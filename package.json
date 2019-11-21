@@ -1,6 +1,6 @@
 {
 	"name": "jsonstat-toolkit",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "JSON-stat Javascript Toolkit: a library to deal with JSON-stat responses.",
 	"homepage": "https://jsonstat.com",
 	"keywords": [
@@ -19,10 +19,10 @@
 		"type": "git",
 		"url": "https://github.com/jsonstat/toolkit.git"
 	},
-	"main": "dist/index.js",
-	"module": "dist/jsonstat.mjs",
-	"unpkg": "dist/jsonstat.js",
-	"jsdelivr": "dist/jsonstat.js",
+	"main": "index.js",
+	"module": "jsonstat.mjs",
+	"unpkg": "jsonstat.js",
+	"jsdelivr": "jsonstat.js",
 	"scripts": {
 		"build": "rollup -c",
 		"test": "node test/node.js"
@@ -37,7 +37,8 @@
 	},
 	"license": "Apache-2.0",
 	"files": [
-		"dist/**/*.js",
+		"*.js",
+		"*.mjs",
 		"test/node.js"
 	],
 	"runkitExampleFilename": "test/node.js"
