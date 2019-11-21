@@ -1,0 +1,41 @@
+{
+	"name": "jsonstat-tookit",
+	"version": "1.0.0",
+	"description": "JSON-stat Javascript Toolkit: a library to deal with JSON-stat responses.",
+	"homepage": "https://jsonstat.com",
+	"keywords": [
+		"jsonstat",
+		"toolkit",
+		"stats",
+		"data",
+		"cube",
+		"opendata"
+	],
+	"author": {
+		"name": "Xavier Badosa",
+		"url": "https://xavierbadosa.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jsonstat/toolkit.git"
+	},
+	"main": "dist/index.js",
+	"module": "dist/jsonstat.mjs",
+	"unpkg": "dist/jsonstat.js",
+	"jsdelivr": "dist/jsonstat.js",
+	"scripts": {
+		"build": "rollup -c",
+		"test": "node test/node.js"
+	},
+	"dependencies": {
+		"node-fetch": "^2.6.0"
+	},
+	"devDependencies": {
+		"rollup": "^1.27.1",
+		"@rollup/plugin-json": "^4.0.0",
+		"rollup-plugin-terser": "^5.1.2"
+	},
+	"license": "Apache-2.0",
+	"files": [ "dist/**/*.js" ],
+	"runkitExampleFilename": "test/node.js"
+}

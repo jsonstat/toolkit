@@ -1,8 +1,12 @@
-# JSONstat Javascript Toolkit
+# JSON-stat Javascript Toolkit
+
+<blockquote>
+This is version 1. Version 0 of this Toolkit can be found <a href="https://github.com/badosa/JSON-stat">elsewhere</a>. If you need to support <em>very</em> old browsers (like IE6), stick to version 0 (latest release is 0.13.13). The two versions have identical APIs, except for the implementation of XHR (an optional feature, anyway) and version exposition. Both changes affect only the JSONstat function: no method is affected. Version 0 is frozen.
+</blockquote>
 
 The [JSON-stat format](https://json-stat.org/format/) is a simple lightweight JSON format for data dissemination. It is based in a cube model that arises from the evidence that the most common form of data dissemination is the tabular form. In this cube model, **datasets** are organized in **dimensions**. Dimensions are organized in **categories**.
 
-The JSONstat Javascript Toolkit (JJT) is part of the [JSONstat Toolkit](https://jsonstat.com). JJT's goal is to help dealing with JSON-stat responses in JavaScript.
+The JSON-stat Javascript Toolkit (JJT) is part of the [JSON-stat Toolkit](https://jsonstat.com). JJT's goal is to help dealing with JSON-stat responses in JavaScript.
 
 ### Resources
 
@@ -12,7 +16,7 @@ The JSONstat Javascript Toolkit (JJT) is part of the [JSONstat Toolkit](https://
 
 ## Design principles
 
-JSON-stat is based on a data cube information structure. The JSONstat Javascript Toolkit exposes the data cube as a tree.
+JSON-stat is based on a data cube information structure. The JSON-stat Javascript Toolkit exposes the data cube as a tree.
 
 ### The JSON-stat tree
 
@@ -46,7 +50,7 @@ Bundles were packages of unordered arbitrary datasets.
 
 Even though JSON-stat currently encourages the use of collections of embedded datasets instead of bundles, JJT supports both approaches.
 
-To retrieve information about the first category of the first dimension of the first embedded dataset in a JSON-stat collection (or bundle) *j*, the JSONstat Javascript Toolkit allows you to traverse the JSON-stat tree like this:
+To retrieve information about the first category of the first dimension of the first embedded dataset in a JSON-stat collection (or bundle) *j*, the JSON-stat Javascript Toolkit allows you to traverse the JSON-stat tree like this:
 
 ```js
 JSONstat( j ).Dataset( 0 ).Dimension( 0 ).Category( 0 )
