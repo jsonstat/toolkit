@@ -1,6 +1,6 @@
 {
 	"name": "jsonstat-toolkit",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "JSON-stat Javascript Toolkit: a library to deal with JSON-stat responses.",
 	"homepage": "https://jsonstat.com",
 	"keywords": [
@@ -36,6 +36,9 @@
 		"rollup-plugin-terser": "^5.1.2"
 	},
 	"license": "Apache-2.0",
-	"files": [ "dist/**/*.js" ],
+	"files": [
+		"dist/**/*.js",
+		"test/node.js"
+	],
 	"runkitExampleFilename": "test/node.js"
 }
