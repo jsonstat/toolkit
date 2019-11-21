@@ -1,7 +1,7 @@
-// jsonstat cjs module and Runkit test
+// jsonstat cjs module test
 
 var
-	JSONstat=require("jsonstat-toolkit"), //../dist/index.js
+	JSONstat=require("jsonstat-toolkit"), // ../index.js
 	uri="https://json-stat.org/samples/oecd-canada-col.json"
 ;
 
