@@ -3,7 +3,13 @@ import json from '@rollup/plugin-json';
 import * as pkg from "./package.json";
 
 const
-  preamble=`// ${pkg.name} v${pkg.version} Copyright ${(new Date).getFullYear()} ${pkg.author.name} ${pkg.homepage}`
+  preamble=`// ${pkg.name} v${pkg.version} Copyright ${(new Date).getFullYear()} ${pkg.author.name} ${pkg.homepage}`,
+  plugins=[
+    json(),
+    terser({
+      output: {preamble}
+    })
+  ]
 ;
 
 export default [
@@ -29,11 +35,14 @@ export default [
         format: "cjs"
       }
     ],
-    plugins: [
-      json(),
-      terser({
-        output: {preamble}
-      })
-    ]
+    plugins
+  },
+  {
+    input: "./src/import.js",
+    output: {
+      file: "import.mjs",
+      format: "esm"
+    },
+    plugins
   }
 ]

@@ -9,18 +9,18 @@
 		<meta name="keywords" content="test, suite, testsuite, library, samples, JSON, statistics, stats, data, metadata, exchange, rest, api, javascript, js, apps, mobile, opendata" />
 		<link rel="stylesheet" type="text/css" href="style.css" />
 		<link rel="me" href="http://xavierbadosa.com/" />
-
-		<!-- Using JSONstat XHR capabilities require Promises and Fetch support. Polyfill included for IE, for example -->
-		<script src="https://cdn.jsdelivr.net/combine/npm/es6-promise@4.2.8,npm/whatwg-fetch@3.0.0"></script>
-		<!-- End of optional polyfilling -->
-
-		<script src="../iife.js"></script>
 	</head>
 	<body>
 		<h1>JSON-stat Javascript Toolkit <span id="version"></span> / Test Suite</h1>
 		<dl>Connecting...</dl>
 
-		<script>
+		<script nomodule>
+		//For old browsers not supporting ES modules
+		window.alert("Sorry, your browser does not support ECMAScript modules!");
+		</script>
+
+		<script type="module">
+		import JSONstat from "https://unpkg.com/jsonstat-toolkit/import.mjs";
 
 		function test(J){
 			var

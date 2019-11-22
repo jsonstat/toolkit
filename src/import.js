@@ -1,4 +1,3 @@
-import fetch from "node-fetch";
 import {version} from "../package.json";
 import jsonstat from "./jsonstat.js";
 

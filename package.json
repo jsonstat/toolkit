@@ -1,6 +1,6 @@
 {
 	"name": "jsonstat-toolkit",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"description": "JSON-stat Javascript Toolkit: a library to deal with JSON-stat responses.",
 	"homepage": "https://jsonstat.com",
 	"keywords": [
@@ -19,10 +19,10 @@
 		"type": "git",
 		"url": "https://github.com/jsonstat/toolkit.git"
 	},
-	"main": "index.js",
-	"module": "jsonstat.mjs",
-	"unpkg": "jsonstat.js",
-	"jsdelivr": "jsonstat.js",
+	"main": "cjs.js",
+	"module": "esm.mjs",
+	"unpkg": "iife.js",
+	"jsdelivr": "iife.js",
 	"scripts": {
 		"build": "rollup -c",
 		"test": "node test/node.js"
