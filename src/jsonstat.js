@@ -65,7 +65,7 @@ function jsonstat(o){
 			//and it will enter the bundle case: once we have a response
 			//if class is dataset we redirect to case "dataset". 0.7.5
 			if(o.class==="dataset" || o.class==="collection" || o.class==="dimension"){
-				return JSONstat(o);
+				return new jsonstat(o);
 			}
 
 			for (prop in o){
@@ -230,7 +230,7 @@ function jsonstat(o){
 		case "dimension" :
 			//It's a native response of class "dimension"
 			if( !o.hasOwnProperty("__tree__") ){
-				return JSONstat({
+				return new jsonstat({
 						"version": "2.0",
 						"class": "dataset",
 						"dimension": {
@@ -402,21 +402,21 @@ jsonstat.prototype.Dataset=function(ds){
 
 		if(typeof ds==="undefined"){
 			for(len=dscol.length; c<len; c++){
-				ar.push(JSONstat(dscol[c]));
+				ar.push(new jsonstat(dscol[c]));
 			}
 			return ar;
 		}
 
 		//Dataset(2) means the 3rd embedded dataset in the collection
 		if(typeof ds==="number" && ds>=0 && ds<dscol.length){
-			return JSONstat(dscol[ds]);
+			return new jsonstat(dscol[ds]);
 		}
 
 		//Dataset("http://...") selection by ID (href) for generalization's sake (probably not particularly useful) 0.9.9
 		if(typeof ds==="string"){
 			for(len=dscol.length; c<len; c++){
 				if(dscol[c].href===ds){
-					return JSONstat(dscol[c]);
+					return new jsonstat(dscol[c]);
 				}
 			}
 		}
