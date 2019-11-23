@@ -10,9 +10,9 @@ The JSON-stat Javascript Toolkit (JJT) is part of the [JSON-stat Toolkit](https:
 
 ### Resources
 
-* [Installation](https://github.com/jsonstat/toolkit/wiki/Installation)
-* [API Reference](https://github.com/jsonstat/toolkit/wiki/API-Reference)
-* [Examples](https://github.com/jsonstat/toolkit/wiki/Examples)
+* [Installation](https://github.com/jsonstat/toolkit/blob/master/docs/INSTALL.md)
+* [API Reference](https://github.com/jsonstat/toolkit/blob/master/docs/API.md)
+* [Examples](https://github.com/jsonstat/toolkit/blob/master/docs/EXAMPLES.md)
 
 ## Design principles
 
