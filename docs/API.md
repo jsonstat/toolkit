@@ -108,7 +108,7 @@ JSONstat( "https://json-stat.org/samples/oecd.json").then(function(j) {
 	}else{
 		window.alert( "Wrong response!" );
 	}
-} ));
+});
 ```
 
 ##### init
