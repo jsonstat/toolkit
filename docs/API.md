@@ -1,3 +1,5 @@
+# API Reference
+
 > [JSON-stat Javascript Toolkit v.1](README.md) ▸ **API Reference**
 
 <blockquote>This is the documentation of JSON-stat Javascript Toolkit version 1. Version 0 has a slightly different API and is documented <a href="https://github.com/badosa/JSON-stat/wiki/API-Reference">elsewhere</a>.</blockquote>
@@ -61,7 +63,7 @@
 
 ## Public Properties
 
-<a href="#class">class</a>, <a href="#coordinates">coordinates</a>, <a href="#error">error</a>, <a href="#extension">extension</a>, <a href="#hierarchy">hierarchy</a>, <a href="#href">href</a>, <a href="#id">id</a>, <a href="#label">label</a>, <a href="#length">length</a>, <a href="#link">link</a>, <a href="#n">n</a>, <a href="#size">size</a>, <a href="#note">note</a>, <a href="#role">role</a>, <a href="#size">size</a>, <a href="#source">source</a>, <a href="#status">status</a>, <a href="#unit">unit</a>, <a href="#updated">updated</a>, <a href="#value">value</a>, <a href="#version">version</a>
+<a href="#class">class</a>, <a href="#coordinates">coordinates</a>, <a href="#error">error</a>, <a href="#extension">extension</a>, <a href="#hierarchy">hierarchy</a>, <a href="#href">href</a>, <a href="#id">id</a>, <a href="#label">label</a>, <a href="#length">length</a>, <a href="#link">link</a>, <a href="#n">n</a>, <a href="#size">size</a>, <a href="#note">note</a>, <a href="#role">role</a>, <a href="#size">size</a>, <a href="#source">source</a>, <a href="#status">status</a>, <a href="#unit">unit</a>, <a href="#updated">updated</a>, <a href="#value">value</a>
 
 ***
 
@@ -227,7 +229,7 @@ JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
 ```
 
 ##### instance
-This boolean parameter (introduced in version 0.12.2) is only available when **dimid** is specified and alters the return value. By default (*true*), the return value is a *jsonstat* instance (object), an array of *jsonstat* instances or *null*. When a valid **dimid** is specified in combination with **instance** *true*, the return value is an array of category labels for dimension **dimid** or, when **dimid** is an object, an array of arrays (one for each selected dimension) of category labels.
+This boolean parameter is only available when **dimid** is specified and alters the return value. By default (*true*), the return value is a *jsonstat* instance (object), an array of *jsonstat* instances or *null*. When a valid **dimid** is specified in combination with **instance** *true*, the return value is an array of category labels for dimension **dimid** or, when **dimid** is an object, an array of arrays (one for each selected dimension) of category labels.
 
 ```js
 JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
@@ -281,7 +283,7 @@ JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
 It can be a positive integer (by index in the *value* array), an array (by dimensions indices) or an object (by dimensions IDs).
 
 ##### status
-This boolean parameter (available since version 0.10.1) determines whether status information is retrieved or not (default is *true*).
+This boolean parameter determines whether status information is retrieved or not (default is *true*).
 
 #### Return Value
 
@@ -322,7 +324,7 @@ JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
 } );
 ```
 
-Since version 0.10.3, it is possible to use an array of arrays instead of an object.
+It is also possible to use an array of arrays instead of an object.
 
 ```js
 JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
@@ -411,13 +413,13 @@ It is an object with the following optional properties:
 * **field**: String (<em>id</em>, *label*). Default value is *label*. Only available when **type** is *object* or *array*. It determines whether dimensions, value and status are identified in the return value by label or by ID.
 * **vlabel**: String. Default value is *Value*. Only available when **type** is *object* or *array*. It determines the label of the value field.
 * **slabel**: String. Default value is *Status*. Only available when **type** is *object* or *array* and **status** is *true*. It determines the label of the status field.
-* **unit**: Boolean. Default value is *false*. Only available when **type** is *arrobj*. It determines whether unit information is included in the output. When *true*, each object in the array includes a *unit* property with all the unit information attached to a value by the provider. It is assumed that there is only a dimension with role *metric* in the dataset (or at least only one with unit information). Available since version 0.12.3.
-* **meta**: Boolean. Default value is *false*. Only available when **type** is *arrobj*. It determines the structure of the output. By default, *arrobj* returns data as an array of objects. When **meta** is *true*, metadata is included in the output, which takes the form of an object with two properties: "meta" and "data". The latter contains the same array of objects that is returned when **meta** is *false*. Available since version 0.13.0.
-* **by**: String. Only available when **type** is *arrobj*. It must be the ID of an existing dimension; otherwise, it will be ignored. When a valid **by** is specified, a property is created for each category of the **by** dimension (the "value" property is "transposed" by the *by* dimension). When a valid **by** is specified, **status**  and **unit** are ignored. Available since version 0.13.0.
-* **bylabel**: Boolean. Default is *false*. Only available when **type** is *arrobj*. When *true*, the categories of the **by** dimension are identified, once transposed, by their label instead of their ID. Available since version 0.13.3.
-* **prefix**: String. Only available when **type** is *arrobj*. When values are transposed using the **by** option, category IDs end up being used as properties, side by side with dimension IDs. To avoid collision, a prefix can be specified to be added at the beginning of each new property created by the transposition. When no valid **by** has been specified, the **prefix** property is ignored. Available since version 0.13.0.
-* **drop**: Array. Only available when **type** is *arrobj*. This property is used to provide dimension IDs not to be included in the output. Invalid dimension IDs and non  single category dimensions are ignored. When no valid **by** is specified, the **drop** property is ignored. Available since version 0.13.0.
-* **comma**: Boolean. Default value is *false*. Only available when **type** is *arrobj*. When *true*, values are represented as strings instead of numbers with comma as the decimal mark. Available since version 0.13.2.
+* **unit**: Boolean. Default value is *false*. Only available when **type** is *arrobj*. It determines whether unit information is included in the output. When *true*, each object in the array includes a *unit* property with all the unit information attached to a value by the provider. It is assumed that there is only a dimension with role *metric* in the dataset (or at least only one with unit information).
+* **meta**: Boolean. Default value is *false*. Only available when **type** is *arrobj*. It determines the structure of the output. By default, *arrobj* returns data as an array of objects. When **meta** is *true*, metadata is included in the output, which takes the form of an object with two properties: "meta" and "data". The latter contains the same array of objects that is returned when **meta** is *false*.
+* **by**: String. Only available when **type** is *arrobj*. It must be the ID of an existing dimension; otherwise, it will be ignored. When a valid **by** is specified, a property is created for each category of the **by** dimension (the "value" property is "transposed" by the *by* dimension). When a valid **by** is specified, **status**  and **unit** are ignored.
+* **bylabel**: Boolean. Default is *false*. Only available when **type** is *arrobj*. When *true*, the categories of the **by** dimension are identified, once transposed, by their label instead of their ID.
+* **prefix**: String. Only available when **type** is *arrobj*. When values are transposed using the **by** option, category IDs end up being used as properties, side by side with dimension IDs. To avoid collision, a prefix can be specified to be added at the beginning of each new property created by the transposition. When no valid **by** has been specified, the **prefix** property is ignored.
+* **drop**: Array. Only available when **type** is *arrobj*. This property is used to provide dimension IDs not to be included in the output. Invalid dimension IDs and non  single category dimensions are ignored. When no valid **by** is specified, the **drop** property is ignored.
+* **comma**: Boolean. Default value is *false*. Only available when **type** is *arrobj*. When *true*, values are represented as strings instead of numbers with comma as the decimal mark.
 
 ```js
 JSONstat( "https://json-stat.org/samples/canada.json".then( function(j) {
@@ -637,7 +639,7 @@ It returns an object of arrays in the [Google DataTable](https://developers.goog
 
 ***
 <div><strong>Parent</strong>: <a href="#dataset">Dataset</a></div>
-<div><strong>Description</strong>: (Available since version 0.11.0) Modifies a <em>jsonstat</em> instance of class "dataset" applying a filter (creates a subset)</div>
+<div><strong>Description</strong>: Modifies a <em>jsonstat</em> instance of class "dataset" applying a filter (creates a subset)</div>
 <div><strong>Public Properties</strong>: <a href="#class">class</a>, <a href="#length">length</a>, <a href="#id">id</a>, <a href="#label">label</a>, <a href="#n">n</a>, <a href="#size">size</a>, <a href="#value">value</a>, <a href="#status">status</a>, <a href="#updated">updated</a>, <a href="#source">source</a>, <a href="#role">role</a>, <a href="#note">note</a>, <a href="#href">href</a>, <a href="#link">link</a>, <a href="#extension">extension</a></div>
 <div><strong>Summary</strong>: <code><i>object</i> Slice ( <i>object</i> or <i>array</i> filter] )</code></div>
 
@@ -916,7 +918,7 @@ JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
 
 #### size
 
-Dimensions sizes. Array. Available since version 0.10.
+Dimensions sizes. Array.
 
 #### source
 
@@ -1003,18 +1005,4 @@ JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
 	//23rd value
 	var value23=j.Data( 22 ).value; //Same as j.Data( 22, false )
 } );
-```
-
-#### version
-
-Version of the JSON-stat Javascript Toolkit. String.
-
-```js
-var ver=JSONstat.version;
-```
-
-This property is not available in the ECMAScript module. If for some reason you need to check the JJT version, you can import it from export.js:
-
-```js
-import { JSONstat, version as JSONstatVersion} from "/your-js-dir/export.js";
 ```
