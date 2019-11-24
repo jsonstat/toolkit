@@ -1,6 +1,6 @@
 # API Reference
 
-> [JSON-stat Javascript Toolkit v.1](README.md) ▸ **API Reference**
+> [JSON-stat Javascript Toolkit v.1](https://github.com/jsonstat/toolkit/blob/master/README.md) ▸ **API Reference**
 
 <blockquote>This is the documentation of JSON-stat Javascript Toolkit version 1. Version 0 has a slightly different API and is documented <a href="https://github.com/badosa/JSON-stat/wiki/API-Reference">elsewhere</a>.</blockquote>
 
