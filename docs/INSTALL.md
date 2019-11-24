@@ -1,6 +1,6 @@
 # Installation
 
-> [JSON-stat Javascript Toolkit v.1](README.md) ▸ **Installation**
+> [JSON-stat Javascript Toolkit v.1](https://github.com/jsonstat/toolkit/blob/master/README.md) ▸ **Installation**
 
 <blockquote>This is the documentation of JSON-stat Javascript Toolkit version 1. Version 0 has slightly different features and installation procedures that are documented <a href="https://github.com/badosa/JSON-stat/wiki/Installation">elsewhere</a>.</blockquote>
 
