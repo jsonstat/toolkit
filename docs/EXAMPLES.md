@@ -70,3 +70,12 @@ function main(j){
   ...
 }
 ```
+
+## ECMAScript Module
+
+Example: [JJT v1: ECMAScript module](https://bl.ocks.org/badosa/c1feb27bd8214de60f430379424e12fa)
+
+## IE Support for JSONstat requests
+
+Example: [JJT v1: GET request](https://bl.ocks.org/badosa/ddd1b3783800dffa9cf7426f6042cc83)
+
