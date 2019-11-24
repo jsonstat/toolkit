@@ -49,8 +49,6 @@ The JJT ECMAScript module works on any browser that support ECMAScript modules.
 $ npm install jsonstat-toolkit
 ```
 
-### Loading
-
 #### CommonJS
 
 ```js
