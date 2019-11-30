@@ -2,6 +2,18 @@
 
 > [JSON-stat Javascript Toolkit v.1](https://github.com/jsonstat/toolkit/blob/master/README.md) ▸ **Examples**
 
+<ul>
+  <li><a href="#differences-between-version-0-and-version-1">Differences between version 0 and version 1</a>
+    <ul>
+      <li><a href="#retrieving-jjts-version">Retrieving JJT's version</a></li>
+      <li><a href="#doing-a-get-request">Doing a GET request</a></li>
+      <li><a href="#doing-a-post-request">Doing a POST request</a></li>
+    </ul>
+  </li>
+  <li><a href="#ecmascript-module">ECMAScript Module</a></li>
+  <li><a href="#ie-support-for-jsonstat-requests">IE Support for JSONstat requests</a></li>
+</ul>
+
 ## Differences between version 0 and version 1
 
 ### Retrieving JJT's version
@@ -70,3 +82,12 @@ function main(j){
   ...
 }
 ```
+
+## ECMAScript Module
+
+Example: [JJT v1: ECMAScript module](https://bl.ocks.org/badosa/c1feb27bd8214de60f430379424e12fa)
+
+## IE Support for JSONstat requests
+
+Example: [JJT v1: GET request](https://bl.ocks.org/badosa/ddd1b3783800dffa9cf7426f6042cc83)
+
