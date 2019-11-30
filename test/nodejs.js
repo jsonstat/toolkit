@@ -1,7 +1,5 @@
-// jsonstat cjs module test
-
 var
-	JSONstat=require("jsonstat-toolkit"), // ../index.js
+	JSONstat=require("jsonstat-toolkit"), // ../main.cjs
 	uri="https://json-stat.org/samples/oecd-canada-col.json"
 ;
 
