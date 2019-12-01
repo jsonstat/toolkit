@@ -1,6 +1,6 @@
 {
 	"name": "jsonstat-toolkit",
-	"version": "1.0.7",
+	"version": "1.0.8",
 	"description": "JSON-stat Javascript Toolkit: a library to deal with JSON-stat responses.",
 	"homepage": "https://jsonstat.com",
 	"keywords": [
@@ -21,6 +21,7 @@
 	},
 	"main": "main.cjs",
 	"module": "module.mjs",
+	"browser": "import.mjs",
 	"unpkg": "iife.js",
 	"jsdelivr": "iife.js",
 	"scripts": {

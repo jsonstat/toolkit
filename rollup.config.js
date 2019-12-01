@@ -40,7 +40,7 @@ export default [
   {
     input: "./src/import.js",
     output: {
-      file: "import.mjs",
+      file: pkg.browser,
       format: "esm"
     },
     plugins
