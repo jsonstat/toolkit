@@ -87,7 +87,67 @@ function main(j){
 
 Example: [JJT v1: ECMAScript module](https://bl.ocks.org/badosa/c1feb27bd8214de60f430379424e12fa)
 
+#### Version 0
+
+```html
+<script type="module">
+  import { JSONstat } from "https://unpkg.com/jsonstat@0.13.13/export.mjs";
+  //or https://cdn.jsdelivr.net/npm/jsonstat@0.13.13/export.mjs
+  ...
+</script>  
+```
+
+#### Version 1
+
+```html
+<script type="module">
+   import JSONstat from "https://unpkg.com/jsonstat-toolkit@1.0.8/import.mjs";
+   //or https://cdn.jsdelivr.net/npm/jsonstat-toolkit@1.0.8/import.mjs
+  ...
+</script>  
+```
+
+
 ## IE Support for JSONstat requests
 
 Example: [JJT v1: GET request](https://bl.ocks.org/badosa/ddd1b3783800dffa9cf7426f6042cc83)
 
+#### Version 0
+
+```html
+<script src="https://unpkg.com/jsonstat@0.13.13"></script>
+<!-- Or https://cdn.jsdelivr.net/npm/jsonstat@0.13.13 -->
+
+<script>
+  var url="...";
+
+  JSONstat(url, main);
+
+  function main(){
+    var ds=this.Dataset(0);
+    ...
+  }
+</script>
+```
+
+#### Version 1
+
+```html
+<!-- Using JSONstat XHR capabilities require Promises and Fetch support -->
+<script src="https://cdn.jsdelivr.net/combine/npm/es6-promise@4.2.8,npm/whatwg-fetch@3.0.0"></script>
+<!-- End of polyfilling -->
+
+<script src="https://unpkg.com/jsonstat-toolkit@1.0.8"></script>
+<!-- Or https://cdn.jsdelivr.net/npm/jsonstat-toolkit@1.0.8 -->
+
+<script>
+  var url="...";
+
+  JSONstat(url).then(main);
+
+  function main(j){
+    var ds=j.Dataset(0);
+    ...
+  }
+</script>
+```
