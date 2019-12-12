@@ -262,7 +262,7 @@ It can be a positive integer (access by index in the categories [id](#id) array)
 When a valid **catid** is specified, it returns a *jsonstat* instance. If **catid** is not valid, a *null* is returned. If **catid** is not specified, it will return an array of *jsonstat* instances: one for each category.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
 	//Label of category "AU" in dimension "area"
 	var AUlabel=j.Dimension( "area" ).Category( "AU" ).label; //"Australia"
 } );
@@ -298,7 +298,7 @@ If **dataid** is an array, the result is a *value-status* object if **dataid** h
 If **dataid** is an object, a dimension is ignored if its ID or the ID of its category is invalid. If all dimensions/categories are correctly specified, the result is a *value-status* object. Take into account that constant dimensions (that is, single category dimensions) are not required. Therefore, to get a *value-status* object, you need to validly select a category for all the non-constant dimensions. If you do not validly select a category of a non-constant dimension (from now on, the free dimension), the return value will be an array of *value-status* objects: one for each category in the free dimension (slice). Objects will be ordered in the free dimension category order. If there is more than one free dimension, a *null* will be returned.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
 	//Value of the first observation
 	var data0=j.Data( 0 ).value;
 	//Same as value with the first category in each dimension
@@ -311,7 +311,7 @@ JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
 If **status** is *false*, *value-status* objects will be replaced by simple values (usually a number; Data() returns whatever was included in the cell by the provider: number, string, *null*...). As a consequence, the return value will be a value, an array of values or *null* when **dataid** is not valid.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
 	//Value of the first observation
 	var data0=j.Data( 0, false );
 	//Same as value with the first category in each dimension
@@ -327,7 +327,7 @@ JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
 It is also possible to use an array of arrays instead of an object.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
 	var unrGR2014=j.Data(
 		[
 			["concept", "UNR"],
@@ -453,7 +453,7 @@ It is a function used to transform the return value.
 Even though toTable can expose a table using different structures depending on **type**, it always includes some sort of array for data. **callback** will be invoked for each element of the data array, passing two parameters: the element and its index. The *this* keyword in **callback** is the dataset information as a *jsonstat* instance.
 
 ```js
-JSONstat( "https://json-stat.org/samples/canada.json".then( function(j) {
+JSONstat( "https://json-stat.org/samples/canada.json" ).then( function(j) {
 	//Discard data by age in the resulting table
 	j.toTable(
 	   { type : "arrobj" },
@@ -469,7 +469,7 @@ JSONstat( "https://json-stat.org/samples/canada.json".then( function(j) {
 Filters and transformations in the **callback** must be expressed in terms of the form of the data array, which depends on **opts**. In the previous example, age is filtered using a category label (<em>total</em>) because this is the default value of the **content** option.
 
 ```js
-JSONstat( "https://json-stat.org/samples/canada.json".then( function(j) {
+JSONstat( "https://json-stat.org/samples/canada.json" ).then( function(j) {
 	//Discard data by age in the resulting table.
 	//Using categories ID instead of labels.
 	j.toTable(
@@ -486,7 +486,7 @@ JSONstat( "https://json-stat.org/samples/canada.json".then( function(j) {
 Take into account that every **type** returns a different form of data array.
 
 ```js
-JSONstat( "https://json-stat.org/samples/canada.json".then( function(j) {
+JSONstat( "https://json-stat.org/samples/canada.json" ).then( function(j) {
 	//As previous example but with type "array"
 	//Age is the third dimension (its index is 2)
 	j.toTable(
@@ -754,13 +754,13 @@ Optional error information. Object. The properties of this object depend on the 
 Collection, dataset, dimension or item extended information. Object. The properties of this object depend on the provider.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
   var
-		//This dataset contains extended properties
-		ext=j.extension,
-		//Get e-mail of contact
-		email=ext["contact"]
-	;
+    //This dataset contains extended properties
+    ext=j.extension,
+    //Get e-mail of contact
+    email=ext["contact"]
+  ;
 } );
 ```
 
@@ -829,7 +829,7 @@ JSONstat( "https://json-stat.org/samples/oecd-canada.json".then( function(j) {
 Collection, dataset, dimension, category or item label. String.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
   //Label for "AU" area (Australia)
   var label=j.Dataset( "oecd" ).Dimension( "area" ).Category( "AU" ).label;
 } );
@@ -842,7 +842,7 @@ Number of datasets, dimensions, categories, category children or items. Integer.
 You should always check for length>0 before further processing.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
 	if( j.length ){
 		...
 	}else{
@@ -868,7 +868,7 @@ JSONstat( "https://json-stat.org/samples/collection.json".then( function(j) {
 Number of values in the dataset. Integer. It is the number of cells in the cube, even if they are empty (missing values).
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
 	window.alert("This dataset has " + String( j.n ) + " observations.");
 } );
 ```
@@ -878,7 +878,7 @@ JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
 Dataset, dimension, category or collection annotations. Array of strings except category annotations, which are an object of strings.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
 	//Display general dataset annotations if available
 	var note=j.note;
 	if( note ){
@@ -901,7 +901,7 @@ JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
 Dimensions with [role](#role) *time*, *geo*, *metric* or with unspecified role (*classification*). *null* if role information was not included in the response; otherwise, object with four keys (*time*, *geo*, *metric* and *classification*). The value of every key is an array of dimensions IDs (or *null* if no dimension has the specified role).
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
 	//Get the name of the first dimension with a "geo" role
 	var geo1=j.role.geo[0];
 } );
@@ -910,7 +910,7 @@ JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
 Dimension role. String (*time*, *geo*, *metric*; otherwise, *classification*) or *null* (when role information not included in the response).
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
 	//Role of the "concept" dimension
 	var crole=j.Dimension( "concept" ).role;
 } );
@@ -925,7 +925,7 @@ Dimensions sizes. Array.
 Dataset or collection source. String.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
 	//Dataset source
 	var source=j.source;
 } );
@@ -936,7 +936,7 @@ JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
 As a property of a dataset, status of its values. Array or *null*.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
 	if( j.status ){
 		//Status of the 23rd value
 		var status23=j.status[22];
@@ -947,7 +947,7 @@ JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
 As a property of a datum, status of its value. String or *null* if not provided.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
 	//Status of the 23rd value
 	var status23=j.Data( 22 ).status;
 } );
@@ -958,7 +958,7 @@ JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
 Category unit information if the category dimension has a *metric* [role](#role). Object. Except "decimals", "label", "symbol" and "position", the rest of the properties of this object depend on the provider. If no unit information has been provided, a *null* is returned.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
 	//First category in the first dimension with a "metric" role
 	var metric1=j.Dimension( { role : "metric" } )[0].Category( 0 );
 	if( metric1.unit && metric1.unit.hasOwnProperty( "decimals" ) ){
@@ -973,7 +973,7 @@ JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
 It is the update date of the dataset or collection. String representing a date in an ISO 8601 format recognized by the Javascript Date.parse method.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
 	if( j.updated ){
 		var
 			upd=new Date( j.updated ),
@@ -990,7 +990,7 @@ JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
 As a property of a dataset, dataset values. Array.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
 	if( j.value ){
 		//23rd value
 		var value23=j.value[22];
@@ -1001,7 +1001,7 @@ JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
 As a property of a datum, datum value. Usually a number. Data() returns whatever was included in the cell by the provider (number, string, *null*...).
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json".then( function(j) {
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
 	//23rd value
 	var value23=j.Data( 22 ).value; //Same as j.Data( 22, false )
 } );
