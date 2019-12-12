@@ -88,11 +88,10 @@ When an object is specified, it processes it to build a *jsonstat* instance (the
 ```js
 var j=JSONstat( { ... } );
 if( j.length ){
-		...
-	}else{
-		window.alert( "Wrong response!" );
-	}
-} );
+  ...
+}else{
+  window.alert( "Wrong response!" );
+}
 ```
 
 When the string "version" is specified, the JSON-stat Javascript Toolkit version is returned.
@@ -104,12 +103,12 @@ var version=JSONstat("version");
 When a URL is specified, JSONstat returns a promise that in case of fulfillment will resolve to a *jsonstat* instance.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json").then(function(j) {
-	if( j.length ){
-		...
-	}else{
-		window.alert( "Wrong response!" );
-	}
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
+  if( j.length ){
+    ...
+  }else{
+    window.alert( "Wrong response!" );
+  }
 });
 ```
 
@@ -119,17 +118,17 @@ When **res** is a URL, an options object can be specified containing the setting
 
 ```js
 var
-	url="https://pxnet2.stat.fi/PXWeb/api/v1/en/StatFin/tym/tyti/vv/statfin_tyti_pxt_11pl.px",
-	query={ "query": [ { "code": "Sukupuoli", "selection": { "filter": "item", "values": [ "SSS" ] } } ], "response": { "format": "json-stat2" } },
-	options={
-		method: "POST",
-		redirect: "follow",
-		body: JSON.stringify(query)
-	}
+  url="https://pxnet2.stat.fi/PXWeb/api/v1/en/StatFin/tym/tyti/vv/statfin_tyti_pxt_11pl.px",
+  query={ "query": [ { "code": "Sukupuoli", "selection": { "filter": "item", "values": [ "SSS" ] } } ], "response": { "format": "json-stat2" } },
+  options={
+    method: "POST",
+    redirect: "follow",
+    body: JSON.stringify(query)
+  }
 ;
 
 JSONstat(url, options).then(function( j ) {
-	var label=j.label;
+  var label=j.label;
 });
 ```
 
@@ -168,32 +167,31 @@ It can be a positive integer (access by index in the datasets [id](#id) array) o
 When a valid **dsid** is specified, it returns a *jsonstat* instance. If **dsid** is not valid, a *null* is returned. If **dsid** is not specified, it will return an array of *jsonstat* instances: one for each dataset.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd-canada.json" ).then( function(j) {
-		if( j.class==="bundle" ){
-			var ds1=j.Dataset( 0 );
-		}
-	}
-);
+JSONstat( "https://json-stat.org/samples/oecd-canada.json" ).then(function(j) {
+  if( j.class==="bundle" ){
+    var ds1=j.Dataset( 0 );
+  }
+});
 ```
 
 The Dataset method can also be applied to *jsonstat* "collection" instances if they have some embedded dataset:
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd-canada-col.json" ).then( function(j) {
-	if( j.class==="collection" ){
-		var ds1=j.Dataset( 0 );
-	}
-} );
+JSONstat( "https://json-stat.org/samples/oecd-canada-col.json" ).then(function(j) {
+  if( j.class==="collection" ){
+    var ds1=j.Dataset( 0 );
+  }
+});
 ```
 
 For generalization's sake, it can also be applied to *jsonstat* "dataset" instances:
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
-	if( j.class==="dataset" ){
-		window.alert( j===j.Dataset( 0 ) ); //true
-	}
-} );
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
+  if( j.class==="dataset" ){
+    window.alert( j===j.Dataset( 0 ) ); //true
+  }
+});
 ```
 
 ### Dimension()
@@ -211,32 +209,32 @@ JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
 It can be a positive integer (access by index in the dimensions [id](#id) array) or a string (access by ID). If no **dimid** is specified, it will return information for every dimension.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
-	if( j.class==="dataset" ){
-		//Label of the first dimension
-		var label1=j.Dimension( 0 ).label;
-	}
-} );
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
+  if( j.class==="dataset" ){
+    //Label of the first dimension
+    var label1=j.Dimension( 0 ).label;
+  }
+});
 ```
 
 It can also be an object in the form <code>{ role : *string* }</code>, where *string* is "time", "geo", "metric" or "classification". This syntax is used to filter dimensions with a particular [role](#role).
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
-	//Label of the first dimension with role "geo"
-	var geolabel1=j.Dimension( { role : "geo" } )[0].label;
-} );
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
+  //Label of the first dimension with role "geo"
+  var geolabel1=j.Dimension( { role : "geo" } )[0].label;
+});
 ```
 
 ##### instance
 This boolean parameter is only available when **dimid** is specified and alters the return value. By default (*true*), the return value is a *jsonstat* instance (object), an array of *jsonstat* instances or *null*. When a valid **dimid** is specified in combination with **instance** *true*, the return value is an array of category labels for dimension **dimid** or, when **dimid** is an object, an array of arrays (one for each selected dimension) of category labels.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
-	//Array of dimension "area" category labels
-	var arealabels=j.Dimension( "area", false );
-	//Same as: j.Dimension( "area" ).Category().map( function( e ){ return e.label; } )
-} );
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
+  //Array of dimension "area" category labels
+  var arealabels=j.Dimension( "area", false );
+  //Same as: j.Dimension( "area" ).Category().map( function( e ){ return e.label; } )
+});
 ```
 
 #### Return Value
@@ -262,10 +260,10 @@ It can be a positive integer (access by index in the categories [id](#id) array)
 When a valid **catid** is specified, it returns a *jsonstat* instance. If **catid** is not valid, a *null* is returned. If **catid** is not specified, it will return an array of *jsonstat* instances: one for each category.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
-	//Label of category "AU" in dimension "area"
-	var AUlabel=j.Dimension( "area" ).Category( "AU" ).label; //"Australia"
-} );
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
+  //Label of category "AU" in dimension "area"
+  var AUlabel=j.Dimension( "area" ).Category( "AU" ).label; //"Australia"
+});
 ```
 
 ### Data()
@@ -298,45 +296,45 @@ If **dataid** is an array, the result is a *value-status* object if **dataid** h
 If **dataid** is an object, a dimension is ignored if its ID or the ID of its category is invalid. If all dimensions/categories are correctly specified, the result is a *value-status* object. Take into account that constant dimensions (that is, single category dimensions) are not required. Therefore, to get a *value-status* object, you need to validly select a category for all the non-constant dimensions. If you do not validly select a category of a non-constant dimension (from now on, the free dimension), the return value will be an array of *value-status* objects: one for each category in the free dimension (slice). Objects will be ordered in the free dimension category order. If there is more than one free dimension, a *null* will be returned.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
-	//Value of the first observation
-	var data0=j.Data( 0 ).value;
-	//Same as value with the first category in each dimension
-	var data000=j.Data( [0, 0, 0] ).value;
-	//Value with concept "UNR", area "GR" and year "2014"
-	var unrGR2014=j.Data( { "concept" : "UNR", "area" : "GR", "year" : "2014" } ).value;
-} );
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
+  //Value of the first observation
+  var data0=j.Data( 0 ).value;
+  //Same as value with the first category in each dimension
+  var data000=j.Data( [0, 0, 0] ).value;
+  //Value with concept "UNR", area "GR" and year "2014"
+  var unrGR2014=j.Data( { "concept" : "UNR", "area" : "GR", "year" : "2014" } ).value;
+});
 ```
 
 If **status** is *false*, *value-status* objects will be replaced by simple values (usually a number; Data() returns whatever was included in the cell by the provider: number, string, *null*...). As a consequence, the return value will be a value, an array of values or *null* when **dataid** is not valid.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
-	//Value of the first observation
-	var data0=j.Data( 0, false );
-	//Same as value with the first category in each dimension
-	var data000=j.Data( [0, 0, 0], false );
-	//Value with concept "UNR", area "GR" and year "2014"
-	var unrGR2014=j.Data(
-		{ "concept" : "UNR", "area" : "GR", "year" : "2014" },
-		false
-	);
-} );
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
+  //Value of the first observation
+  var data0=j.Data( 0, false );
+  //Same as value with the first category in each dimension
+  var data000=j.Data( [0, 0, 0], false );
+  //Value with concept "UNR", area "GR" and year "2014"
+  var unrGR2014=j.Data(
+    { "concept" : "UNR", "area" : "GR", "year" : "2014" },
+    false
+  );
+});
 ```
 
 It is also possible to use an array of arrays instead of an object.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
-	var unrGR2014=j.Data(
-		[
-			["concept", "UNR"],
-			["area", "GR"],
-			["year", "2014"]
-		]
-	);
-	//Same as { "concept" : "UNR", "area" : "GR", "year" : "2014" }
-} );
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
+  var unrGR2014=j.Data(
+    [
+      ["concept", "UNR"],
+      ["area", "GR"],
+      ["year", "2014"]
+    ]
+  );
+  //Same as { "concept" : "UNR", "area" : "GR", "year" : "2014" }
+});
 ```
 
 ### Item()
@@ -369,24 +367,24 @@ If the value of the "class" property is not a valid <a href="#class">class</a> v
 When **itemid** is not specified, it returns an array of item objects: one for each item.
 
 ```js
-JSONstat( "https://json-stat.org/samples/collection.json".then( function(j) {
-	//Get the label of the first item in the collection
-	var label1=j.Item( 0 ).label;
-} );
+JSONstat( "https://json-stat.org/samples/collection.json" ).then(function(j) {
+  //Get the label of the first item in the collection
+  var label1=j.Item( 0 ).label;
+});
 ```
 
 ```js
-JSONstat( "https://json-stat.org/samples/collection.json".then( function(j) {
-	//Get the number of items with class "dataset" in the collection
-	var dsn=j.Item( { class : "dataset" } ).length;
-} );
+JSONstat( "https://json-stat.org/samples/collection.json" ).then(function(j) {
+  //Get the number of items with class "dataset" in the collection
+  var dsn=j.Item( { class : "dataset" } ).length;
+});
 ```
 
 ```js
-JSONstat( "https://json-stat.org/samples/collection.json".then( function(j) {
-	//Get the number of embedded dataset in the collection (none)
-	var dsn=j.Item( { class : "dataset" , embedded: true } ).length;
-} );
+JSONstat( "https://json-stat.org/samples/collection.json" ).then(function(j) {
+  //Get the number of embedded dataset in the collection (none)
+  var dsn=j.Item( { class : "dataset" , embedded: true } ).length;
+});
 ```
 
 ## Transforming
@@ -422,28 +420,28 @@ It is an object with the following optional properties:
 * **comma**: Boolean. Default value is *false*. Only available when **type** is *arrobj*. When *true*, values are represented as strings instead of numbers with comma as the decimal mark.
 
 ```js
-JSONstat( "https://json-stat.org/samples/canada.json".then( function(j) {
-	//Column names (first row)
-	//["country", "year", "age group", "concepts", "sex", "Value"]
-	var cols=j.toTable( { type : "array" } )[0];
-	//IDs instead of labels
-	//["country", "year", "age", "concept", "sex", "value"]
-	cols=j.toTable( { type : "array", field : "id" } )[0];
-	//Labels including status
-	//["country", "year", "age group", "concepts", "sex", "Status", "Value"]
-	cols=j.toTable( { type : "array", status : true } )[0];
-	//Same but naming status as "Metadata" and value as "Data"
-	cols=j.toTable( { type : "array", status : true, vlabel : "Data", slabel: "Metadata" } )[0];
-	//First data row
-	//["Canada", "2012", "total", "population", "total", 34880.5]
-	var row1=j.toTable( {type: "array"} )[1];
-	//Same including status
-	//["Canada", "2012", "total", "population", "total", "a", 34880.5]
-	row1=j.toTable( {type: "array", status: true} )[1];
-	//Same but IDs instead of labels
-	//["CA", "2012", "T", "POP", "T", "a", 34880.5]
-	row1=j.toTable( {type: "array", status: true, content: "id"} )[1];
-} );
+JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
+  //Column names (first row)
+  //["country", "year", "age group", "concepts", "sex", "Value"]
+  var cols=j.toTable( { type : "array" } )[0];
+  //IDs instead of labels
+  //["country", "year", "age", "concept", "sex", "value"]
+  cols=j.toTable( { type : "array", field : "id" } )[0];
+  //Labels including status
+  //["country", "year", "age group", "concepts", "sex", "Status", "Value"]
+  cols=j.toTable( { type : "array", status : true } )[0];
+  //Same but naming status as "Metadata" and value as "Data"
+  cols=j.toTable( { type : "array", status : true, vlabel : "Data", slabel: "Metadata" } )[0];
+  //First data row
+  //["Canada", "2012", "total", "population", "total", 34880.5]
+  var row1=j.toTable( {type: "array"} )[1];
+  //Same including status
+  //["Canada", "2012", "total", "population", "total", "a", 34880.5]
+  row1=j.toTable( {type: "array", status: true} )[1];
+  //Same but IDs instead of labels
+  //["CA", "2012", "T", "POP", "T", "a", 34880.5]
+  row1=j.toTable( {type: "array", status: true, content: "id"} )[1];
+});
 ```
 
 ##### callback
@@ -453,82 +451,82 @@ It is a function used to transform the return value.
 Even though toTable can expose a table using different structures depending on **type**, it always includes some sort of array for data. **callback** will be invoked for each element of the data array, passing two parameters: the element and its index. The *this* keyword in **callback** is the dataset information as a *jsonstat* instance.
 
 ```js
-JSONstat( "https://json-stat.org/samples/canada.json" ).then( function(j) {
-	//Discard data by age in the resulting table
-	j.toTable(
-	   { type : "arrobj" },
-	   function( d, i ){
-	      if( d.age==="total" ){
-	         return d;
-	      }
-	   }
-	);
-} );
+JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
+  //Discard data by age in the resulting table
+  j.toTable(
+    { type : "arrobj" },
+    function( d, i ){
+      if( d.age==="total" ){
+        return d;
+      }
+    }
+  );
+});
 ```
 
 Filters and transformations in the **callback** must be expressed in terms of the form of the data array, which depends on **opts**. In the previous example, age is filtered using a category label (<em>total</em>) because this is the default value of the **content** option.
 
 ```js
-JSONstat( "https://json-stat.org/samples/canada.json" ).then( function(j) {
-	//Discard data by age in the resulting table.
-	//Using categories ID instead of labels.
-	j.toTable(
-	   { type : "arrobj" , content : "id" },
-	   function( d, i ){
-	      if( d.age==="T" ){
-	         return d;
-	      }
-	   }
-	);
-} );
+JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
+  //Discard data by age in the resulting table.
+  //Using categories ID instead of labels.
+  j.toTable(
+    { type : "arrobj" , content : "id" },
+    function( d, i ){
+      if( d.age==="T" ){
+        return d;
+      }
+    }
+  );
+});
 ```
 
 Take into account that every **type** returns a different form of data array.
 
 ```js
-JSONstat( "https://json-stat.org/samples/canada.json" ).then( function(j) {
-	//As previous example but with type "array"
-	//Age is the third dimension (its index is 2)
-	j.toTable(
-	   { type : "array" , content : "id" },
-	   function( d, i ){
-	      if( d[2]==="T" ){
-	         return d;
-	      }
-	   }
-	);
-} );
+JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
+  //As previous example but with type "array"
+  //Age is the third dimension (its index is 2)
+  j.toTable(
+     { type : "array" , content : "id" },
+     function( d, i ){
+        if( d[2]==="T" ){
+           return d;
+        }
+     }
+  );
+});
 ```
 
 ```js
-JSONstat( "https://json-stat.org/samples/canada.json".then( function(j) {
-	//As previous example but with type "object"
-	//Age is the third dimension (its index is 2)
-	j.toTable(
-	   { type : "object" , content : "id" },
-	   function( d, i ){
-	      if( d.c[2].v==="T" ){
-	         return d;
-	      }
-	   }
-	);
-} );
+JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
+  //As previous example but with type "object"
+  //Age is the third dimension (its index is 2)
+  j.toTable(
+     { type : "object" , content : "id" },
+     function( d, i ){
+        if( d.c[2].v==="T" ){
+           return d;
+        }
+     }
+  );
+});
 ```
 
 The *arrobj* **type** does not return a table header, but *array* and *object* **type** do: **callback** cannot act on the header, only on the data array.
 
 ```js
-JSONstat( "https://json-stat.org/samples/canada.json".then( function(j) {
-	//This will not remove the header (row 0 in type "array") but the first data row
-	j.toTable(
-	   { type : "array" },
-	   function( d, i ){
-	      if( i ){
-	         return d;
-	      }
-	   }
-	);
-} );
+JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
+  //This will not remove the header (row 0 in type "array") but the first data row
+  j.toTable(
+     { type : "array" },
+     function( d, i ){
+        if( i ){
+           return d;
+        }
+     }
+  );
+});
 ```
 
 Because *array* and *object* **type** includes a header in the result, it is not advisable to change the structure of the data array when using these types: the header will be left untouched and incoherent.
@@ -536,19 +534,19 @@ Because *array* and *object* **type** includes a header in the result, it is not
 If you need to transform the output deeply use the *arrobj* **type**.
 
 ```js
-JSONstat( "https://json-stat.org/samples/canada.json".then( function(j) {
-	//Select only the female population by age group
-	//Get an array of objects with only two properties (age and population)
-	//Change scale of units
-	j.toTable(
-	   { type : "arrobj", content : "id" },
-	   function( d ){
-	      if( d.sex==="F" && d.concept==="POP" ){
-	         return { age : d.age, population : d.value*1000 };
-	      }
-	   }
-	);
-} );
+JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
+  //Select only the female population by age group
+  //Get an array of objects with only two properties (age and population)
+  //Change scale of units
+  j.toTable(
+     { type : "arrobj", content : "id" },
+     function( d ){
+        if( d.sex==="F" && d.concept==="POP" ){
+           return { age : d.age, population : d.value*1000 };
+        }
+     }
+  );
+});
 ```
 
 #### Return Value
@@ -561,10 +559,10 @@ Unless **meta** is *true*, it returns an array of objects, where the key is the 
 
 ```json
 [
-	{ "age" : "total", "concept" : "population", "country": "Canada", "sex": "total", "value" : 34880.5, "year" : "2012"},
-	{ "age" : "total", "concept" : "population", "country": "Canada", "sex": "male", "value" : 17309.1, "year" : "2012"},
-	{ "age" : "total", "concept" : "population", "country": "Canada", "sex": "female", "value" : 17571.3, "year" : "2012"},
-	...
+  { "age" : "total", "concept" : "population", "country": "Canada", "sex": "total", "value" : 34880.5, "year" : "2012"},
+  { "age" : "total", "concept" : "population", "country": "Canada", "sex": "male", "value" : 17309.1, "year" : "2012"},
+  { "age" : "total", "concept" : "population", "country": "Canada", "sex": "female", "value" : 17571.3, "year" : "2012"},
+  ...
 ]
 ```
 
@@ -572,37 +570,37 @@ When **meta** is *true*, it returns an object of objects:
 
 ```json
 {
-	"meta": {
-		"label": "Population by sex and age group. Canada. 2012",
-		"source": "Statistics Canada, CANSIM, table 051-0001",
-		"updated": "2012-09-27",
-		"id": ["country", "year", "age", "concept", "sex"],
-		"status": false,
-		"unit": false,
-		"by": "sex",
-		"bylabel": false,
-		"drop": ["year", "country"],
-		"prefix": "",
-		"comma": false,
-		"dimensions": {
-			"sex": {
-				"label": "sex",
-				"role": "classification",
-				"categories": {
-					"id": [ "T", "M", "F"],
-					"label": [ "total", "male", "female" ]
-				}
-			},
-			"age": { ... },
-			"concept": { ... },
-			"country": { ... },
-			"year": { ... }
-		}
-	},
+  "meta": {
+    "label": "Population by sex and age group. Canada. 2012",
+    "source": "Statistics Canada, CANSIM, table 051-0001",
+    "updated": "2012-09-27",
+    "id": ["country", "year", "age", "concept", "sex"],
+    "status": false,
+    "unit": false,
+    "by": "sex",
+    "bylabel": false,
+    "drop": ["year", "country"],
+    "prefix": "",
+    "comma": false,
+    "dimensions": {
+      "sex": {
+        "label": "sex",
+        "role": "classification",
+        "categories": {
+          "id": [ "T", "M", "F"],
+          "label": [ "total", "male", "female" ]
+        }
+      },
+      "age": { ... },
+      "concept": { ... },
+      "country": { ... },
+      "year": { ... }
+    }
+  },
 
-	"data": [
-		...
-	]
+  "data": [
+    ...
+  ]
 }
 ```
 
@@ -614,10 +612,10 @@ It returns an array of arrays. The first element in the array contains the colum
 
 ```json
 [
-	[ "country", "year", "age group", "concepts", "sex", "Value" ],
-	[ "Canada", "2012", "total", "population", "total", 34880.5 ],
-	[ "Canada", "2012", "total", "population", "male", 17309.1 ],
-	...
+  [ "country", "year", "age group", "concepts", "sex", "Value" ],
+  [ "Canada", "2012", "total", "population", "total", 34880.5 ],
+  [ "Canada", "2012", "total", "population", "male", 17309.1 ],
+  ...
 ]
 ```
 
@@ -627,8 +625,8 @@ It returns an object of arrays in the [Google DataTable](https://developers.goog
 
 ```json
 {
-	"cols" : [ ... ],
-	"rows" : [ ... ]
+  "cols" : [ ... ],
+  "rows" : [ ... ]
 }
 ```
 
@@ -655,40 +653,40 @@ The filter can be specified as an object where properties are dimensions IDs and
 
 ```js
 JSONstat("https://json-stat.org/samples/galicia.json",
-	function(){
-		var
-			subset=JSONstat( this ).Slice(
-				//Flatten dimensions "birth", "age", "time":
-				//Keep only
-				//category "T" of dimension "birth"
-				//category "T" of dimension "age"
-				//category "2011" of dimension "time"
-				{ "birth": "T",	"age": "T",	"time": "2011" }
-			)
-		;
-	}
+  function(){
+    var
+      subset=JSONstat( this ).Slice(
+        //Flatten dimensions "birth", "age", "time":
+        //Keep only
+        //category "T" of dimension "birth"
+        //category "T" of dimension "age"
+        //category "2011" of dimension "time"
+        { "birth": "T", "age": "T", "time": "2011" }
+      )
+    ;
+  }
 );
 ```
 
 ```js
 JSONstat("https://json-stat.org/samples/galicia.json",
-	function(){
-		var
-			subset=JSONstat( this ).Slice(
-				//Flatten dimensions "birth", "age", "time":
-				//Keep only
-				//category "T" of dimension "birth"
-				//category "T" of dimension "age"
-				//category "2011" of dimension "time"
-				[
-					[ "birth", "T" ],
-					[ "age", "T" ],
-					[ "time", "2011" ]
-				]
+  function(){
+    var
+      subset=JSONstat( this ).Slice(
+        //Flatten dimensions "birth", "age", "time":
+        //Keep only
+        //category "T" of dimension "birth"
+        //category "T" of dimension "age"
+        //category "2011" of dimension "time"
+        [
+          [ "birth", "T" ],
+          [ "age", "T" ],
+          [ "time", "2011" ]
+        ]
 
-			)
-		;
-	}
+      )
+    ;
+  }
 );
 ```
 
@@ -700,16 +698,16 @@ It returns a *jsonstat* instance identical to the original one but with some dim
 
 ```js
 JSONstat("https://json-stat.org/samples/galicia.json",
-	function(){
-		var
-			original=JSONstat( JSON.parse( JSON.stringify( this ) ) ),
-			subset=JSONstat( this ).Slice(
-				{ "birth": "T",	"age": "T",	"time": "2011" }
-			) //*this* will be modified
-		;
-		//Compare original, subset and *this*
-	},
-	false //To be able to clone the original dataset
+  function(){
+    var
+      original=JSONstat( JSON.parse( JSON.stringify( this ) ) ),
+      subset=JSONstat( this ).Slice(
+        { "birth": "T", "age": "T", "time": "2011" }
+      ) //*this* will be modified
+    ;
+    //Compare original, subset and *this*
+  },
+  false //To be able to clone the original dataset
 );
 ```
 
@@ -730,7 +728,7 @@ switch( j.class ){
   case "collection":
     j.Item( { class : "dataset" , embedded: false } ).forEach( function( e ){
       datasets.push( JSONstat( e.href ) ); //Async. Deprecated.
-    } );
+    });
   break;
   case "bundle":
     datasets=j.Dataset();
@@ -754,14 +752,14 @@ Optional error information. Object. The properties of this object depend on the 
 Collection, dataset, dimension or item extended information. Object. The properties of this object depend on the provider.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
   var
     //This dataset contains extended properties
     ext=j.extension,
     //Get e-mail of contact
     email=ext["contact"]
   ;
-} );
+});
 ```
 
 #### hierarchy
@@ -769,10 +767,10 @@ JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
 *true* if there is information about the relationship between the categories in the dimension. Boolean.
 
 ```js
-JSONstat( "https://json-stat.org/samples/hierarchy.json".then( function(j) {
+JSONstat( "https://json-stat.org/samples/hierarchy.json" ).then(function(j) {
   //First dimension
   var dim=j.Dimension( 0 );
-	if( dim.hierarchy ){
+  if( dim.hierarchy ){
     var
       //First category ID
       id=dim.id[0],
@@ -780,7 +778,7 @@ JSONstat( "https://json-stat.org/samples/hierarchy.json".then( function(j) {
       ids=dim.Category( 0 ).id
     ;
   }
-} );
+});
 ```
 
 #### href
@@ -788,10 +786,10 @@ JSONstat( "https://json-stat.org/samples/hierarchy.json".then( function(j) {
 Collection, bundle, dataset or dimension URL.
 
 ```js
-JSONstat( "https://json-stat.org/samples/collection.json".then( function(j) {
-	//Get the URL of the first item in the collection
-	var href1=j.Item( 0 ).href;
-} );
+JSONstat( "https://json-stat.org/samples/collection.json" ).then(function(j) {
+  //Get the URL of the first item in the collection
+  var href1=j.Item( 0 ).href;
+});
 ```
 
 #### id
@@ -804,7 +802,7 @@ In the case of items, **id** is an array of URLs.
 
 ```js
 //This example would work also with https://json-stat.org/samples/oecd.json
-JSONstat( "https://json-stat.org/samples/oecd-canada.json".then( function(j) {
+JSONstat( "https://json-stat.org/samples/oecd-canada.json" ).then(function(j) {
   if( j.class==="bundle" || j.class==="dataset" ){
     var
       //"OECD" dataset (if class "bundle")
@@ -821,7 +819,7 @@ JSONstat( "https://json-stat.org/samples/oecd-canada.json".then( function(j) {
       var oecdids=dim.Category( "OECD" ).id;
     }
   }
-} );
+});
 ```
 
 #### label
@@ -829,10 +827,10 @@ JSONstat( "https://json-stat.org/samples/oecd-canada.json".then( function(j) {
 Collection, dataset, dimension, category or item label. String.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
   //Label for "AU" area (Australia)
   var label=j.Dataset( "oecd" ).Dimension( "area" ).Category( "AU" ).label;
-} );
+});
 ```
 
 #### length
@@ -842,13 +840,13 @@ Number of datasets, dimensions, categories, category children or items. Integer.
 You should always check for length>0 before further processing.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
-	if( j.length ){
-		...
-	}else{
-		window.alert( "Wrong response!" );
-	}
-} );
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
+  if( j.length ){
+    ...
+  }else{
+    window.alert( "Wrong response!" );
+  }
+});
 ```
 
 #### link
@@ -856,11 +854,11 @@ JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
 Collection, bundle, dataset or dimension links. Object of relation names.
 
 ```js
-JSONstat( "https://json-stat.org/samples/collection.json".then( function(j) {
-	//Get info for IANA link relation "item" in a collection http://www.iana.org/assignments/link-relations/link-relations.xhtml
-	var items=j.link["item"];
-	//Same as j.Item().
-} );
+JSONstat( "https://json-stat.org/samples/collection.json" ).then(function(j) {
+  //Get info for IANA link relation "item" in a collection http://www.iana.org/assignments/link-relations/link-relations.xhtml
+  var items=j.link["item"];
+  //Same as j.Item().
+});
 ```
 
 #### n
@@ -868,9 +866,9 @@ JSONstat( "https://json-stat.org/samples/collection.json".then( function(j) {
 Number of values in the dataset. Integer. It is the number of cells in the cube, even if they are empty (missing values).
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
-	window.alert("This dataset has " + String( j.n ) + " observations.");
-} );
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
+  window.alert("This dataset has " + String( j.n ) + " observations.");
+});
 ```
 
 #### note
@@ -878,22 +876,22 @@ JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
 Dataset, dimension, category or collection annotations. Array of strings except category annotations, which are an object of strings.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
-	//Display general dataset annotations if available
-	var note=j.note;
-	if( note ){
-		note.forEach( function( e ){
-			window.alert( e );
-		} );
-	}
-	//Display annotations for Germany if available
-	var denote=j.Dimension( "area" ).Category( "DE" ).note;
-	if( denote ){
-		denote.forEach( function( e ){
-			window.alert( e );
-		} );
-	}
-} );
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
+  //Display general dataset annotations if available
+  var note=j.note;
+  if( note ){
+    note.forEach( function( e ){
+      window.alert( e );
+    });
+  }
+  //Display annotations for Germany if available
+  var denote=j.Dimension( "area" ).Category( "DE" ).note;
+  if( denote ){
+    denote.forEach( function( e ){
+      window.alert( e );
+    });
+  }
+});
 ```
 
 #### role
@@ -901,19 +899,19 @@ JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
 Dimensions with [role](#role) *time*, *geo*, *metric* or with unspecified role (*classification*). *null* if role information was not included in the response; otherwise, object with four keys (*time*, *geo*, *metric* and *classification*). The value of every key is an array of dimensions IDs (or *null* if no dimension has the specified role).
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
-	//Get the name of the first dimension with a "geo" role
-	var geo1=j.role.geo[0];
-} );
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
+  //Get the name of the first dimension with a "geo" role
+  var geo1=j.role.geo[0];
+});
 ```
 
 Dimension role. String (*time*, *geo*, *metric*; otherwise, *classification*) or *null* (when role information not included in the response).
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
-	//Role of the "concept" dimension
-	var crole=j.Dimension( "concept" ).role;
-} );
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
+  //Role of the "concept" dimension
+  var crole=j.Dimension( "concept" ).role;
+});
 ```
 
 #### size
@@ -925,10 +923,10 @@ Dimensions sizes. Array.
 Dataset or collection source. String.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
-	//Dataset source
-	var source=j.source;
-} );
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
+  //Dataset source
+  var source=j.source;
+});
 ```
 
 #### status
@@ -936,21 +934,21 @@ JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
 As a property of a dataset, status of its values. Array or *null*.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
-	if( j.status ){
-		//Status of the 23rd value
-		var status23=j.status[22];
-	}
-} );
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
+  if( j.status ){
+    //Status of the 23rd value
+    var status23=j.status[22];
+  }
+});
 ```
 
 As a property of a datum, status of its value. String or *null* if not provided.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
-	//Status of the 23rd value
-	var status23=j.Data( 22 ).status;
-} );
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
+  //Status of the 23rd value
+  var status23=j.Data( 22 ).status;
+});
 ```
 
 #### unit
@@ -958,14 +956,14 @@ JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
 Category unit information if the category dimension has a *metric* [role](#role). Object. Except "decimals", "label", "symbol" and "position", the rest of the properties of this object depend on the provider. If no unit information has been provided, a *null* is returned.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
-	//First category in the first dimension with a "metric" role
-	var metric1=j.Dimension( { role : "metric" } )[0].Category( 0 );
-	if( metric1.unit && metric1.unit.hasOwnProperty( "decimals" ) ){
-		//Decimals of the first category in the first dimension with a "metric" role
-		var dec=metric1.unit.decimals;
-	}
-} );
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
+  //First category in the first dimension with a "metric" role
+  var metric1=j.Dimension( { role : "metric" } )[0].Category( 0 );
+  if( metric1.unit && metric1.unit.hasOwnProperty( "decimals" ) ){
+    //Decimals of the first category in the first dimension with a "metric" role
+    var dec=metric1.unit.decimals;
+  }
+});
 ```
 
 #### updated
@@ -973,16 +971,16 @@ JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
 It is the update date of the dataset or collection. String representing a date in an ISO 8601 format recognized by the Javascript Date.parse method.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
-	if( j.updated ){
-		var
-			upd=new Date( j.updated ),
-			timelapse=Date.now()-upd,
-			days=Math.floor( timelapse / ( 1000*60*60*24 ) )
-		;
-		window.alert( "This dataset was updated " + String( days ) + " days ago." );
-	}
-} );
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
+  if( j.updated ){
+    var
+      upd=new Date( j.updated ),
+      timelapse=Date.now()-upd,
+      days=Math.floor( timelapse / ( 1000*60*60*24 ) )
+    ;
+    window.alert( "This dataset was updated " + String( days ) + " days ago." );
+  }
+});
 ```
 
 #### value
@@ -990,19 +988,19 @@ JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
 As a property of a dataset, dataset values. Array.
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
-	if( j.value ){
-		//23rd value
-		var value23=j.value[22];
-	}
-} );
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
+  if( j.value ){
+    //23rd value
+    var value23=j.value[22];
+  }
+});
 ```
 
 As a property of a datum, datum value. Usually a number. Data() returns whatever was included in the cell by the provider (number, string, *null*...).
 
 ```js
-JSONstat( "https://json-stat.org/samples/oecd.json" ).then( function(j) {
-	//23rd value
-	var value23=j.Data( 22 ).value; //Same as j.Data( 22, false )
-} );
+JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
+  //23rd value
+  var value23=j.Data( 22 ).value; //Same as j.Data( 22, false )
+});
 ```
