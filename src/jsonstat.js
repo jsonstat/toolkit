@@ -556,6 +556,87 @@ jsonstat.prototype.Category=function(cat){
 	return new jsonstat({"class" : "category", "index": index, "label": oc.label[cat], "note": note, "child" : child, "unit" : unit, "coord" : coord});
 };
 
+
+//Since v.1.1.0 (more powerful than Slice)
+jsonstat.prototype.Dice=function(filters, clone){
+	if(this===null || this.class!=="dataset"){
+		return null;
+	}
+  if(typeof filters==="undefined"){
+		return this;
+	}
+  if(typeof clone!=="boolean" || clone!==true){
+		clone=false;
+	}
+
+	//Accept arrays [["area", ["BE","ES"]],["year", ["2010","2011"]]]
+  var obj={};
+  if(Array.isArray(filters)){
+    filters.forEach(function(f){
+      obj[f[0]]=f[1];
+    });
+    filters=obj;
+  }
+
+	var
+    ds=clone ? JSONstat(JSON.parse(JSON.stringify(this))) : this,
+    statin=ds.status,
+    ids=Object.keys(filters),
+    value=[],
+    status=[]
+  ;
+
+  ds
+  .toTable({type: "arrobj", content: "id", status: true})
+  .forEach(function(item, i){
+    var or=[];
+
+    ids.forEach(function(dimid){
+      var
+        catids=filters[dimid],
+        filter=[]
+      ;
+
+      catids.forEach(function(id){
+        filter.push(item[dimid]===id);
+      });
+
+      or.push(filter.indexOf(true)!==-1);//OR
+    });
+
+    if(or.indexOf(false)===-1){//AND
+      value.push(item.value);
+      status.push(item.status);
+    }
+  });
+
+  ids.forEach(function(dimid){
+    var
+      ids=ds.Dimension(dimid).id,
+      ndx=0,
+      index={}
+    ;
+
+    ds.size[ds.id.indexOf(dimid)]=filters[dimid].length;
+
+    ids.forEach(function(catid){
+      if(filters[dimid].indexOf(catid)!==-1){
+        index[catid]=ndx;
+        ndx++;
+      }
+    });
+
+    ds.__tree__.dimension[dimid].category.index=index;
+  });
+
+  ds.n=value.length;
+	ds.value=ds.__tree__.value=value;
+	ds.status=ds.__tree__.status=(statin!==null) ? status : null;
+
+	return ds;
+};
+
+//Deprecated since v.1.1.0
 jsonstat.prototype.Slice=function(filter){
 	if(this===null || this.class!=="dataset"){
 		return null;
