@@ -579,7 +579,7 @@ jsonstat.prototype.Dice=function(filters, clone){
   }
 
 	var
-    ds=clone ? JSONstat(JSON.parse(JSON.stringify(this))) : this,
+    ds=clone ? new jsonstat(JSON.parse(JSON.stringify(this))) : this,
     statin=ds.status,
     ids=Object.keys(filters),
     value=[],
