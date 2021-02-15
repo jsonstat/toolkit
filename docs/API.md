@@ -11,7 +11,7 @@
 <ul>
 	<li><strong><a href="#reading">Reading</a></strong>: <a href="#jsonstat">JSONstat()</a></li>
 	<li><strong><a href="#traversing">Traversing</a></strong>: <a href="#dataset">Dataset()</a>, <a href="#dimension">Dimension()</a>, <a href="#category">Category()</a>, <a href="#data">Data()</a>, <a href="#item">Item()</a></li>
-	<li><strong><a href="#transforming">Transforming</a></strong>: <a href="#totable">toTable()</a>, <a href="#slice">Slice()</a></li>
+	<li><strong><a href="#transforming">Transforming</a></strong>: <a href="#totable">toTable()</a>, <a href="#dice">Dice()</a>, <a href="#slice">Slice()</a></li>
 </ul>
 
 ### By hierarchy
@@ -40,6 +40,7 @@
 							</li>
 							<li><strong><a href="#data">Data()</a></strong>: <a href="#value">value</a>, <a href="#status">status</a></li>
 							<li><strong><a href="#totable">toTable()</a></strong>
+							<li><strong><a href="#dice">Dice()</a></strong>
 							<li><strong><a href="#slice">Slice()</a></strong>
 						</ul>
 					</li>
@@ -54,6 +55,7 @@
 					</li>
 					<li><strong><a href="#data">Data()</a></strong>: <a href="#value">value</a>, <a href="#status">status</a></li>
 					<li><strong><a href="#totable">toTable()</a></strong>
+					<li><strong><a href="#dice">Dice()</a></strong>
 					<li><strong><a href="#slice">Slice()</a></strong>
 				</ul>
 			</li>
@@ -200,7 +202,7 @@ JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
 <div><strong>Parent</strong>: <a href="#dataset">Dataset</a></div>
 <div><strong>Description</strong>: Gets dimension information from a <em>jsonstat</em> instance</div>
 <div><strong>Public Properties</strong>: <a href="#class">class</a>, <a href="#length">length</a>, <a href="#id">id</a>, <a href="#label">label</a>, <a href="#role">role</a>, <a href="#hierarchy">hierarchy</a>, <a href="#note">note</a>, <a href="#href">href</a>, <a href="#link">link</a>, <a href="#extension">extension</a></div>
-<div><strong>Summary</strong>: <code><i>object</i> or <i>array</i> Dimension ( [<i>integer</i>, <i>string</i> or <i>object</i> dimid]  [, boolean instance] )</code></div>
+<div><strong>Summary</strong>: <code><i>object</i> or <i>array</i> Dimension ( [<i>integer</i>, <i>string</i> or <i>object</i> dimid] [, <i>boolean</i> instance] )</code></div>
 
 ***
 
@@ -633,6 +635,54 @@ It returns an object of arrays in the [Google DataTable](https://developers.goog
 **Warning**: DataTable declares explicitly the type of the values. JSON-stat does not, so this information must be inferred. Generally, it can safely be assumed that values are numbers. Currently, toTable only performs a very naïf test: if the first value is a number (or *null*), it will assign a type of *number*; otherwise, it will assign a type of *string*.
 
 
+### Dice()
+
+***
+<div><strong>Parent</strong>: <a href="#dataset">Dataset</a></div>
+<div><strong>Description</strong>: Modifies a <em>jsonstat</em> instance of class "dataset" applying a filter (creates a subset)</div>
+<div><strong>Public Properties</strong>: <a href="#class">class</a>, <a href="#length">length</a>, <a href="#id">id</a>, <a href="#label">label</a>, <a href="#n">n</a>, <a href="#size">size</a>, <a href="#value">value</a>, <a href="#status">status</a>, <a href="#updated">updated</a>, <a href="#source">source</a>, <a href="#role">role</a>, <a href="#note">note</a>, <a href="#href">href</a>, <a href="#link">link</a>, <a href="#extension">extension</a></div>
+<div><strong>Summary</strong>: <code><i>object</i> Dice ( <i>object</i> or <i>array</i> filter [, <i>boolean</i> clone] )</code></div>
+
+***
+
+#### Parameters
+
+##### filter
+
+This parameter is used to define a subset of the original dataset by keeping only the specified dimension categories. It does not remove any dimension from the original dataset: it only removes categories.
+
+The filter can be specified as an object where properties are dimensions IDs and values are arrays of categories IDs (like in <a href="https://www.npmjs.com/package/jsonstat-euro#filters">JSON-stat for Eurostat</a>) or as an array of arrays (pairs of dimension ID / category IDs)).
+
+```js
+{
+  "geo": ["AT"],
+  "time": ["2017", "2018"]
+}
+```
+
+```js
+[
+  ["geo", ["AT"]],
+  ["time", ["2017", "2018"]]
+]
+```
+
+##### clone
+
+The subset is created by modifying the original dataset. This boolean parameter determines whether the original dataset is kept (default is *false*) or modified. To create a new dataset and keep unchanged the original one use *true*.
+
+```js
+JSONstat("https://json-stat.org/samples/oecd.json").then(function(js){
+  var subset=js.Dice(
+    {
+      "area": ["AT","CA"],
+      "year": ["2010","2011"]
+    },
+		true
+  );
+});
+```
+
 ### Slice()
 
 ***
@@ -643,45 +693,47 @@ It returns an object of arrays in the [Google DataTable](https://developers.goog
 
 ***
 
+Deprecated in version 1.1 (use the more powerful <a href="#dice">Dice()</a> instead.)
+
 #### Parameters
 
 ##### filter
 
 This parameter is used to define a subset of the original dataset by freezing one or several dimensions by one of its categories. It does not remove any dimension of the original dataset: it only makes the selected dimensions constant (single category dimensions).
 
-The filter can be specified as an object where properties are dimensions IDs and values are categories IDs or a an array of arrays (pairs of dimension ID / category ID)).
+The filter can be specified as an object where properties are dimensions IDs and values are categories IDs or as an array of arrays (pairs of dimension ID / category ID)).
 
 ```js
 JSONstat("https://json-stat.org/samples/galicia.json").then(function(j){
-	var
-		subset=j.Slice(
-			//Flatten dimensions "birth", "age", "time":
-			//Keep only
-			//category "T" of dimension "birth"
-			//category "T" of dimension "age"
-			//category "2011" of dimension "time"
-			{ "birth": "T", "age": "T", "time": "2011" }
-		)
-	;
+  var
+    subset=j.Slice(
+      //Flatten dimensions "birth", "age", "time":
+      //Keep only
+      //category "T" of dimension "birth"
+      //category "T" of dimension "age"
+      //category "2011" of dimension "time"
+      { "birth": "T", "age": "T", "time": "2011" }
+    )
+  ;
 });
 ```
 
 ```js
 JSONstat("https://json-stat.org/samples/galicia.json").then(function(j){
-	var
-		subset=j.Slice(
-			//Flatten dimensions "birth", "age", "time":
-			//Keep only
-			//category "T" of dimension "birth"
-			//category "T" of dimension "age"
-			//category "2011" of dimension "time"
-			[
-				[ "birth", "T" ],
-				[ "age", "T" ],
-				[ "time", "2011" ]
-			]
-		)
-	;
+  var
+    subset=j.Slice(
+      //Flatten dimensions "birth", "age", "time":
+      //Keep only
+      //category "T" of dimension "birth"
+      //category "T" of dimension "age"
+      //category "2011" of dimension "time"
+     [
+       [ "birth", "T" ],
+       [ "age", "T" ],
+       [ "time", "2011" ]
+     ]
+    )
+  ;
 });
 ```
 
@@ -693,13 +745,13 @@ It returns a *jsonstat* instance identical to the original one but with some dim
 
 ```js
 JSONstat("https://json-stat.org/samples/galicia.json").then(function(j){
-	var
-		original=JSON.parse( JSON.stringify( j ) ),
-		subset=j.Slice(
-			{ "birth": "T", "age": "T", "time": "2011" }
-		) //j will be modified
-	;
-	//Compare original, subset and j
+  var
+    original=JSON.parse( JSON.stringify( j ) ),
+    subset=j.Slice(
+      { "birth": "T", "age": "T", "time": "2011" }
+    ) //j will be modified
+  ;
+  //Compare original, subset and j
 });
 ```
 
