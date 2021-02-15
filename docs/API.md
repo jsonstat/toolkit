@@ -678,7 +678,7 @@ JSONstat("https://json-stat.org/samples/oecd.json").then(function(js){
       "area": ["AT","CA"],
       "year": ["2010","2011"]
     },
-		true
+    true
   );
 });
 ```
