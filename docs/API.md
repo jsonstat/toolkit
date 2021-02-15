@@ -652,42 +652,37 @@ This parameter is used to define a subset of the original dataset by freezing on
 The filter can be specified as an object where properties are dimensions IDs and values are categories IDs or a an array of arrays (pairs of dimension ID / category ID)).
 
 ```js
-JSONstat("https://json-stat.org/samples/galicia.json",
-  function(){
-    var
-      subset=JSONstat( this ).Slice(
-        //Flatten dimensions "birth", "age", "time":
-        //Keep only
-        //category "T" of dimension "birth"
-        //category "T" of dimension "age"
-        //category "2011" of dimension "time"
-        { "birth": "T", "age": "T", "time": "2011" }
-      )
-    ;
-  }
-);
+JSONstat("https://json-stat.org/samples/galicia.json").then(function(j){
+	var
+		subset=j.Slice(
+			//Flatten dimensions "birth", "age", "time":
+			//Keep only
+			//category "T" of dimension "birth"
+			//category "T" of dimension "age"
+			//category "2011" of dimension "time"
+			{ "birth": "T", "age": "T", "time": "2011" }
+		)
+	;
+});
 ```
 
 ```js
-JSONstat("https://json-stat.org/samples/galicia.json",
-  function(){
-    var
-      subset=JSONstat( this ).Slice(
-        //Flatten dimensions "birth", "age", "time":
-        //Keep only
-        //category "T" of dimension "birth"
-        //category "T" of dimension "age"
-        //category "2011" of dimension "time"
-        [
-          [ "birth", "T" ],
-          [ "age", "T" ],
-          [ "time", "2011" ]
-        ]
-
-      )
-    ;
-  }
-);
+JSONstat("https://json-stat.org/samples/galicia.json").then(function(j){
+	var
+		subset=j.Slice(
+			//Flatten dimensions "birth", "age", "time":
+			//Keep only
+			//category "T" of dimension "birth"
+			//category "T" of dimension "age"
+			//category "2011" of dimension "time"
+			[
+				[ "birth", "T" ],
+				[ "age", "T" ],
+				[ "time", "2011" ]
+			]
+		)
+	;
+});
 ```
 
 #### Return Value
@@ -697,18 +692,15 @@ It returns a *jsonstat* instance identical to the original one but with some dim
 **Warning**: Keep in mind that this is performed by actually modifying the original dataset. If you want to keep it, clone it first.
 
 ```js
-JSONstat("https://json-stat.org/samples/galicia.json",
-  function(){
-    var
-      original=JSONstat( JSON.parse( JSON.stringify( this ) ) ),
-      subset=JSONstat( this ).Slice(
-        { "birth": "T", "age": "T", "time": "2011" }
-      ) //*this* will be modified
-    ;
-    //Compare original, subset and *this*
-  },
-  false //To be able to clone the original dataset
-);
+JSONstat("https://json-stat.org/samples/galicia.json").then(function(j){
+	var
+		original=JSON.parse( JSON.stringify( j ) ),
+		subset=j.Slice(
+			{ "birth": "T", "age": "T", "time": "2011" }
+		) //j will be modified
+	;
+	//Compare original, subset and j
+});
 ```
 
 ***
