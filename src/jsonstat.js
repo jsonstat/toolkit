@@ -558,33 +558,56 @@ jsonstat.prototype.Category=function(cat){
 
 
 //Since v.1.1.0 (more powerful than Slice)
-jsonstat.prototype.Dice=function(filters, clone){
+jsonstat.prototype.Dice=function(filters, clone, drop){
 	if(this===null || this.class!=="dataset"){
 		return null;
 	}
   if(typeof filters==="undefined"){
 		return this;
 	}
-  if(typeof clone!=="boolean" || clone!==true){
+	if(typeof clone!=="boolean" || clone!==true){
 		clone=false;
+	}
+	if(typeof drop!=="boolean" || drop!==true){
+		drop=false;
 	}
 
 	//Accept arrays [["area", ["BE","ES"]],["year", ["2010","2011"]]]
-  var obj={};
+  var
+		ds=clone ? new jsonstat(JSON.parse(JSON.stringify(this))) : this,
+		statin=ds.status,
+    value=[],
+    status=[],
+		objectify=function(filters){
+			var obj={};
+			filters.forEach(function(f){
+				obj[f[0]]=f[1];
+			});
+			return obj;
+		},
+		keep=function(drop){
+			var obj={};
+			Object.keys(drop)
+				.forEach(d=>
+					obj[d]=ds.Dimension(d).id
+						.filter(cat=>
+							drop[d].indexOf(cat)===-1
+						)
+				)
+			;
+			return obj;
+		}
+	;
+
   if(Array.isArray(filters)){
-    filters.forEach(function(f){
-      obj[f[0]]=f[1];
-    });
-    filters=obj;
+    filters=objectify(filters);
   }
 
-	var
-    ds=clone ? new jsonstat(JSON.parse(JSON.stringify(this))) : this,
-    statin=ds.status,
-    ids=Object.keys(filters),
-    value=[],
-    status=[]
-  ;
+	if(drop){
+		filters=keep(filters);
+	}
+
+	var ids=Object.keys(filters);
 
   ds
   .toTable({type: "arrobj", content: "id", status: true})
