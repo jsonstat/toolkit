@@ -600,11 +600,11 @@ jsonstat.prototype.Dice=function(filters, options, drop){
 			Object.keys(drop)
 				.forEach(d=>
 					obj[d]=ds.Dimension(d).id
-						.filter(cat=>
-							drop[d].indexOf(cat)===-1
-						)
+					.filter(cat=>
+						drop[d].indexOf(cat)===-1
+					)
 				)
-			;
+				;
 			return obj;
 		}
 	;
@@ -613,6 +613,11 @@ jsonstat.prototype.Dice=function(filters, options, drop){
   if(Array.isArray(filters)){
     filters=objectify(filters);
   }
+
+	//filters is not required. {} and [] accepted but also null
+	if(filters===null){
+		filters={};
+	}
 
 	if(drop){
 		filters=keep(filters);

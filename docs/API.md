@@ -641,7 +641,7 @@ It returns an object of arrays in the [Google DataTable](https://developers.goog
 <div><strong>Parent</strong>: <a href="#dataset">Dataset</a></div>
 <div><strong>Description</strong>: Modifies a <em>jsonstat</em> instance of class "dataset" applying a filter (creates a subset)</div>
 <div><strong>Public Properties</strong>: <a href="#class">class</a>, <a href="#length">length</a>, <a href="#id">id</a>, <a href="#label">label</a>, <a href="#n">n</a>, <a href="#size">size</a>, <a href="#value">value</a>, <a href="#status">status</a>, <a href="#updated">updated</a>, <a href="#source">source</a>, <a href="#role">role</a>, <a href="#note">note</a>, <a href="#href">href</a>, <a href="#link">link</a>, <a href="#extension">extension</a></div>
-<div><strong>Summary</strong>: <code><i>object</i> or <i>string</i> Dice ( <i>object</i> or <i>array</i> filter [, <i>object</i> opts] )</code></div>
+<div><strong>Summary</strong>: <code><i>object</i> or <i>string</i> Dice ( [<i>object</i> or <i>array</i> filter, <i>object</i> opts] )</code></div>
 
 ***
 
