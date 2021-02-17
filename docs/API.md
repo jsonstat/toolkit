@@ -641,7 +641,7 @@ It returns an object of arrays in the [Google DataTable](https://developers.goog
 <div><strong>Parent</strong>: <a href="#dataset">Dataset</a></div>
 <div><strong>Description</strong>: Modifies a <em>jsonstat</em> instance of class "dataset" applying a filter (creates a subset)</div>
 <div><strong>Public Properties</strong>: <a href="#class">class</a>, <a href="#length">length</a>, <a href="#id">id</a>, <a href="#label">label</a>, <a href="#n">n</a>, <a href="#size">size</a>, <a href="#value">value</a>, <a href="#status">status</a>, <a href="#updated">updated</a>, <a href="#source">source</a>, <a href="#role">role</a>, <a href="#note">note</a>, <a href="#href">href</a>, <a href="#link">link</a>, <a href="#extension">extension</a></div>
-<div><strong>Summary</strong>: <code><i>object</i> Dice ( <i>object</i> or <i>array</i> filter [, <i>boolean</i> clone, <i>boolean</i> drop] )</code></div>
+<div><strong>Summary</strong>: <code><i>object</i> or <i>string</i> Dice ( <i>object</i> or <i>array</i> filter [, <i>object</i> opts] )</code></div>
 
 ***
 
@@ -667,23 +667,46 @@ The filter can be specified as an object where properties are dimensions IDs and
 ]
 ```
 
-##### clone
+##### opts
 
-The subset is created by modifying the original dataset. This boolean parameter determines whether the original dataset is kept (default is *false*) or modified. To create a new dataset and keep unchanged the original one use *true*.
+It is an object with the following optional properties:
+
+###### clone
+
+Boolean. Default value is *false*.
+
+The subset is created by modifying the original dataset. This parameter determines whether the original dataset is kept (default is *false*) or modified. To create a new dataset and keep unchanged the original one, use *true*.
 
 ```js
-JSONstat("https://json-stat.org/samples/oecd.json").then(function(js){
-  var subset=js.Dice(
+JSONstat("https://json-stat.org/samples/oecd.json").then(function(j){
+  j.Dice(
+    {
+      "area": ["AT","CA"],
+      "year": ["2010","2011"]
+    }
+  );
+	//j has been modified
+});
+```
+
+
+```js
+JSONstat("https://json-stat.org/samples/oecd.json").then(function(j){
+  var subset=j.Dice(
     {
       "area": ["AT","CA"],
       "year": ["2010","2011"]
     },
-    true
+    {
+			clone: true
+		}
   );
 });
 ```
 
-##### drop
+###### drop
+
+Boolean. Default value is *false*.
 
 Filters are positive statements: they state what you want. Sometimes it is shorter to use a negative statement (*antifilter*). Instead of specifying what you want to keep, an antifilter states what you do not want and shall be dropped.
 
@@ -694,19 +717,31 @@ var
   drop={
     //do not keep areas that aren't countries
     "area": ["EU15", "OECD"],
-		//drop 2003-2005
+    //drop 2003-2005
     "year": ["2003", "2004", "2005"]
   }
 ;
 
-JSONstat("https://json-stat.org/samples/oecd.json").then(function(js){
-  js.Dice(
+JSONstat("https://json-stat.org/samples/oecd.json").then(function(j){
+  j.Dice(
     drop,
-    false,
-		true
+    {
+			drop: true
+		}
   );
 });
 ```
+
+###### stringify
+
+Boolean. Default value is *false*.
+
+When *true* the Dice method returns a JSON-stat string.
+
+#### Return Value
+
+It returns a *jsonstat* instance or a string when the stringify option is *true*.
+
 
 ### Slice()
 
