@@ -70,11 +70,6 @@ function jsonstat(o){
 
 			for (prop in o){
 				ds++;
-				/* If sparse cube, we can't rely on value to check size
-				if (Array.isArray(o[prop].value)){
-					a++;
-				}
-				*/
 				arr.push(prop);
 			}
 			this.__tree__=o;
@@ -558,24 +553,39 @@ jsonstat.prototype.Category=function(cat){
 
 
 //Since v.1.1.0 (more powerful than Slice)
-jsonstat.prototype.Dice=function(filters, clone, drop){
+//Supports 1.1 (filters, clone, drop) Deprecated
+//Supports 1.2 (filters, options) options={clone: false, drop: false, stringify: false}
+jsonstat.prototype.Dice=function(filters, options, drop){
+	var
+		clone=false,
+		stringify=false
+	;
+
 	if(this===null || this.class!=="dataset"){
 		return null;
 	}
-  if(typeof filters==="undefined"){
+	if(typeof filters!=="object"){
 		return this;
 	}
-	if(typeof clone!=="boolean" || clone!==true){
-		clone=false;
-	}
-	if(typeof drop!=="boolean" || drop!==true){
-		drop=false;
+
+	if(typeof options!=="object"){
+		//Old style (v.1.1)
+		if(typeof options==="boolean" && options===true){
+			clone=true;
+		}
+		if(typeof drop!=="boolean" || drop!==true){
+			drop=false;
+		}
+	}else{ //>1.2 (options object)
+		clone=options.hasOwnProperty("clone") && !!options.clone;
+		drop=options.hasOwnProperty("drop") && !!options.drop;
+		stringify=options.hasOwnProperty("stringify") && !!options.stringify;
 	}
 
-	//Accept arrays [["area", ["BE","ES"]],["year", ["2010","2011"]]]
   var
 		ds=clone ? new jsonstat(JSON.parse(JSON.stringify(this))) : this,
 		statin=ds.status,
+		tree,
     value=[],
     status=[],
 		objectify=function(filters){
@@ -599,6 +609,7 @@ jsonstat.prototype.Dice=function(filters, clone, drop){
 		}
 	;
 
+	//Accept arrays [["area", ["BE","ES"]],["year", ["2010","2011"]]]
   if(Array.isArray(filters)){
     filters=objectify(filters);
   }
@@ -656,10 +667,30 @@ jsonstat.prototype.Dice=function(filters, clone, drop){
 	ds.value=ds.__tree__.value=value;
 	ds.status=ds.__tree__.status=(statin!==null) ? status : null;
 
+	if(stringify){
+		tree=ds.__tree__;
+
+    if(tree.hasOwnProperty("status") && tree.status===null){
+      delete tree.status;
+    }
+
+    if(tree.hasOwnProperty("role")){
+      delete tree.role.classification;
+
+      ["geo", "time", "metric"].forEach(function(e){
+        if(tree.role[e]===null){
+          delete tree.role[e];
+        }
+      });
+    }
+
+		return JSON.stringify(tree);
+	}
+
 	return ds;
 };
 
-//Deprecated since v.1.1.0
+//Deprecated since v.1.1
 jsonstat.prototype.Slice=function(filter){
 	if(this===null || this.class!=="dataset"){
 		return null;
