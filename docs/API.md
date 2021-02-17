@@ -685,7 +685,7 @@ JSONstat("https://json-stat.org/samples/oecd.json").then(function(j){
       "year": ["2010","2011"]
     }
   );
-	//j has been modified
+  //j has been modified
 });
 ```
 
@@ -698,8 +698,8 @@ JSONstat("https://json-stat.org/samples/oecd.json").then(function(j){
       "year": ["2010","2011"]
     },
     {
-			clone: true
-		}
+      clone: true
+    }
   );
 });
 ```
@@ -726,8 +726,8 @@ JSONstat("https://json-stat.org/samples/oecd.json").then(function(j){
   j.Dice(
     drop,
     {
-			drop: true
-		}
+      drop: true
+    }
   );
 });
 ```
@@ -737,6 +737,21 @@ JSONstat("https://json-stat.org/samples/oecd.json").then(function(j){
 Boolean. Default value is *false*.
 
 When *true* the Dice method returns a JSON-stat string.
+
+```js
+JSONstat("https://json-stat.org/samples/oecd.json").then(function(j){
+  var str=j.Dice(
+    {
+      "area": ["AT","CA"],
+      "year": ["2010","2011"]
+    },
+    {
+      stringify: true
+    }
+  );
+});
+```
+
 
 #### Return Value
 
