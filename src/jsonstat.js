@@ -644,13 +644,13 @@ jsonstat.prototype.Dice=function(filters, options, drop){
 		filters={};
 	}
 
+	var ids=Object.keys(filters);
+
 	//If there are filters... (with or without filters value and status are returned as arrays)
-	if(filters!=={}){
+	if(ids.length>0){
 		if(drop){
 			filters=keep(filters);
 		}
-
-		var ids=Object.keys(filters);
 
 	  ds
 	  .toTable({type: "arrobj", content: "id", status: true})
@@ -721,7 +721,7 @@ jsonstat.prototype.Dice=function(filters, options, drop){
 			}
 		}
 
-    if(tree.hasOwnProperty("status") && [null, {}, []].indexOf[tree.status]!==-1){
+    if(tree.hasOwnProperty("status") && ["null", "{}", "[]"].indexOf(JSON.stringify(tree.status))!==-1){
       delete tree.status;
     }
 

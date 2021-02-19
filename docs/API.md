@@ -736,7 +736,7 @@ JSONstat("https://json-stat.org/samples/oecd.json").then(function(j){
 
 Boolean. Default value is *false*.
 
-When *true* the Dice method returns a JSON-stat string.
+When *true*, the Dice method returns a JSON-stat string.
 
 ```js
 JSONstat("https://json-stat.org/samples/oecd.json").then(function(j){
@@ -752,6 +752,31 @@ JSONstat("https://json-stat.org/samples/oecd.json").then(function(j){
 });
 ```
 
+This option can be used to convert JSON-stat<2.0 documents to JSON-stat 2.0.
+
+```js
+JSONstat("https://data.ssb.no/api/v0/dataset/1118.json?lang=en").then(function(j){
+  console.log(JSON.parse(j.Dataset(0).Dice(null, { stringify: true })));
+});
+```
+
+By default, when **stringify** is *true*, the JSON-stat properties *value* and *status* (if present) are returned in array form. Options **ovalue** and **ostatus** allow you to change this.
+
+###### ovalue
+
+Boolean. Default value is *false*.
+
+When *true*, the *value* property is returned as an object instead of an array.
+
+This option is ignored if **stringify** is *false*.
+
+###### ostatus
+
+Boolean. Default value is *false*.
+
+When *true*, the *status* (if present) property is returned as an object instead of an array.
+
+This option is ignored if **stringify** is *false*.
 
 #### Return Value
 
