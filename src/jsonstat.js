@@ -554,11 +554,17 @@ jsonstat.prototype.Category=function(cat){
 
 //Since v.1.1.0 (more powerful than Slice)
 //Supports 1.1 (filters, clone, drop) Deprecated
-//Supports 1.2 (filters, options) options={clone: false, drop: false, stringify: false}
+//Supports 1.2 (filters, options)
+//options={clone: false, drop: false, stringify: false, ovalue: false, ostatus: false}
 jsonstat.prototype.Dice=function(filters, options, drop){
 	var
-		clone=false,
-		stringify=false
+		clone,
+		stringify,
+		ovalue,
+		ostatus,
+		boolize=function(opt, par){
+			return opt.hasOwnProperty(par) && !!opt[par];
+		}
 	;
 
 	if(this===null || this.class!=="dataset"){
@@ -576,10 +582,12 @@ jsonstat.prototype.Dice=function(filters, options, drop){
 		if(typeof drop!=="boolean" || drop!==true){
 			drop=false;
 		}
-	}else{ //>1.2 (options object)
-		clone=options.hasOwnProperty("clone") && !!options.clone;
-		drop=options.hasOwnProperty("drop") && !!options.drop;
-		stringify=options.hasOwnProperty("stringify") && !!options.stringify;
+	}else{ //1.2+ (options object)
+		clone=boolize(options, "clone");
+		drop=boolize(options, "drop");
+		stringify=boolize(options, "stringify");
+		ovalue=boolize(options, "ovalue");
+		ostatus=boolize(options, "ostatus");
 	}
 
   var
@@ -606,6 +614,23 @@ jsonstat.prototype.Dice=function(filters, options, drop){
 				)
 				;
 			return obj;
+		},
+		arr2obj=function(o,p){ //o object p property
+			var ret={};
+			if(Object.prototype.toString.call(o[p]) === '[object Array]'){
+				o[p].forEach(function(e,i){
+					if(e!==null){
+						ret[String(i)]=e;
+					}
+				});
+				return ret;
+			}
+			return o[p];
+		},
+		modify=function(tree, attr){
+			var newcont=arr2obj(tree, attr);
+			delete tree[attr];
+			tree[attr]=newcont;
 		}
 	;
 
@@ -614,68 +639,89 @@ jsonstat.prototype.Dice=function(filters, options, drop){
     filters=objectify(filters);
   }
 
-	//filters is not required. {} and [] accepted but also null
+	//filters are not required. {} and [] accepted but also null
 	if(filters===null){
 		filters={};
 	}
 
-	if(drop){
-		filters=keep(filters);
+	//If there are filters... (with or without filters value and status are returned as arrays)
+	if(filters!=={}){
+		if(drop){
+			filters=keep(filters);
+		}
+
+		var ids=Object.keys(filters);
+
+	  ds
+	  .toTable({type: "arrobj", content: "id", status: true})
+	  .forEach(function(item, i){
+	    var or=[];
+
+	    ids.forEach(function(dimid){
+	      var
+	        catids=filters[dimid],
+	        filter=[]
+	      ;
+
+	      catids.forEach(function(id){
+	        filter.push(item[dimid]===id);
+	      });
+
+	      or.push(filter.indexOf(true)!==-1);//OR
+	    });
+
+	    if(or.indexOf(false)===-1){//AND
+	      value.push(item.value);
+	      status.push(item.status);
+	    }
+	  });
+
+	  ids.forEach(function(dimid){
+	    var
+	      ids=ds.Dimension(dimid).id,
+	      ndx=0,
+	      index={}
+	    ;
+
+	    ds.size[ds.id.indexOf(dimid)]=filters[dimid].length;
+
+	    ids.forEach(function(catid){
+	      if(filters[dimid].indexOf(catid)!==-1){
+	        index[catid]=ndx;
+	        ndx++;
+	      }
+	    });
+
+	    ds.__tree__.dimension[dimid].category.index=index;
+	  });
+
+	  ds.n=value.length;
+		ds.value=ds.__tree__.value=value;
+		ds.status=ds.__tree__.status=(statin!==null) ? status : null;
 	}
-
-	var ids=Object.keys(filters);
-
-  ds
-  .toTable({type: "arrobj", content: "id", status: true})
-  .forEach(function(item, i){
-    var or=[];
-
-    ids.forEach(function(dimid){
-      var
-        catids=filters[dimid],
-        filter=[]
-      ;
-
-      catids.forEach(function(id){
-        filter.push(item[dimid]===id);
-      });
-
-      or.push(filter.indexOf(true)!==-1);//OR
-    });
-
-    if(or.indexOf(false)===-1){//AND
-      value.push(item.value);
-      status.push(item.status);
-    }
-  });
-
-  ids.forEach(function(dimid){
-    var
-      ids=ds.Dimension(dimid).id,
-      ndx=0,
-      index={}
-    ;
-
-    ds.size[ds.id.indexOf(dimid)]=filters[dimid].length;
-
-    ids.forEach(function(catid){
-      if(filters[dimid].indexOf(catid)!==-1){
-        index[catid]=ndx;
-        ndx++;
-      }
-    });
-
-    ds.__tree__.dimension[dimid].category.index=index;
-  });
-
-  ds.n=value.length;
-	ds.value=ds.__tree__.value=value;
-	ds.status=ds.__tree__.status=(statin!==null) ? status : null;
 
 	if(stringify){
 		tree=ds.__tree__;
 
-    if(tree.hasOwnProperty("status") && tree.status===null){
+		//if v<2.0 convert to 2.0
+		if(!tree.hasOwnProperty("id")){
+			tree.version="2.0";
+			if(!tree.hasOwnProperty("class")){
+				tree.class="dataset";
+			}
+
+			tree.id=tree.dimension.id;
+			tree.size=tree.dimension.size;
+			delete tree.dimension.id;
+			delete tree.dimension.size;
+
+			if(tree.dimension.hasOwnProperty("role")){
+				tree.role=tree.dimension.role;
+				delete tree.dimension.role;
+			}
+		}
+
+    if(tree.hasOwnProperty("status") && [null, {}, []].indexOf[tree.status]!==-1){
       delete tree.status;
     }
 
@@ -688,6 +734,13 @@ jsonstat.prototype.Dice=function(filters, options, drop){
         }
       });
     }
+
+		if(ovalue){
+			modify(tree, "value");
+		}
+		if(ostatus && tree.hasOwnProperty("status")){
+			modify(tree, "status");
+		}
 
 		return JSON.stringify(tree);
 	}
