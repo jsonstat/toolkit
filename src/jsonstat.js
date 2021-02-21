@@ -770,82 +770,11 @@ jsonstat.prototype.Slice=function(filter){
 		filter=arr;
 	}
 
-	var
-		ds=this,
-		nfilters=filter.length,
-		totbl=ds.toTable({field: "id", content: "id" , status: true}),
-		statin=ds.status,
-		head=totbl.shift(),
-		error=false,
-		value=[], statout=[],
-		ndx=[], //dimndx, catndx
-		lbl=[] //catlbl
-	;
-
-	filter.forEach(function(e){
-		var dim=ds.Dimension( e[0] );
-
-		//Wrong dimension ID
-		if(dim===null){
-			error=true;
-			return;
-		}
-
-		var catndx=dim.id.indexOf( e[1] );
-
-		//Wrong cat ID
-		if(catndx===-1){
-			error=true;
-			return;
-		}
-
-		//e[0] dimid e[1] catid
-		ndx.push( [ ds.id.indexOf( e[0] ), catndx ] );
-		lbl.push( dim.Category( catndx ).label );
-	});
-
-	if(error){
-		return null;
-	}
-
-	totbl.forEach(function(e){
-		var
-			tblr={},
-			n=0,
-			j
-		;
-
-		//Avoidable? Use a different .toTable()?
-		for(j=e.length;j--;){
-			tblr[head[j]]=e[j];
-		}
-
-		//Filter
-		filter.forEach(function(f){
-			if(tblr[ f[0] ]===f[1]){
-				n++;
-			}
-		});
-
-		if(nfilters===n){
-			value.push(tblr.value);
-			statout.push(tblr.status);
-		}
-	});
-
-	ds.n=value.length;
-	ds.value=ds.__tree__.value=value;
-	ds.status=ds.__tree__.status=(statin!==null) ? statout : null;
-
-	filter.forEach(function(e, i){
-		ds.size[ ndx[i][0] ]=1; //dimndx
-		ds.__tree__.dimension[ e[0] ].category.index={};//dimid
-		ds.__tree__.dimension[ e[0] ].category.index[ e[1] ]=0; //dimid catid
-		ds.__tree__.dimension[ e[0] ].category.label={};//dimid
-		ds.__tree__.dimension[ e[0] ].category.label[ e[1] ]=lbl[i]; //catlbl
-	});
-
-	return ds;
+	return this.Dice(
+		filter.map(function(e){
+			return [ e[0], [e[1]] ];
+		})
+	);
 };
 
 jsonstat.prototype.Data=function(e, include){
