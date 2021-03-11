@@ -60,3 +60,11 @@ const JSONstat = require("jsonstat-toolkit");
 ```js
 import JSONstat from "jsonstat-toolkit";
 ```
+
+## Observable
+
+The safest way to load the jsonstat-toolkit in [Observable](https://observablehq.com/) is:
+
+```js
+JSONstat = require('jsonstat-toolkit@1.2.5').catch(() => window["JSONstat"])
+```
