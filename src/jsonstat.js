@@ -648,6 +648,18 @@ jsonstat.prototype.Dice=function(filters, options, drop){
 
 	//If there are filters... (with or without filters value and status are returned as arrays)
 	if(ids.length>0){
+		//category values must be inside array
+		ids.forEach(function(dim){
+			var d=filters[dim];
+			if(!Array.isArray(d)){
+				filters[dim]=[d];
+			}
+
+			if(filters[dim].length===0){
+				delete filters[dim];
+			}
+		});
+
 		if(drop){
 			filters=keep(filters);
 		}
