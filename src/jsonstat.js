@@ -79,7 +79,7 @@ function jsonstat(o){
 
 		case "dataset" :
 			//It's a native response of class "dataset"
-			if (!o.hasOwnProperty("__tree__")){
+			if(!o.hasOwnProperty("__tree__")){
 				this.__tree__=ot=o;
 			}else{
 				this.__tree__=ot=o.__tree__;
@@ -103,8 +103,11 @@ function jsonstat(o){
 
 			this.size=size; //0.10.0
 
-			if(ot.hasOwnProperty("value") && Array.isArray(ot.value)){
-				dsize=ot.value.length;
+			//1.2.7 No value, null, [] => same as {} (metadata response)
+			this.value=(!ot.hasOwnProperty("value") || ot.value===null || ot.value.length===0) ? {} : ot.value;
+
+			if(Array.isArray(this.value)){
+				dsize=this.value.length;
 			}else{
 				var length=1;
 				for(s=size.length; s--;){
@@ -113,7 +116,7 @@ function jsonstat(o){
 				dsize=length;
 			}
 
-			this.value=normalize(ot.value,dsize);
+			this.value=normalize(this.value,dsize);
 			this.status=(!(ot.hasOwnProperty("status"))) ? null : normalize(ot.status,dsize);
 
 			// if dimensions are defined, id and size arrays are required and must have equal length
