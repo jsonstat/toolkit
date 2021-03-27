@@ -8,6 +8,8 @@ The [JSON-stat format](https://json-stat.org/format/) is a simple lightweight JS
 
 The JSON-stat Javascript Toolkit (JJT) is part of the [JSON-stat Toolkit](https://jsonstat.com). JJT's goal is to help dealing with JSON-stat responses in JavaScript.
 
+To learn by example, you can read the interactive notebook **[Introduction to the jsonstat-toolkit](https://observablehq.com/@jsonstat/toolkit)**.
+
 ### Resources
 
 * [Installation](https://github.com/jsonstat/toolkit/blob/master/docs/INSTALL.md)
