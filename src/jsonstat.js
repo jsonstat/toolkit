@@ -967,6 +967,12 @@ jsonstat.prototype.toTable=function(opts, func){
 
 	//default: use label for field names and content instead of "id". "by", "prefix", drop & meta added on 0.13.0 (currently only for "arrobj", "by" cancels "unit"). "comma" is 0.13.2
 	opts=opts || {field: "label", content: "label", vlabel: "Value", slabel: "Status", type: "array", status: false, unit: false, by: null, prefix: "", drop: [], meta: false, comma: false, bylabel: false};
+
+	//1.3.0 Backward compatibility: before arrobj had always field=id (now it's the default)
+	if(opts.type==="arrobj" && typeof(opts.field)==="undefined"){
+		opts.field="id";
+	}
+
 	var
 		totbl,
 		dataset=this.__tree__,
@@ -1004,11 +1010,8 @@ jsonstat.prototype.toTable=function(opts, func){
 	}
 
 	if(opts.type==="arrobj"){
-		totbl=this.toTable({field: "id", content: opts.content, status: status});
-
 		var
 			tbl=[],
-			head=totbl.shift(),
 			//0.12.3
 			metric=dataset.role && dataset.role.metric,
 			addUnits=function(){},
@@ -1065,6 +1068,15 @@ jsonstat.prototype.toTable=function(opts, func){
 				}
 			}
 		;
+
+		//1.3.0 If by, opts.fields forced to "id"
+		if(by){
+			opts.field="id";
+		}
+
+		totbl=this.toTable({field: opts.field /* Before 1.3.0 was: "id" */, content: opts.content, status: status});
+
+		var head=totbl.shift();
 
 		//0.12.3 Include unit information if there's any (only if arrobj and 0.13.0 not "by")
 		if(by===null && opts.unit && metric){
@@ -1215,7 +1227,7 @@ jsonstat.prototype.toTable=function(opts, func){
 		var valuetype=(typeof this.value[0]==="number" || this.value[0]===null) ? "number" : "string"; //cell type inferred from first cell. If null, number is assumed (naif)
 
 		addCol=function(dimid,dimlabel){
-			var label=(useid && dimid) || dimlabel || dimid; //if userid then id; else label; then id if not label
+			var label=(useid && dimid) || dimlabel || dimid; //if useid then id; else label; then id if not label
 			cols.push({id: dimid, label: label, type: "string"}); //currently not using datetime Google type (requires a Date object)
 		};
 

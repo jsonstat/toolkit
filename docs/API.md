@@ -407,18 +407,18 @@ JSONstat( "https://json-stat.org/samples/collection.json" ).then(function(j) {
 
 It is an object with the following optional properties:
 
-* **type**: String (<em>arrobj</em>, *object*, *array*). Default value is *array*. It determines the form of the return value.
+* **type**: String (*arrobj*, *object*, *array*). Default value is *array*. It determines the form of the return value.
 * **status**: Boolean. Default value is *false*. It determines whether the status of each value is included in the return value.
-* **content**: String (<em>id</em>, *label*). Default value is *label*. It determines whether categories are identified in the return value by label or by ID.
-* **field**: String (<em>id</em>, *label*). Default value is *label*. Only available when **type** is *object* or *array*. It determines whether dimensions, value and status are identified in the return value by label or by ID.
-* **vlabel**: String. Default value is *Value*. Only available when **type** is *object* or *array*. It determines the label of the value field.
-* **slabel**: String. Default value is *Status*. Only available when **type** is *object* or *array* and **status** is *true*. It determines the label of the status field.
+* **content**: String (*id*, *label*). Default value is *label*. It determines whether categories are identified by label or by ID in the return value.
+* **field**: String (*id*, *label*). Default value is *label* except when **type** is *arrobj*. It determines whether dimensions, value and status are identified by label or by ID in the return value. When a valid **by** is specified, **field** is ignored and set to *id*.
+* **vlabel**: String. Default value is *Value*. It determines the label of the value field.
+* **slabel**: String. Default value is *Status*. Only available when **status** is *true*. It determines the label of the status field.
 * **unit**: Boolean. Default value is *false*. Only available when **type** is *arrobj*. It determines whether unit information is included in the output. When *true*, each object in the array includes a *unit* property with all the unit information attached to a value by the provider. It is assumed that there is only a dimension with role *metric* in the dataset (or at least only one with unit information).
 * **meta**: Boolean. Default value is *false*. Only available when **type** is *arrobj*. It determines the structure of the output. By default, *arrobj* returns data as an array of objects. When **meta** is *true*, metadata is included in the output, which takes the form of an object with two properties: "meta" and "data". The latter contains the same array of objects that is returned when **meta** is *false*.
-* **by**: String. Only available when **type** is *arrobj*. It must be the ID of an existing dimension; otherwise, it will be ignored. When a valid **by** is specified, a property is created for each category of the **by** dimension (the "value" property is "transposed" by the *by* dimension). When a valid **by** is specified, **status**  and **unit** are ignored.
+* **by**: String. Only available when **type** is *arrobj*. It must be the ID of an existing dimension; otherwise, it will be ignored. When a valid **by** is specified, a property is created for each category of the **by** dimension (the "value" property is "transposed" by the *by* dimension). When a valid **by** is specified, **field**, **status** and **unit** are ignored.
 * **bylabel**: Boolean. Default is *false*. Only available when **type** is *arrobj*. When *true*, the categories of the **by** dimension are identified, once transposed, by their label instead of their ID.
 * **prefix**: String. Only available when **type** is *arrobj*. When values are transposed using the **by** option, category IDs end up being used as properties, side by side with dimension IDs. To avoid collision, a prefix can be specified to be added at the beginning of each new property created by the transposition. When no valid **by** has been specified, the **prefix** property is ignored.
-* **drop**: Array. Only available when **type** is *arrobj*. This property is used to provide dimension IDs not to be included in the output. Invalid dimension IDs and non  single category dimensions are ignored. When no valid **by** is specified, the **drop** property is ignored.
+* **drop**: Array. Only available when **type** is *arrobj*. This property is used to provide dimension IDs not to be included in the output. Invalid dimension IDs and non single category dimensions are ignored. When no valid **by** is specified, the **drop** property is ignored.
 * **comma**: Boolean. Default value is *false*. Only available when **type** is *arrobj*. When *true*, values are represented as strings instead of numbers with comma as the decimal mark.
 
 ```js
