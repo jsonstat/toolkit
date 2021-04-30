@@ -1074,7 +1074,7 @@ jsonstat.prototype.toTable=function(opts, func){
 			opts.field="id";
 		}
 
-		totbl=this.toTable({field: opts.field /* Before 1.3.0 was: "id" */, content: opts.content, status: status});
+		totbl=this.toTable({field: opts.field /* Before 1.3.0 was: "id" */, vlabel: opts.vlabel, slabel: opts.slabel, content: opts.content, status: status});
 
 		var head=totbl.shift();
 
