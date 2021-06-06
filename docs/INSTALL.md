@@ -63,7 +63,13 @@ import JSONstat from "jsonstat-toolkit";
 
 ## Observable
 
-The safest way to load the jsonstat-toolkit in [Observable](https://observablehq.com/) is:
+To use the jsonstat-toolkit in [Observable](https://observablehq.com/) simply import it from @jsonstat/toolkit:
+
+```js
+import { JSONstat } from "@jsonstat/toolkit"
+```
+
+To import a particular version of the jsonstat-toolkit in [Observable](https://observablehq.com/):
 
 ```js
 JSONstat = require('jsonstat-toolkit@1.3.1').catch(() => window["JSONstat"])
