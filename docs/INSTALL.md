@@ -72,5 +72,5 @@ import { JSONstat } from "@jsonstat/toolkit"
 To import a particular version of the jsonstat-toolkit in [Observable](https://observablehq.com/):
 
 ```js
-JSONstat = require('jsonstat-toolkit@1.3.1').catch(() => window["JSONstat"])
+JSONstat = require("jsonstat-toolkit@1.3.1").catch(() => window["JSONstat"])
 ```
