@@ -609,13 +609,12 @@ jsonstat.prototype.Dice=function(filters, options, drop){
 		keep=function(drop){
 			var obj={};
 			Object.keys(drop)
-				.forEach(d=>
-					obj[d]=ds.Dimension(d).id
-					.filter(cat=>
-						drop[d].indexOf(cat)===-1
-					)
-				)
-				;
+				.forEach(function(d){
+					obj[d]=ds.Dimension(d).id.filter(function(cat){
+						return drop[d].indexOf(cat)===-1;
+					})
+				})
+			;
 			return obj;
 		},
 		arr2obj=function(o,p){ //o object p property
