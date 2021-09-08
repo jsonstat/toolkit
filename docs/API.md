@@ -77,7 +77,7 @@
 <div><strong>Parent</strong>: none</div>
 <div><strong>Description</strong>: Creates a <em>jsonstat</em> instance from an external input in the <a href="https://json-stat.org/format/">JSON-stat format</a></div>
 <div><strong>Public Properties</strong>: <a href="#class">class</a>, <a href="#length">length</a>, <a href="#id">id</a>, <a href="#error">error</a>, <a href="#label">label</a>, <a href="#n">n</a>, <a href="#size">size</a>, <a href="#value">value</a>, <a href="#status">status</a>, <a href="#updated">updated</a>, <a href="#source">source</a>, <a href="#role">role</a>, <a href="#note">note</a>, <a href="#href">href</a>, <a href="#link">link</a>, <a href="#extension">extension</a></div>
-<div><strong>Summary</strong>: <code><i>object</i> JSONstat ( <i>object</i> or <i>string</i> res [, <i>object</i> init] )</code></div>
+<div><strong>Summary</strong>: <code><i>object</i> JSONstat ( <i>object</i> or <i>string</i> res [, <i>object</i> init]  [, <i>function</i> typedArray] )</code></div>
 
 ***
 
@@ -133,6 +133,20 @@ JSONstat(url, options).then(function( j ) {
   var label=j.label;
 });
 ```
+
+##### typedArray
+
+Since version 1.4, the JSON-stat Javascript Toolkit supports typed arrays. If an object that uses a typed array for the *value* property is passed to JSONstat(), it will keep the type once converted into a *jsonstat* instance.
+
+**typedArray** is used to store the *value* property as a typed array of the specified type. It must be a valid TypedArray constructor.
+
+```js
+JSONstat( "https://json-stat.org/samples/oecd.json", Float32Array ).then(function(j) {
+  console.log(j.value);
+});
+```
+
+The type is kept when a subset is created using <a href="#dice">Dice()</a> (or <a href="#slice">Slice()</a>) or when dataset information is exported using <a href="#totable">toTable()</a> ("objarr" type without **by**).
 
 #### Return Value
 
@@ -407,19 +421,19 @@ JSONstat( "https://json-stat.org/samples/collection.json" ).then(function(j) {
 
 It is an object with the following optional properties:
 
-* **type**: String (*arrobj*, *object*, *array*). Default value is *array*. It determines the form of the return value.
+* **type**: String (*arrobj*, *objarr*, *object*, *array*). Default value is *array*. It determines the form of the return value.
 * **status**: Boolean. Default value is *false*. It determines whether the status of each value is included in the return value.
 * **content**: String (*id*, *label*). Default value is *label*. It determines whether categories are identified by label or by ID in the return value.
-* **field**: String (*id*, *label*). Default value is *label* except when **type** is *arrobj*. It determines whether dimensions, value and status are identified by label or by ID in the return value. When a valid **by** is specified, **field** is ignored and set to *id*.
+* **field**: String (*id*, *label*). Default value is *label* except when **type** is *arrobj* or *objarr*. It determines whether dimensions, value and status are identified by label or by ID in the return value. When a valid **by** is specified, **field** is ignored and set to *id*.
 * **vlabel**: String. Default value is *Value*. It determines the label of the value field.
 * **slabel**: String. Default value is *Status*. Only available when **status** is *true*. It determines the label of the status field.
-* **unit**: Boolean. Default value is *false*. Only available when **type** is *arrobj*. It determines whether unit information is included in the output. When *true*, each object in the array includes a *unit* property with all the unit information attached to a value by the provider. It is assumed that there is only a dimension with role *metric* in the dataset (or at least only one with unit information).
-* **meta**: Boolean. Default value is *false*. Only available when **type** is *arrobj*. It determines the structure of the output. By default, *arrobj* returns data as an array of objects. When **meta** is *true*, metadata is included in the output, which takes the form of an object with two properties: "meta" and "data". The latter contains the same array of objects that is returned when **meta** is *false*.
-* **by**: String. Only available when **type** is *arrobj*. It must be the ID of an existing dimension; otherwise, it will be ignored. When a valid **by** is specified, a property is created for each category of the **by** dimension (the "value" property is "transposed" by the *by* dimension). When a valid **by** is specified, **field**, **status** and **unit** are ignored.
-* **bylabel**: Boolean. Default is *false*. Only available when **type** is *arrobj*. When *true*, the categories of the **by** dimension are identified, once transposed, by their label instead of their ID.
-* **prefix**: String. Only available when **type** is *arrobj*. When values are transposed using the **by** option, category IDs end up being used as properties, side by side with dimension IDs. To avoid collision, a prefix can be specified to be added at the beginning of each new property created by the transposition. When no valid **by** has been specified, the **prefix** property is ignored.
-* **drop**: Array. Only available when **type** is *arrobj*. This property is used to provide dimension IDs not to be included in the output. Invalid dimension IDs and non single category dimensions are ignored. When no valid **by** is specified, the **drop** property is ignored.
-* **comma**: Boolean. Default value is *false*. Only available when **type** is *arrobj*. When *true*, values are represented as strings instead of numbers with comma as the decimal mark.
+* **unit**: Boolean. Default value is *false*. Only available when **type** is *arrobj* or *objarr*. It determines whether unit information is included in the output. When *true*, each object in the array includes a *unit* property with all the unit information attached to a value by the provider. It is assumed that there is only a dimension with role *metric* in the dataset (or at least only one with unit information).
+* **meta**: Boolean. Default value is *false*. Only available when **type** is *arrobj* or *objarr*. It determines the structure of the output. When **meta** is *true*, metadata is included in the output, which takes the form of an object with two properties: "meta" and "data". The latter contains the same array of objects that is returned when **meta** is *false*.
+* **by**: String. Only available when **type** is *arrobj* or *objarr*. It must be the ID of an existing dimension; otherwise, it will be ignored. When a valid **by** is specified, a property is created for each category of the **by** dimension (the "value" property is "transposed" by the *by* dimension). When a valid **by** is specified, **field**, **status** and **unit** are ignored.
+* **bylabel**: Boolean. Default is *false*. Only available when **type** is *arrobj* or *objarr*. When *true*, the categories of the **by** dimension are identified, once transposed, by their label instead of their ID.
+* **prefix**: String. Only available when **type** is *arrobj* or *objarr*. When values are transposed using the **by** option, category IDs end up being used as properties, side by side with dimension IDs. To avoid collision, a prefix can be specified to be added at the beginning of each new property created by the transposition. When no valid **by** has been specified, the **prefix** property is ignored.
+* **drop**: Array. Only available when **type** is *arrobj* or *objarr*. This property is used to provide dimension IDs not to be included in the output. Invalid dimension IDs and non single category dimensions are ignored. When no valid **by** is specified, the **drop** property is ignored.
+* **comma**: Boolean. Default value is *false*. Only available when **type** is *arrobj* or *objarr*. When *true*, values are represented as strings instead of numbers with comma as the decimal mark.
 
 ```js
 JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
@@ -515,7 +529,7 @@ JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
 });
 ```
 
-The *arrobj* **type** does not return a table header, but *array* and *object* **type** do: **callback** cannot act on the header, only on the data array.
+The *arrobj* / *objarr* **types** does not return a table header, but *array* and *object* **type** do: **callback** cannot act on the header, only on the data array.
 
 ```js
 JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
@@ -531,9 +545,9 @@ JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
 });
 ```
 
-Because *array* and *object* **type** includes a header in the result, it is not advisable to change the structure of the data array when using these types: the header will be left untouched and incoherent.
+Because *array* / *object* **type** include a header in the result, it is not advisable to change the structure of the data array when using these types: the header will be left untouched and incoherent.
 
-If you need to transform the output deeply use the *arrobj* **type**.
+If you need to transform the output deeply use the *arrobj* / *objarr* **type**.
 
 ```js
 JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
@@ -607,6 +621,20 @@ When **meta** is *true*, it returns an object of objects:
 ```
 
 The dimensions included in the "meta.dimensions" property are not affected by the value of the **by** and **drop** options.
+
+##### <em>objarr</em> type
+
+*objarr* has the same options of *arrobj* but, instead of using an array of objects, it expresses data as an object where each property (table column) is an array. This table structure is often known as column-oriented arrays or columnar format.
+
+```json
+{
+  "value": [5.943826289, 5.39663128, 5.044790587, ...],
+  "status": [null, null, null, ...],
+  "year": ["2003", "2004", "2005", ...],
+  "area": ["AU", "AU", "AU", ...],
+  "concept": ["UNR", "UNR", "UNR", ...]
+}
+```
 
 ##### <em>array</em> type
 

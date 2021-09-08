@@ -9,15 +9,26 @@ function responseJSON(resp) {
   return resp.json();
 }
 
-export default function JSONstat(input, init) {
+//1.4.0 typedArray
+export default function JSONstat(input, init, typedArray) {
+  var options=(typeof init==="object") ? init : null;
+
+  if(typeof typedArray!=="function"){
+    typedArray=null;
+  }
+
+  if(!typedArray && typeof init==="function"){
+    typedArray=init;
+  }
+
   if(typeof input==="object"){
-    return new jsonstat(input);
+    return new jsonstat(input, typedArray);
   }else{
 		if(input==="version"){
 			return version;
 		}else if(fetch){ //For iife and IE
-			return fetch(input, init).then(responseJSON).then(function(json){
-	      return new jsonstat(json);
+			return fetch(input, options).then(responseJSON).then(function(json){
+	      return new jsonstat(json, typedArray);
 	    });
 		}
   }

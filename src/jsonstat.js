@@ -1,17 +1,25 @@
 //{follow: true} is gone in version 1
-function jsonstat(o){
+function jsonstat(o, typedArray){
 	var
 		//sparse cube (value or status)
 		//If only one value/status is provided it means same for all (if more than one, then missing values/statuses are nulled).
-		normalize=function(s,len){
+		normalize=function(s, len, ta){
 			var ret=[], l;
+
+			if(ta && !isValidTypedArrayName(ta.name)){
+				ta=null;
+			}
 
 			if(typeof s==="string"){
 				s=[s];
 			}
-			if(Array.isArray(s)){
+			if(//Array or TypedArray
+				Array.isArray(s) ||
+				isTypedArray(s) //1.4.0
+			){
 				if(s.length===len){ //normal case
-					return s;
+					//1.4.0
+					return ta ? ta.from(s) : s;
 				}
 				if(s.length===1){ //all obs same status
 					for(l=0; l<len; l++){
@@ -106,7 +114,10 @@ function jsonstat(o){
 			//1.2.7 No value, null, [] => same as {} (metadata response)
 			this.value=(!ot.hasOwnProperty("value") || ot.value===null || ot.value.length===0) ? {} : ot.value;
 
-			if(Array.isArray(this.value)){
+			if(
+				Array.isArray(this.value) ||
+				isTypedArray(this.value) //1.4.0
+			){
 				dsize=this.value.length;
 			}else{
 				var length=1;
@@ -116,8 +127,8 @@ function jsonstat(o){
 				dsize=length;
 			}
 
-			this.value=normalize(this.value,dsize);
-			this.status=(!(ot.hasOwnProperty("status"))) ? null : normalize(ot.status,dsize);
+			this.value=normalize(this.value, dsize, typedArray);
+			this.status=(!(ot.hasOwnProperty("status"))) ? null : normalize(ot.status, dsize);
 
 			// if dimensions are defined, id and size arrays are required and must have equal length
 			if (ot.hasOwnProperty("dimension")){
@@ -311,6 +322,30 @@ function jsonstat(o){
 			}
 		break;
 	}
+}
+
+//1.4.0
+function isTypedArray(s){
+	return Object.prototype.toString.call(s.buffer) === "[object ArrayBuffer]";
+}
+
+//1.4.0
+function isValidTypedArrayName(name){
+	var names=[
+		"Int8Array",
+		"Uint8Array",
+		"Uint8ClampedArray",
+		"Int16Array",
+		"Uint16Array",
+		"Int32Array",
+		"Uint32Array",
+		"Float32Array",
+		"Float64Array",
+		"BigInt64Array",
+		"BigUint64Array"
+	];
+
+	return names.indexOf(name)!==-1;
 }
 
 jsonstat.prototype.Item=function(o){ //0.8.0
@@ -567,6 +602,9 @@ jsonstat.prototype.Dice=function(filters, options, drop){
 		ostatus,
 		boolize=function(opt, par){
 			return opt.hasOwnProperty(par) && !!opt[par];
+		},
+		toTypedArray=function(value, constructor){//1.4.0
+			return constructor.from(value);
 		}
 	;
 
@@ -594,6 +632,7 @@ jsonstat.prototype.Dice=function(filters, options, drop){
 	}
 
   var
+		originalValue=this.value,
 		ds=clone ? new jsonstat(JSON.parse(JSON.stringify(this))) : this,
 		statin=ds.status,
 		tree,
@@ -619,7 +658,7 @@ jsonstat.prototype.Dice=function(filters, options, drop){
 		},
 		arr2obj=function(o,p){ //o object p property
 			var ret={};
-			if(Object.prototype.toString.call(o[p]) === '[object Array]'){
+			if(Array.isArray(o[p])){
 				o[p].forEach(function(e,i){
 					if(e!==null){
 						ret[String(i)]=e;
@@ -710,7 +749,9 @@ jsonstat.prototype.Dice=function(filters, options, drop){
 	  });
 
 	  ds.n=value.length;
-		ds.value=ds.__tree__.value=value;
+
+		//1.4.0 Support for TypedArrays
+		ds.value=ds.__tree__.value=isTypedArray(originalValue) ? toTypedArray(value, originalValue.constructor) : value;
 		ds.status=ds.__tree__.status=(statin!==null) ? status : null;
 	}
 
@@ -952,7 +993,7 @@ jsonstat.prototype.Data=function(e, include){
 
 /*
 	Transformation method: output in DataTable format (array or object)
-	Setup: opts={by: null, bylabel: false, meta: false, drop: [], status: false, slabel: "Status", vlabel: "Value", field: "label", content: "label", type: "array"} (type values: "array" / "object" / "arrobj")
+	Setup: opts={by: null, bylabel: false, meta: false, drop: [], status: false, slabel: "Status", vlabel: "Value", field: "label", content: "label", type: "array"} (type values: "array" / "object" / "arrobj" / "objarr"[1.4.0])
 */
 jsonstat.prototype.toTable=function(opts, func){
 	if(this===null || this.class!=="dataset"){
@@ -964,15 +1005,18 @@ jsonstat.prototype.toTable=function(opts, func){
 		opts=null;
 	}
 
-	//default: use label for field names and content instead of "id". "by", "prefix", drop & meta added on 0.13.0 (currently only for "arrobj", "by" cancels "unit"). "comma" is 0.13.2
+	//default: use label for field names and content instead of "id". "by", "prefix", drop & meta added on 0.13.0 (currently only for "arrobj"/"objarr", "by" cancels "unit"). "comma" is 0.13.2
 	opts=opts || {field: "label", content: "label", vlabel: "Value", slabel: "Status", type: "array", status: false, unit: false, by: null, prefix: "", drop: [], meta: false, comma: false, bylabel: false};
 
 	//1.3.0 Backward compatibility: before arrobj had always field=id (now it's the default)
-	if(opts.type==="arrobj" && typeof(opts.field)==="undefined"){
+	if((opts.type==="arrobj" || opts.type==="objarr") && typeof(opts.field)==="undefined"){
 		opts.field="id";
 	}
 
 	var
+	 	useid=(opts.field==="id"),
+		getVlabel=function(str){ return (useid && "value") || str || "Value"; },
+		getSlabel=function(str){ return (useid && "status") || str || "Status"; },
 		totbl,
 		dataset=this.__tree__,
 		i, j, x,
@@ -1008,7 +1052,7 @@ jsonstat.prototype.toTable=function(opts, func){
 		return ret;
 	}
 
-	if(opts.type==="arrobj"){
+	if(opts.type==="arrobj" || opts.type==="objarr"){
 		var
 			tbl=[],
 			//0.12.3
@@ -1023,7 +1067,43 @@ jsonstat.prototype.toTable=function(opts, func){
 			drop=(typeof opts.drop!=="undefined" && Array.isArray(opts.drop)) ? opts.drop : [],
 			comma=(opts.comma===true),
 			bylabel=(opts.bylabel===true),
+			ta=ds.value.constructor,
 			formatResp=function(arr){
+				//1.4.0 columns arrays ("objarr") simple (vs. efficient) implementation: converted from "arrobj"
+				//For example: value array in a column array is equal to the original normalized JSON-stat value array
+				var
+					obj={},
+					vlabel=getVlabel(opts.vlabel),
+					arrobj2objarr
+				;
+
+				if(opts.type==="objarr"){
+					arrobj2objarr=
+						(by===null && isValidTypedArrayName(ta.name))
+						?
+						function(e){
+							if(e===vlabel){
+								obj[e]=ta.from(arr, function(d){
+									return d[e];
+								});
+							}else{
+								obj[e]=arr.map(function(d){
+									return d[e];
+								});
+							}
+						}
+						:
+						function(e){
+							obj[e]=arr.map(function(d){
+								return d[e];
+							})
+						}
+					;
+
+				  Object.keys(arr[0]).forEach(arrobj2objarr);
+					arr=obj;
+				}
+
 				if(meta){
 					var obj={};
 
@@ -1077,7 +1157,7 @@ jsonstat.prototype.toTable=function(opts, func){
 
 		var head=totbl.shift();
 
-		//0.12.3 Include unit information if there's any (only if arrobj and 0.13.0 not "by")
+		//0.12.3 Include unit information if there's any (only if arrobj/objarr and 0.13.0 not "by")
 		if(by===null && opts.unit && metric){
 			if(opts.content!=="id"){
 				for(var m=metric.length; m--;){
@@ -1217,23 +1297,22 @@ jsonstat.prototype.toTable=function(opts, func){
 		addCol,
 		addColValue,
 		addRow,
-		addRowValue,
-		useid=(opts.field==="id")
+		addRowValue
 	;
 
 	if(opts.type==="object"){
 		//Object
 		var valuetype=(typeof this.value[0]==="number" || this.value[0]===null) ? "number" : "string"; //cell type inferred from first cell. If null, number is assumed (naif)
 
-		addCol=function(dimid,dimlabel){
+		addCol=function(dimid, dimlabel){
 			var label=(useid && dimid) || dimlabel || dimid; //if useid then id; else label; then id if not label
 			cols.push({id: dimid, label: label, type: "string"}); //currently not using datetime Google type (requires a Date object)
 		};
 
-		addColValue=function(str1,str2,status){
+		addColValue=function(str1, str2, status){
 			var
-				vlabel=(useid && "value") || str1 || "Value",
-				slabel=(useid && "status") || str2 || "Status"
+				vlabel=getVlabel(str1),
+				slabel=getSlabel(str2)
 			;
 			if(status){
 				cols.push({id: "status", label: slabel, type: "string"});
@@ -1260,8 +1339,8 @@ jsonstat.prototype.toTable=function(opts, func){
 
 		addColValue=function(str1,str2,status){
 			var
-				vlabel=(useid && "value") || str1 || "Value",
-				slabel=(useid && "status") || str2 || "Status"
+				vlabel=getVlabel(str1),
+				slabel=getSlabel(str2)
 			;
 			if(status){
 				cols.push(slabel);
