@@ -18,8 +18,8 @@ function jsonstat(o, typedArray){
 				isTypedArray(s) //1.4.0
 			){
 				if(s.length===len){ //normal case
-					//1.4.0
-					return ta ? ta.from(s) : s;
+					//1.4.0 (1.4.1 don't convert to TypedArray if nulls (or empty or undefined) are present)
+					return ta && -1===s.findIndex(function(d){return d===null || typeof d==="undefined";}) ? ta.from(s) : s;
 				}
 				if(s.length===1){ //all obs same status
 					for(l=0; l<len; l++){
