@@ -12,7 +12,7 @@ function responseJSON(resp) {
 
 //1.4.0 typedArray
 export default function JSONstat(input, init, typedArray) {
-  var options=(typeof init==="object") ? init : null;
+  var options=(typeof init==="object") ? init : { method: "GET" };//1.4.2 method explicit instead of null to avoid issues with new releases of node-fetch
 
   if(typeof typedArray!=="function"){
     typedArray=null;
