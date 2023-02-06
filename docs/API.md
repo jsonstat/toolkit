@@ -529,7 +529,7 @@ JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
 });
 ```
 
-The *arrobj* / *objarr* **types** does not return a table header, but *array* and *object* **type** do: **callback** cannot act on the header, only on the data array.
+The *arrobj* / *objarr* **types** do not return a table header, but *array* and *object* **type** do: **callback** cannot act on the header, only on the data array.
 
 ```js
 JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
@@ -545,7 +545,7 @@ JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
 });
 ```
 
-Because *array* / *object* **type** include a header in the result, it is not advisable to change the structure of the data array when using these types: the header will be left untouched and incoherent.
+Because the *array* / *object* **types** include a header in the result, it is not advisable to change the structure of the data array when using these types: the header will be left untouched and incoherent.
 
 If you need to transform the output deeply use the *arrobj* / *objarr* **type**.
 
