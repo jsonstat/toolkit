@@ -41,7 +41,7 @@ import JSONstat from "https://cdn.jsdelivr.net/npm/jsonstat-toolkit@1.4.2/import
 </script>
 ```
 
-The Toolkit ECMAScript module works on any browser that support ECMAScript modules.
+The Toolkit ECMAScript module works on any browser that supports ECMAScript modules.
 
 ## Node.js
 
