@@ -1,7 +1,7 @@
 # JSON-stat Javascript Toolkit
 
 <blockquote>
-This package (<strong>jsonstat-toolkit</strong>) contains version 1 of the JSON-stat Javascript Toolkit. Version 0 of this Toolkit can be found in the <a href="https://www.npmjs.com/package/jsonstat">jsonstat</a> package. If you need to support <em>very</em> old browsers (like IE6), stick to version 0. The two versions have identical APIs, except for the implementation of XHR (an optional feature, anyway) and version number exposition. Both changes affect only the JSONstat function: no method is affected. Version 0 is frozen.
+This package (<strong>jsonstat-toolkit</strong>) contains version 1 of the JSON-stat Javascript Toolkit. Version 0 of this Toolkit can be found in the <a href="https://www.npmjs.com/package/jsonstat">jsonstat</a> package. If you need to support <em>very</em> old browsers (like IE6), stick to version 0. The two versions have similar APIs, except for the implementation of XHR (an optional feature, anyway) and version number exposition. Both changes affect only the JSONstat function: no method is affected. Version 0 is frozen.
 </blockquote>
 
 The [JSON-stat format](https://json-stat.org/format/) is a simple lightweight JSON format for data dissemination. It is based in a cube model that arises from the evidence that the most common form of data dissemination is the tabular form. In this cube model, **datasets** are organized in **dimensions**. Dimensions are organized in **categories**.
