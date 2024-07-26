@@ -4,6 +4,11 @@ function jsonstat(o, typedArray){
 		//sparse cube (value or status)
 		//If only one value/status is provided it means same for all (if more than one, then missing values/statuses are nulled).
 		normalize=function(s, len, ta){
+			//1.5.0 [], {} (when empty, it can only be {})
+			if(Object.entries(s).length===0){
+				return null;
+			}
+
 			var ret=[], l;
 
 			if(ta && !isValidTypedArrayName(ta.name)){
@@ -608,7 +613,10 @@ jsonstat.prototype.Dice=function(filters, options, drop){
 		}
 	;
 
-	if(this===null || this.class!=="dataset"){
+	if(this===null || this.class!=="dataset"
+		//1.5.0
+		|| Object.entries(this.value).length===0
+	){
 		return null;
 	}
 	if(typeof filters!=="object"){
@@ -805,7 +813,10 @@ jsonstat.prototype.Dice=function(filters, options, drop){
 
 //Deprecated since v.1.1
 jsonstat.prototype.Slice=function(filter){
-	if(this===null || this.class!=="dataset"){
+	if(this===null || this.class!=="dataset"
+		//1.5.0
+		|| Object.entries(this.value).length===0
+	){
 		return null;
 	}
 	if(typeof filter==="undefined"){
@@ -868,7 +879,10 @@ jsonstat.prototype.Data=function(e, include){
 		}
 	;
 
-	if(this===null || this.class!=="dataset"){
+	if(this===null || this.class!=="dataset"
+		//1.5.0
+		|| Object.entries(this.value).length===0
+	){
 		return null;
 	}
 
@@ -996,7 +1010,10 @@ jsonstat.prototype.Data=function(e, include){
 	Setup: opts={by: null, bylabel: false, meta: false, drop: [], status: false, slabel: "Status", vlabel: "Value", field: "label", content: "label", type: "array"} (type values: "array" / "object" / "arrobj" / "objarr"[1.4.0])
 */
 jsonstat.prototype.toTable=function(opts, func){
-	if(this===null || this.class!=="dataset"){
+	if(this===null || this.class!=="dataset"
+		//1.5.0
+		|| Object.entries(this.value).length===0
+	){
 		return null;
 	}
 

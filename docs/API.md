@@ -311,6 +311,8 @@ If **dataid** is an array, the result is a *value-status* object if **dataid** h
 
 If **dataid** is an object, a dimension is ignored if its ID or the ID of its category is invalid. If all dimensions/categories are correctly specified, the result is a *value-status* object. Take into account that constant dimensions (that is, single category dimensions) are not required. Therefore, to get a *value-status* object, you need to validly select a category for all the non-constant dimensions. If you do not validly select a category of a non-constant dimension (from now on, the free dimension), the return value will be an array of *value-status* objects: one for each category in the free dimension (slice). Objects will be ordered in the free dimension category order. If there is more than one free dimension, a *null* will be returned.
 
+Since version 1.5, it returns *null* when the dataset has no values.
+
 ```js
 JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
   //Value of the first observation
@@ -567,7 +569,7 @@ JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
 
 #### Return Value
 
-It depends on the **type** specified in the <strong><a href="#opts">opts</a></strong> parameter.
+It depends on the **type** specified in the <strong><a href="#opts">opts</a></strong> parameter. Since version 1.5, it returns *null* when the dataset has no values.
 
 ##### <em>arrobj</em> type
 
@@ -808,8 +810,7 @@ This option is ignored if **stringify** is *false*.
 
 #### Return Value
 
-It returns a *jsonstat* instance or a string when the stringify option is *true*.
-
+It returns a *jsonstat* instance or a string when the stringify option is *true*. Since version 1.5, it returns *null* when the dataset has no values.
 
 ### Slice()
 
@@ -821,7 +822,7 @@ It returns a *jsonstat* instance or a string when the stringify option is *true*
 
 ***
 
-Deprecated in version 1.1 (use the more powerful <a href="#dice">Dice()</a> instead.)
+Deprecated in version 1.1 (use the more powerful <a href="#dice">Dice()</a> instead).
 
 #### Parameters
 
@@ -867,7 +868,7 @@ JSONstat("https://json-stat.org/samples/galicia.json").then(function(j){
 
 #### Return Value
 
-It returns a *jsonstat* instance identical to the original one but with some dimensions "flattened". When **filter** is wrong, *null* is returned.
+It returns a *jsonstat* instance identical to the original one but with some dimensions "flattened". When **filter** is wrong, *null* is returned. Since version 1.5, it returns *null* when the dataset has no values.
 
 **Warning**: Keep in mind that this is performed by actually modifying the original dataset. If you want to keep it, clone it first.
 
