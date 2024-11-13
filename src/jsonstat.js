@@ -614,8 +614,8 @@ jsonstat.prototype.Dice=function(filters, options, drop){
 	;
 
 	if(this===null || this.class!=="dataset"
-		//1.5.0
-		|| Object.entries(this.value).length===0
+		//1.5.1
+		|| this.value===null
 	){
 		return null;
 	}
@@ -880,8 +880,8 @@ jsonstat.prototype.Data=function(e, include){
 	;
 
 	if(this===null || this.class!=="dataset"
-		//1.5.0
-		|| Object.entries(this.value).length===0
+		//1.5.1
+		|| this.value===null
 	){
 		return null;
 	}
@@ -1011,8 +1011,8 @@ jsonstat.prototype.Data=function(e, include){
 */
 jsonstat.prototype.toTable=function(opts, func){
 	if(this===null || this.class!=="dataset"
-		//1.5.0
-		|| Object.entries(this.value).length===0
+		//1.5.1
+		|| this.value===null
 	){
 		return null;
 	}
