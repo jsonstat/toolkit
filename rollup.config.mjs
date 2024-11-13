@@ -1,6 +1,6 @@
-import {terser} from "rollup-plugin-terser";
+import terser from "@rollup/plugin-terser";
 import json from '@rollup/plugin-json';
-import * as pkg from "./package.json";
+import pkg from "./package.json" with {type: "json"};
 
 const
   preamble=`// ${pkg.name} v${pkg.version} Copyright ${(new Date).getFullYear()} ${pkg.author.name} ${pkg.homepage}`,
