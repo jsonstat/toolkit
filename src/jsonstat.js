@@ -133,7 +133,8 @@ function jsonstat(o, typedArray){
 			}
 
 			this.value=normalize(this.value, dsize, typedArray);
-			this.status=(!(ot.hasOwnProperty("status"))) ? null : normalize(ot.status, dsize);
+			//1.5.3 ot.status===null (when it comes from Dice() for example)
+			this.status=(!(ot.hasOwnProperty("status")) || ot.status===null) ? null : normalize(ot.status, dsize);
 
 			// if dimensions are defined, id and size arrays are required and must have equal length
 			if (ot.hasOwnProperty("dimension")){
