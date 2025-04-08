@@ -9,58 +9,60 @@
 ### By type
 
 <ul>
-	<li><strong><a href="#reading">Reading</a></strong>: <a href="#jsonstat">JSONstat()</a></li>
-	<li><strong><a href="#traversing">Traversing</a></strong>: <a href="#dataset">Dataset()</a>, <a href="#dimension">Dimension()</a>, <a href="#category">Category()</a>, <a href="#data">Data()</a>, <a href="#item">Item()</a></li>
-	<li><strong><a href="#transforming">Transforming</a></strong>: <a href="#totable">toTable()</a>, <a href="#dice">Dice()</a>, <a href="#slice">Slice()</a></li>
+  <li><strong><a href="#reading">Reading</a></strong>: <a href="#jsonstat">JSONstat()</a></li>
+  <li><strong><a href="#traversing">Traversing</a></strong>: <a href="#dataset">Dataset()</a>, <a href="#dimension">Dimension()</a>, <a href="#category">Category()</a>, <a href="#data">Data()</a>, <a href="#item">Item()</a></li>
+  <li><strong><a href="#transforming">Transforming</a></strong>: <a href="#unflatten">Unflatten()</a>, <a href="#totable">toTable()</a>, <a href="#dice">Dice()</a>, <a href="#slice">Slice()</a></li>
 </ul>
 
 ### By hierarchy
 
 <ul>
-	<li><strong><a href="#jsonstat">JSONstat()</a></strong>:</li>
-		<ul>
-		<li>
-			Collection responses: <a href="#class">class</a>, <a href="#length">length</a>, <a href="#id">id</a>, <a href="#label">label</a>, <a href="#updated">updated</a>, <a href="#source">source</a>, <a href="#note">note</a>, <a href="#href">href</a>, <a href="#link">link</a>, <a href="#extension">extension</a>
-			<ul>
-				<li>
-					<strong><a href="#item">Item()</a></strong>: <a href="#class">class</a>, <a href="#href">href</a>, <a href="#label">label</a>, <a href="#extension">extension</a>
-				</li>
-			</ul>
-		</li>
-			<li>
-				Bundle responses: <a href="#class">class</a>, <a href="#length">length</a>, <a href="#id">id</a>, <a href="#error">error</a>
-				<ul>
-					<li><strong><a href="#dataset">Dataset()</a></strong>: <a href="#class">class</a>, <a href="#length">length</a>, <a href="#id">id</a>,
-					<a href="#label">label</a>, <a href="#n">n</a>, <a href="#size">size</a>, <a href="#value">value</a>, <a href="#status">status</a>, <a href="#updated">updated</a>, <a href="#source">source</a>, <a href="#role">role</a>, <a href="#note">note</a>, <a href="#href">href</a>, <a href="#link">link</a>, <a href="#extension">extension</a>
-						<ul>
-							<li><strong><a href="#dimension">Dimension()</a></strong>: <a href="#class">class</a>, <a href="#length">length</a>, <a href="#id">id</a>, <a href="#label">label</a>, <a href="#role">role</a>, <a href="#hierarchy">hierarchy</a>, <a href="#note">note</a>, <a href="#href">href</a>, <a href="#link">link</a>, <a href="#extension">extension</a>
-								<ul>
-									<li><strong><a href="#category">Category()</a></strong>: <a href="#length">length</a>, <a href="#id">id</a>, <a href="#label">label</a>, <a href="#coordinates">coordinates</a>, <a href="#unit">unit</a>, <a href="#note">note</a></li>
-								</ul>
-							</li>
-							<li><strong><a href="#data">Data()</a></strong>: <a href="#value">value</a>, <a href="#status">status</a></li>
-							<li><strong><a href="#totable">toTable()</a></strong>
-							<li><strong><a href="#dice">Dice()</a></strong>
-							<li><strong><a href="#slice">Slice()</a></strong>
-						</ul>
-					</li>
-				</ul>
-			</li>
-			<li>Dataset responses: <a href="#class">class</a>, <a href="#length">length</a>, <a href="#id">id</a>, <a href="#label">label</a>, <a href="#n">n</a>, <a href="#size">size</a>, <a href="#value">value</a>, <a href="#status">status</a>, <a href="#updated">updated</a>, <a href="#source">source</a>, <a href="#role">role</a>, <a href="#note">note</a>, <a href="#href">href</a>, <a href="#link">link</a>, <a href="#extension">extension</a>
-				<ul>
-					<li><strong><a href="#dimension">Dimension()</a></strong>: <a href="#class">class</a>, <a href="#length">length</a>, <a href="#id">id</a>, <a href="#label">label</a>, <a href="#role">role</a>, <a href="#hierarchy">hierarchy</a>, <a href="#note">note</a>, <a href="#href">href</a>, <a href="#link">link</a>, <a href="#extension">extension</a>
-						<ul>
-							<li><strong><a href="#category">Category()</a></strong>: <a href="#length">length</a>, <a href="#id">id</a>, <a href="#label">label</a>, <a href="#coordinates">coordinates</a>, <a href="#unit">unit</a>, <a href="#note">note</a></li>
-						</ul>
-					</li>
-					<li><strong><a href="#data">Data()</a></strong>: <a href="#value">value</a>, <a href="#status">status</a></li>
-					<li><strong><a href="#totable">toTable()</a></strong>
-					<li><strong><a href="#dice">Dice()</a></strong>
-					<li><strong><a href="#slice">Slice()</a></strong>
-				</ul>
-			</li>
-		</ul>
-	</li>
+  <li><strong><a href="#jsonstat">JSONstat()</a></strong>:</li>
+    <ul>
+    <li>
+      Collection responses: <a href="#class">class</a>, <a href="#length">length</a>, <a href="#id">id</a>, <a href="#label">label</a>, <a href="#updated">updated</a>, <a href="#source">source</a>, <a href="#note">note</a>, <a href="#href">href</a>, <a href="#link">link</a>, <a href="#extension">extension</a>
+      <ul>
+        <li>
+          <strong><a href="#item">Item()</a></strong>: <a href="#class">class</a>, <a href="#href">href</a>, <a href="#label">label</a>, <a href="#extension">extension</a>
+        </li>
+      </ul>
+    </li>
+      <li>
+        Bundle responses: <a href="#class">class</a>, <a href="#length">length</a>, <a href="#id">id</a>, <a href="#error">error</a>
+        <ul>
+          <li><strong><a href="#dataset">Dataset()</a></strong>: <a href="#class">class</a>, <a href="#length">length</a>, <a href="#id">id</a>,
+          <a href="#label">label</a>, <a href="#n">n</a>, <a href="#size">size</a>, <a href="#value">value</a>, <a href="#status">status</a>, <a href="#updated">updated</a>, <a href="#source">source</a>, <a href="#role">role</a>, <a href="#note">note</a>, <a href="#href">href</a>, <a href="#link">link</a>, <a href="#extension">extension</a>
+            <ul>
+              <li><strong><a href="#dimension">Dimension()</a></strong>: <a href="#class">class</a>, <a href="#length">length</a>, <a href="#id">id</a>, <a href="#label">label</a>, <a href="#role">role</a>, <a href="#hierarchy">hierarchy</a>, <a href="#note">note</a>, <a href="#href">href</a>, <a href="#link">link</a>, <a href="#extension">extension</a>
+                <ul>
+                  <li><strong><a href="#category">Category()</a></strong>: <a href="#length">length</a>, <a href="#id">id</a>, <a href="#label">label</a>, <a href="#coordinates">coordinates</a>, <a href="#unit">unit</a>, <a href="#note">note</a></li>
+                </ul>
+              </li>
+              <li><strong><a href="#data">Data()</a></strong>: <a href="#value">value</a>, <a href="#status">status</a></li>
+              <li><strong><a href="#unflatten">Unflatten()</a></strong></li>
+              <li><strong><a href="#totable">toTable()</a></strong></li>
+              <li><strong><a href="#dice">Dice()</a></strong></li>
+              <li><strong><a href="#slice">Slice()</a></strong></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>Dataset responses: <a href="#class">class</a>, <a href="#length">length</a>, <a href="#id">id</a>, <a href="#label">label</a>, <a href="#n">n</a>, <a href="#size">size</a>, <a href="#value">value</a>, <a href="#status">status</a>, <a href="#updated">updated</a>, <a href="#source">source</a>, <a href="#role">role</a>, <a href="#note">note</a>, <a href="#href">href</a>, <a href="#link">link</a>, <a href="#extension">extension</a>
+        <ul>
+          <li><strong><a href="#dimension">Dimension()</a></strong>: <a href="#class">class</a>, <a href="#length">length</a>, <a href="#id">id</a>, <a href="#label">label</a>, <a href="#role">role</a>, <a href="#hierarchy">hierarchy</a>, <a href="#note">note</a>, <a href="#href">href</a>, <a href="#link">link</a>, <a href="#extension">extension</a>
+            <ul>
+              <li><strong><a href="#category">Category()</a></strong>: <a href="#length">length</a>, <a href="#id">id</a>, <a href="#label">label</a>, <a href="#coordinates">coordinates</a>, <a href="#unit">unit</a>, <a href="#note">note</a></li>
+            </ul>
+          </li>
+          <li><strong><a href="#data">Data()</a></strong>: <a href="#value">value</a>, <a href="#status">status</a></li>
+          <li><strong><a href="#unflatten">Unflatten()</a></strong></li>
+          <li><strong><a href="#totable">toTable()</a></strong></li>
+          <li><strong><a href="#dice">Dice()</a></strong></li>
+          <li><strong><a href="#slice">Slice()</a></strong></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
 </ul>
 
 ## Public Properties
@@ -407,6 +409,139 @@ JSONstat( "https://json-stat.org/samples/collection.json" ).then(function(j) {
 
 ## Transforming
 
+### Unflatten()
+
+***
+<div><strong>Parent</strong>: <a href="#dataset">Dataset</a></div>
+<div><strong>Description</strong>: Converts information from a <em>jsonstat</em> instance into a data array with the associated dimension categories</div>
+<div><strong>Public Properties</strong>: &mdash;</div>
+<div><strong>Summary</strong>: <code><i>array</i> Unflatten ( <i>function</i> callback )</code></div>
+
+***
+
+Added in version 1.6, this method is more efficient and flexible than <a href="#totable">toTable()</a>. While <a href="#totable">toTable()</a> supports popular structures and transformations, Unflatten uses a better extraction method to expose data and its associated metadata to a callback function allowing the user to customize the resulting output.
+
+#### Parameters
+##### callback (required)
+
+It is a function that defines the structure of the returned array.
+
+Unflatten returns an array that exposes the following cell-level information to the callback function:
+
+* **Coordinates**: An object describing the location of the cell in the cube in terms of dimension ids and category ids.
+
+```json
+{
+  "sex": "M",
+  "concept": "POP",
+  "age": "T",
+  "year": "2012",
+  "country": "CA"
+}
+```
+
+* **Data point**: An object with the cell value and status (when no status information is available, "status" will be set to *null*).
+
+```json
+{
+  "value": 17309.1,
+  "status": "a"
+}
+```
+
+* **Cell counter**: An integer expressing the position of the cell in the array of values.
+
+* **Cells array**:  The returned array.
+
+#### Return Value
+
+It returns an array. If no callback function is provided, *null* is returned.
+
+```js
+JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
+  //It returns an array of objects with two properties: "coordinates" and "datapoint"
+  const arr1=j.Unflatten((coordinates, datapoint) => { 
+    return {coordinates, datapoint}; 
+  });
+
+  //"coordinates" and "value"
+  const arr2=j.Unflatten((coordinates, datapoint) => { 
+    return {coordinates, value: datapoint.value};
+  });
+
+  //Array of flat objects that use dimension and category ids and value
+  const arr3=j.Unflatten((coordinates, datapoint) => { 
+    const ret={};
+
+    j.id.forEach(dimId => {
+      ret[dimId] = coordinates[dimId];
+    });
+
+    ret.value = datapoint.value;
+
+    return ret;
+  });
+
+  //Array of flat objects including "status" and using dimension and category labels instead of ids
+  const arr4=j.Unflatten((coordinates, datapoint) => { 
+    const ret={};
+
+    j.id.forEach(dimId => {
+      const dim = j.Dimension(dimId);
+      ret[dim.label] = dim.Category(coordinates[dimId]).label;
+    });
+
+    ret.value = datapoint.value;
+    ret.status = datapoint.status;
+
+    return ret;
+  });
+
+  //CSV string with value and status
+  const csv1=j.Unflatten((coordinates, datapoint, n, row) => {  
+    const 
+      dimIds = j.id
+      ret={}
+    ;
+
+    if(n===0){
+      row.push(dimIds.join(',').concat(',value,status'));
+    }
+
+    dimIds.forEach(dimId => {
+      ret[dimId] = coordinates[dimId];
+    });
+
+    ret.value = datapoint.value;
+    ret.status = datapoint.status;
+
+    return Object.values(ret).join(',');
+  }).join('\n');
+
+  //Filtered CSV string (only females)
+  const csv2=j.Unflatten((coordinates, datapoint, n, row) => { 
+    const 
+      dimIds = j.id,
+      ret={}
+    ;
+
+    if(n===0){
+      row.push(dimIds.join(',').concat(',value,status'));
+    }
+    dimIds.forEach(dimId => {
+      ret[dimId] = coordinates[dimId];
+    });
+    ret.value = datapoint.value;
+    ret.status = datapoint.status;
+
+    if(coordinates.sex === 'F'){
+      return Object.values(ret).join(',');
+    }
+  }).join('\n');
+
+});
+```
+
 ### toTable()
 
 ***
@@ -416,6 +551,8 @@ JSONstat( "https://json-stat.org/samples/collection.json" ).then(function(j) {
 <div><strong>Summary</strong>: <code><i>object</i> or <i>array</i> toTable ( [<i>object</i> opts, <i>function</i> callback] )</code></div>
 
 ***
+
+For a more efficient and more flexible transformation method, see <a href="#unflatten">Unflatten()</a>.
 
 #### Parameters
 
@@ -471,7 +608,7 @@ Even though toTable can expose a table using different structures depending on *
 ```js
 JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
   //Discard data by age in the resulting table
-  j.toTable(
+  const arrobj=j.toTable(
     { type : "arrobj" },
     function( d, i ){
       if( d.age==="total" ){
@@ -488,7 +625,7 @@ Filters and transformations in the **callback** must be expressed in terms of th
 JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
   //Discard data by age in the resulting table.
   //Using categories ID instead of labels.
-  j.toTable(
+  const arrobj=j.toTable(
     { type : "arrobj" , content : "id" },
     function( d, i ){
       if( d.age==="T" ){
@@ -505,7 +642,7 @@ Take into account that every **type** returns a different form of data array.
 JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
   //As previous example but with type "array"
   //Age is the third dimension (its index is 2)
-  j.toTable(
+  const arr=j.toTable(
      { type : "array" , content : "id" },
      function( d, i ){
         if( d[2]==="T" ){
@@ -520,7 +657,7 @@ JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
 JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
   //As previous example but with type "object"
   //Age is the third dimension (its index is 2)
-  j.toTable(
+  const obj=j.toTable(
      { type : "object" , content : "id" },
      function( d, i ){
         if( d.c[2].v==="T" ){
@@ -536,7 +673,7 @@ The *arrobj* / *objarr* **types** do not return a table header, but *array* and 
 ```js
 JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
   //This will not remove the header (row 0 in type "array") but the first data row
-  j.toTable(
+  const arr=j.toTable(
      { type : "array" },
      function( d, i ){
         if( i ){
@@ -556,7 +693,7 @@ JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
   //Select only the female population by age group
   //Get an array of objects with only two properties (age and population)
   //Change scale of units
-  j.toTable(
+  const arrobj=j.toTable(
      { type : "arrobj", content : "id" },
      function( d ){
         if( d.sex==="F" && d.concept==="POP" ){
@@ -674,6 +811,8 @@ It returns an object of arrays in the [Google DataTable](https://developers.goog
 <div><strong>Summary</strong>: <code><i>object</i> or <i>string</i> Dice ( [<i>object</i> or <i>array</i> filter, <i>object</i> opts] )</code></div>
 
 ***
+
+Added in version 1.1.
 
 #### Parameters
 

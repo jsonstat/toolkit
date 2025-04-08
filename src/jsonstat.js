@@ -1467,4 +1467,119 @@ jsonstat.prototype.toString=function(){
 	return this.class;
 };
 
+//1.6.0
+jsonstat.prototype.Unflatten=function(callback){
+	if(this===null || this.class!=="dataset" || this.value===null || typeof callback !== 'function'){
+		return null;
+	}
+
+	const 
+		dims = this.id,
+		size = this.size,
+		cells = []
+	;
+
+	for(let index=0; index<this.n; index++){
+		const
+			point = this.Data(index),
+			coord = {}
+		;
+
+		let remaining = index;
+		
+		for (let i = dims.length - 1; i >= 0; i--) {
+			const 
+				dim = this.Dimension(i),
+				//role = dim.role,
+				id = this.id[i],
+				//label = dim.label,
+				dimSize = size[i],
+				catIndex = remaining % dimSize,
+				cat = dim.Category(catIndex),
+				//catLabel = cat.label,
+				catId = dim.id[catIndex]
+			;
+
+			remaining = Math.floor(remaining / dimSize);
+			
+			coord[id] = catId;
+		}
+		
+		const result = callback(
+			coord, 
+			point, 
+			index, 
+			cells
+		);
+
+		if (typeof result !== 'undefined') {
+			cells.push(result);
+		}
+	}
+
+	return cells;
+}
+
 export default jsonstat;
+
+/*
+
+jsonstat.prototype.Unflatten=function(callback){
+	if(this===null || this.class!=="dataset" || this.value===null || typeof callback !== 'function'){
+		return null;
+	}
+
+	const 
+		dims = this.id,
+		size = this.size,
+		cells = []
+	;
+
+	for(let index=0; index<this.n; index++){
+		const
+			point = this.Data(index),
+			coord = {}
+		;
+
+		let remaining = index;
+		
+		for (let i = dims.length - 1; i >= 0; i--) {
+			const 
+				dim = this.Dimension(i),
+				role = dim.role,
+				id = this.id[i],
+				label = dim.label,
+				dimSize = size[i],
+				catIndex = remaining % dimSize,
+				cat = dim.Category(catIndex),
+				catLabel = cat.label,
+				catId = dim.id[catIndex]
+			;
+
+			remaining = Math.floor(remaining / dimSize);
+			
+			coord[id] = {
+				label: label,
+				cat: {
+					id: catId,
+					label: catLabel
+				}
+			};
+
+			if(role!==null){
+				coord[id].role = role;
+				if(role==="metric" && cat.unit){
+					coord[id].cat.unit = cat.unit;
+				}	
+			}
+		}
+		
+		const result = callback(coord, point, index, cells);
+		if (typeof result !== 'undefined') {
+			cells.push(result);
+		}
+	}
+
+	return cells;
+}
+*/
