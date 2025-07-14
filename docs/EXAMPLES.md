@@ -1,10 +1,10 @@
 # Examples
 
-> [JSON-stat Javascript Toolkit v.1](https://github.com/jsonstat/toolkit/blob/master/README.md) ▸ **Examples**
+> [JSON-stat JavaScript Toolkit](https://github.com/jsonstat/toolkit/blob/master/README.md) ▸ **Examples**
 
 <ul>
   <li><a href="#observable-notebooks">Observable Notebooks</a></li>
-  <li><a href="#differences-between-version-0-and-version-1">Differences between version 0 and version 1</a>
+  <li><a href="#differences-between-version-0-and-version-1">Differences between version 0 and version&gt;0</a>
     <ul>
       <li><a href="#retrieving-jjts-version">Retrieving JJT's version</a></li>
       <li><a href="#doing-a-get-request">Doing a GET request</a></li>
@@ -22,7 +22,7 @@
 * [Renewable Energy in Europe](https://observablehq.com/@jsonstat/energy)
 * [JSON-stat Empty Datasets](https://observablehq.com/@jsonstat/emptydatasets)
 
-## Differences between version 0 and version 1
+## Differences between version 0 and version>0
 
 ### Retrieving JJT's version
 

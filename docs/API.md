@@ -1,8 +1,8 @@
 # API Reference
 
-> [JSON-stat Javascript Toolkit v.1](https://github.com/jsonstat/toolkit/blob/master/README.md) ▸ **API Reference**
+> [JSON-stat JavaScript Toolkit](https://github.com/jsonstat/toolkit/blob/master/README.md) ▸ **API Reference**
 
-<blockquote>This is the documentation of JSON-stat Javascript Toolkit version 1. Version 0 has a slightly different API and is documented <a href="https://github.com/badosa/JSON-stat/wiki/API-Reference">elsewhere</a>.</blockquote>
+<blockquote>This is the documentation of JSON-stat JavaScript Toolkit version 1 and 2. Version 0 has a slightly different API and is documented <a href="https://github.com/badosa/JSON-stat/wiki/API-Reference">elsewhere</a>.</blockquote>
 
 ## Methods
 
@@ -98,7 +98,7 @@ if( j.length ){
 }
 ```
 
-When the string "version" is specified, the JSON-stat Javascript Toolkit version is returned.
+When the string "version" is specified, the JSON-stat JavaScript Toolkit version is returned.
 
 ```js
 var version=JSONstat("version");
@@ -138,7 +138,7 @@ JSONstat(url, options).then(function( j ) {
 
 ##### typedArray
 
-Since version 1.4, the JSON-stat Javascript Toolkit supports typed arrays. If an object that uses a typed array for the *value* property is passed to JSONstat(), it will keep the type once converted into a *jsonstat* instance.
+Since version 1.4, the JSON-stat JavaScript Toolkit supports typed arrays. If an object that uses a typed array for the *value* property is passed to JSONstat(), it will keep the type once converted into a *jsonstat* instance.
 
 **typedArray** is used to store the *value* property as a typed array of the specified type. It must be a valid TypedArray constructor.
 
@@ -1280,7 +1280,7 @@ JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
 
 #### updated
 
-It is the update date of the dataset or collection. String representing a date in an ISO 8601 format recognized by the Javascript Date.parse method.
+It is the update date of the dataset or collection. String representing a date in an ISO 8601 format recognized by the JavaScript Date.parse method.
 
 ```js
 JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {

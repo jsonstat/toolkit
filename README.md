@@ -1,12 +1,12 @@
-# JSON-stat Javascript Toolkit
+# JSON-stat JavaScript Toolkit
 
 <blockquote>
-This package (<strong>jsonstat-toolkit</strong>) contains version 1 of the JSON-stat Javascript Toolkit. Version 0 of this Toolkit can be found in the <a href="https://www.npmjs.com/package/jsonstat">jsonstat</a> package. If you need to support <em>very</em> old browsers (like IE6), stick to version 0. The two versions have similar APIs, except for the implementation of XHR (an optional feature, anyway) and version number exposition. Both changes affect only the JSONstat function: no method is affected. Version 0 is frozen.
+This package (<strong>jsonstat-toolkit</strong>) contains the JSON-stat JavaScript Toolkit. There are three major versions. Version 2 is the last one and should work on any modern browser: it has been developed using ECMAScript 2016 (ES2016), an specification well-supported in major web browsers since 2020. If you need to support even older browsers or want to play safe, use version 1: this version has stood the test of time (1.6.0 is the last release and will always be: version 1 is frozen). Version 0 of this Toolkit can be found in the <a href="https://www.npmjs.com/package/jsonstat">jsonstat</a> package and is deprecated: it should only be used if you need to support <em>very</em> old browsers (like IE6).
 </blockquote>
 
 The [JSON-stat format](https://json-stat.org/format/) is a simple lightweight JSON format for data dissemination. It is based in a cube model that arises from the evidence that the most common form of data dissemination is the tabular form. In this cube model, **datasets** are organized in **dimensions**. Dimensions are organized in **categories**.
 
-The JSON-stat Javascript Toolkit (JJT) is part of the [JSON-stat Toolkit](https://jsonstat.com). JJT's goal is to help dealing with JSON-stat responses in JavaScript.
+The JSON-stat JavaScript Toolkit (JJT) is part of the [JSON-stat Toolkit](https://jsonstat.com). JJT's goal is to help dealing with JSON-stat responses in JavaScript.
 
 To learn by example, you can read the interactive notebook **[Introduction to the jsonstat-toolkit](https://observablehq.com/@jsonstat/toolkit)**.
 
@@ -18,7 +18,7 @@ To learn by example, you can read the interactive notebook **[Introduction to th
 
 ## Design principles
 
-JSON-stat is based on a data cube information structure. The JSON-stat Javascript Toolkit exposes the data cube as a tree.
+JSON-stat is based on a data cube information structure. The JSON-stat JavaScript Toolkit exposes the data cube as a tree.
 
 ### The JSON-stat tree
 
@@ -52,7 +52,7 @@ Bundles were packages of unordered arbitrary datasets.
 
 Even though JSON-stat currently encourages the use of collections of embedded datasets instead of bundles, JJT supports both approaches.
 
-To retrieve information about the first category of the first dimension of the first embedded dataset in a JSON-stat collection (or bundle) *j*, the JSON-stat Javascript Toolkit allows you to traverse the JSON-stat tree like this:
+To retrieve information about the first category of the first dimension of the first embedded dataset in a JSON-stat collection (or bundle) *j*, the JSON-stat JavaScript Toolkit allows you to traverse the JSON-stat tree like this:
 
 ```js
 JSONstat( j ).Dataset( 0 ).Dimension( 0 ).Category( 0 )
@@ -145,11 +145,39 @@ When the argument is neither an integer nor an array, single category dimensions
 
 ### Transformation methods
 
-Transformation methods get information in the JSON-stat tree and export it to a different JSON structure for convenience.
+Transformation methods get information in the JSON-stat tree and export it to a different object structure for convenience or to a different JSON-stat.
+
+#### Dice 
+
+Dataset method that creates a subset of the original dataset.
+
+(It requires version 1 or 2.)
+
+```js
+JSONstat( j ).Dataset( 0 ).Dice(
+   {
+      "area": ["AT","CA"],
+      "year": ["2010","2011"]
+   }
+);
+```
+(It requires version 1 or 2.)
+
+#### Unflatten
+
+This dataset method returns an array of objects defined by a callback function (each element contains a value and its metadata).
+
+```js
+JSONstat( j ).Dataset( 0 ).Unflatten( ( coordinates, datapoint ) => { 
+   return { coordinates, datapoint }; 
+});
+```
+
+(It requires version 1 or 2.)
 
 #### toTable
 
-This is a dataset method. It converts the information of a particular dataset into a JSON table. The conversion can be setup using an optional argument.
+Dataset method that converts the information of a particular dataset into a JSON table. The conversion can be setup using an optional argument.
 
 ```js
 JSONstat( j ).Dataset( 0 ).toTable()

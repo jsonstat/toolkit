@@ -1,0 +1,6 @@
+# Ignore all dotfiles.
+.*
+# but not the .gitignore itself
+!.gitignore
+# Ignore node_modules directory
+/node_modules

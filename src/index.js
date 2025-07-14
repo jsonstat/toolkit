@@ -1,36 +1,37 @@
-import fetch from "node-fetch";
 import {version} from "../package.json";
 import jsonstat from "./jsonstat.js";
 
-
-function responseJSON(resp) {
-  if(!resp.ok){
-    throw new Error(resp.status + " " + resp.statusText);
-  }
-  return resp.json();
+const responseJSON = resp => {
+	if(!resp.ok){
+		throw new Error(`${resp.status} ${resp.statusText}`);
+	}
+	return resp.json();
 }
 
 //1.4.0 typedArray
 export default function JSONstat(input, init, typedArray) {
-  var options=(typeof init==="object") ? init : { method: "GET" };//1.4.2 method explicit: node-fetch does not accept null (error introduced in 1.4.0 with TypedArrays)
+	const options=(typeof init==="object") ? init : { method: "GET" };
 
-  if(typeof typedArray!=="function"){
-    typedArray=null;
-  }
+	if(typeof typedArray!=="function"){
+		typedArray=null;
+	}
 
-  if(!typedArray && typeof init==="function"){
-    typedArray=init;
-  }
+	if(!typedArray && typeof init==="function"){
+		typedArray=init;
+	}
 
-  if(typeof input==="object"){
-    return new jsonstat(input, typedArray);
-  }else{
+	if(typeof input==="object"){
+		return new jsonstat(input, typedArray);
+	}else{
 		if(input==="version"){
 			return version;
-		}else if(fetch){ //For iife and IE
-			return fetch(input, options).then(responseJSON).then(function(json){
-	      return new jsonstat(json, typedArray);
-	    });
+		}else if(fetch){
+			return fetch(input, options)
+				.then(responseJSON)
+				.then(json => new jsonstat(json, typedArray))
+				.catch(err => {
+					throw err;
+				});
 		}
-  }
+	}
 }
