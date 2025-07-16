@@ -500,7 +500,7 @@ JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
   //CSV string with value and status
   const csv1=j.Unflatten((coordinates, datapoint, n, row) => {  
     const 
-      dimIds = j.id
+      dimIds = j.id,
       ret={}
     ;
 
