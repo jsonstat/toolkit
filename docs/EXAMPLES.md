@@ -19,8 +19,9 @@
 
 * [Introduction to the jsonstat-toolkit](https://observablehq.com/@jsonstat/toolkit)
 * [Fetching Official Statistics in Observable Notebooks... Worldwide](https://observablehq.com/@jsonstat/fetch)
-* [Renewable Energy in Europe](https://observablehq.com/@jsonstat/energy)
+* [Bringing Data and Metadata Together: The JSONSTAT-TOOLKIT Unflatten Method](https://observablehq.com/@jsonstat/unflatten)
 * [JSON-stat Empty Datasets](https://observablehq.com/@jsonstat/emptydatasets)
+* [Renewable Energy in Europe](https://observablehq.com/@jsonstat/energy)
 
 ## Differences between version 0 and version>0
 
