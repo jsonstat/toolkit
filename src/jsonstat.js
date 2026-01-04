@@ -1064,6 +1064,7 @@ jsonstat.prototype.toTable=function(opts, func){
 		totbl=this.toTable({field: opts.field /* Before 1.3.0 was: "id" */, vlabel: opts.vlabel, slabel: opts.slabel, content: opts.content, status: status});
 
 		const head=totbl.shift();
+		let tblr;
 
 		//0.12.3 Include unit information if there's any (only if arrobj/objarr and 0.13.0 not "by")
 		if(by===null && opts.unit && metric){
@@ -1098,7 +1099,7 @@ jsonstat.prototype.toTable=function(opts, func){
 
 		len=totbl.length;
 		for(i=0; i<len; i++){ //Can't be done with i-- as we want to keep the original order
-			let tblr={};
+			tblr={};
 			for(j=totbl[i].length;j--;){
 				tblr[head[j]]=totbl[i][j];
 				addUnits(head[j], totbl[i][j]); //0.12.3
