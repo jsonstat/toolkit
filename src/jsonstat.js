@@ -1360,49 +1360,55 @@ jsonstat.prototype.toString=function(){
 	return this.class;
 };
 
-//1.6.0
-jsonstat.prototype.Unflatten=function(callback){
-	if(this===null || this.class!=="dataset" || this.value===null || typeof callback !== 'function'){
+//1.6.0 (Improved in 2.0.2)
+jsonstat.prototype.Unflatten = function (callback) {
+	if (this === null || this.class !== "dataset" || this.value === null || typeof callback !== 'function') {
 		return null;
 	}
 
-	const 
+	const
 		dims = this.id,
 		size = this.size,
-		cells = []
+		ndims = dims.length,
+		cells = [],
+		dimCats = [],
+		counters = new Array(ndims).fill(0)
 	;
 
-	for(let index=0; index<this.n; index++){
+	for (let i = 0; i < ndims; i++) {
+		dimCats.push(this.Dimension(i).id);
+	}
+
+	for (let index = 0; index < this.n; index++) {
 		const
-			point = this.Data(index),
-			coord = {}
+			coord = {},
+			point = {
+				value: this.value[index],
+				status: (this.status) ? this.status[index] : null
+			}
 		;
 
-		let remaining = index;
-		
-		for (let i = dims.length - 1; i >= 0; i--) {
-			const 
-				dim = this.Dimension(i),
-				id = this.id[i],
-				dimSize = size[i],
-				catIndex = remaining % dimSize,
-				catId = dim.id[catIndex]
-			;
-
-			remaining = Math.floor(remaining / dimSize);
-			
-			coord[id] = catId;
+		for (let i = 0; i < ndims; i++) {
+			coord[dims[i]] = dimCats[i][counters[i]];
 		}
-		
+
 		const result = callback(
-			coord, 
-			point, 
-			index, 
+			coord,
+			point,
+			index,
 			cells
 		);
 
 		if (typeof result !== 'undefined') {
 			cells.push(result);
+		}
+
+		for (let i = ndims - 1; i >= 0; i--) {
+			counters[i]++;
+			if (counters[i] < size[i]) {
+				break;
+			}
+			counters[i] = 0;
 		}
 	}
 
