@@ -1109,9 +1109,10 @@ jsonstat.prototype.toTable=function(opts, func){
 
 		//0.13.2
 		if(comma){
+			const vlabel=getVlabel(opts.vlabel); //2.0.3
 			tbl.forEach(function(r){
-				if(r.value!==null){
-					r.value=(String(r.value)).replace(".", ",");
+				if(r[vlabel]!==null){
+					r[vlabel]=(String(r[vlabel])).replace(".", ",");
 				}
 			});
 		}
