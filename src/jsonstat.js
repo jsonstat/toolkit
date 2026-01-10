@@ -898,6 +898,7 @@ jsonstat.prototype.Data=function(e, include){
 
 /*
 	Transformation method: output in DataTable format (array or object)
+	Deprecated: Planned for removal in 3.0.0
 	Setup: opts={by: null, bylabel: false, meta: false, drop: [], status: false, slabel: "Status", vlabel: "Value", field: "label", content: "label", type: "array"} (type values: "array" / "object" / "arrobj" / "objarr"[1.4.0])
 */
 jsonstat.prototype.toTable=function(opts, func){
@@ -1414,6 +1415,209 @@ jsonstat.prototype.Unflatten = function (callback) {
 	}
 
 	return cells;
+};
+
+/* 
+	2.1.0 
+	Replacement for toTable().
+	Comparison with toTable:
+	- Currently only supporting "array" and "arrobj" types. 
+	- "unit" is not supported.
+	- callback argument not supported.
+	- "bylabel" removed (it uses "content" value instead). 
+	+ "type" added to meta property ("unit" and "bylabel" removed from meta property).
+	+ "drop", "comma" and "meta", generalized (available also for "array" type).
+	+ It relies on Unflatten: much more efficient than toTable.
+	
+*/
+jsonstat.prototype.Transform=function(opts){
+	if (this === null || this.class !== "dataset" || this.value === null) {
+		return null;
+	}
+
+	if (typeof opts !== "undefined" && opts !== null) {
+		if (typeof opts !== "object" || (typeof opts.type !== "undefined" && typeof opts.type !== "string")) {
+			return null;
+		}
+	} else {
+		opts = {};
+	}
+
+	const
+		type = opts.type !== "arrobj" ? "array" : "arrobj",
+		ids = this.id,
+		by = (type !== "array" && opts.by && ids.indexOf(opts.by) !== -1) ? opts.by : null,
+		comma = opts.comma || false,
+		status = by === null && opts.status || false,
+		content = opts.content || "label",
+		field = by === null ? opts.field || "label" : "id",
+		vlabel = opts.field === "id" ? "value" : (opts.vlabel || "Value"),
+		slabel = opts.field === "id" ? "status" : (opts.slabel || "Status"),
+		meta = opts.meta || false,
+		prefix = (by && typeof opts.prefix === "string") ? opts.prefix : "",
+		drop = (opts.drop && opts.drop.length > 0) ? opts.drop : [],
+		dec = opts.comma ? dp => String(dp.value).replace(".", ",") : dp => dp.value
+	;
+
+	let callback, arrobj, header;
+
+	if (drop) {
+		let i = drop.length;
+		while (i--) {
+			if (!this.Dimension(drop[i]) || this.Dimension(drop[i]).length > 1) {
+				drop.splice(i, 1);
+			}
+		}
+	}
+
+	switch (type) {
+		case "array":
+			const
+				validIds = ids.filter(id => drop.indexOf(id) === -1),
+				dimLabels = (field === "label") ? validIds.map(id => this.Dimension(id).label) : validIds,
+				labels = status ? [slabel, vlabel] : [vlabel],
+				dims = validIds.map(id => this.Dimension(id))
+			;
+
+			header = dimLabels.concat(labels);
+
+			const addStatusArray = status ? (ret, dp) => ret.push(dp.status) : () => { };
+
+			callback = (coordinates, datapoint) => {
+				const ret = [];
+
+				for (let i = 0, len = validIds.length; i < len; i++) {
+					const
+						dimId = validIds[i],
+						d = dims[i]
+					;
+
+					ret.push(content === "label" ? d.Category(coordinates[dimId]).label : coordinates[dimId]);
+				}
+
+				addStatusArray(ret, datapoint);
+				ret.push(dec(datapoint));
+
+				return ret;
+			};
+			break;
+
+		//case "arrobj"
+		default:
+			const
+				pivotMap = new Map(),
+				validDims = []
+			;
+
+			ids.forEach(dimId => {
+				if (drop.indexOf(dimId) !== -1) {
+					return;
+				}
+				const dim = this.Dimension(dimId);
+
+				validDims.push({
+					id: dimId,
+					dim: dim,
+					prop: (field === "label") ? dim.label : dimId,
+					isBy: (by && dimId === by)
+				});
+			});
+
+			const addStatusObj = status ? (ret, dp) => { ret[slabel] = dp.status; } : () => { };
+
+			callback = (coordinates, datapoint) => {
+				const ret = {};
+
+				let pivotColValue;
+
+				for (let i = 0, len = validDims.length; i < len; i++) {
+					const
+						d = validDims[i],
+						dId = d.id,
+						dProp = d.prop,
+						dIsBy = d.isBy,
+						cat = coordinates[dId],
+						val = content === "label" ? d.dim.Category(cat).label : cat
+					;
+
+					if (dIsBy) {
+						pivotColValue = val;
+					} else {
+						ret[dProp] = val;
+					}
+				}
+
+				if (by) {
+					addStatusObj(ret, datapoint);
+
+					const signature = Object.values(ret).join('|');
+
+					let
+						targetRow = pivotMap.get(signature),
+						isNew = false
+					;
+
+					if (!targetRow) {
+						targetRow = ret;
+						pivotMap.set(signature, targetRow);
+						isNew = true;
+					}
+
+					const dynamicKey = prefix + pivotColValue;
+					targetRow[dynamicKey] = dec(datapoint);
+
+					return isNew ? targetRow : undefined;
+				}
+
+				ret[vlabel] = dec(datapoint);
+				addStatusObj(ret, datapoint);
+
+				return ret;
+			};
+	}
+
+	arrobj = this.Unflatten(callback);
+
+	if (header) {
+		arrobj.unshift(header);
+	}
+
+	if (meta) {
+		const obj = {};
+
+		ids.forEach(i => {
+			const d = this.Dimension(i);
+
+			obj[i] = {
+				"label": d.label,
+				"role": d.role,
+				"categories": { //diferent from JSON-stat on purpose: "id" is not "index" and "label" is different than JSON-stat categories' label.
+					"id": d.id,
+					"label": this.Dimension(i, false)
+				}
+			};
+		});
+
+		return {
+			"meta": {
+				"type": type, //New in Transform. bylabel removed.
+				"label": this.label,
+				"source": this.source,
+				"updated": this.updated,
+				"id": ids,
+				"status": status,
+				"by": by,
+				"drop": drop.length > 0 ? drop : null,
+				"prefix": by !== null ? (prefix || "") : null,
+				"comma": comma,
+				"dimensions": obj //different from JSON-stat on purpose: the content is different and this export format is addressed to people probably not familiar with the JSON-stat format
+			},
+			"data": arrobj
+		};
+	} else {
+		//does nothing
+		return arrobj;
+	}
 };
 
 export default jsonstat;
