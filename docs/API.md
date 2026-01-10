@@ -11,7 +11,7 @@
 <ul>
   <li><strong><a href="#reading">Reading</a></strong>: <a href="#jsonstat">JSONstat()</a></li>
   <li><strong><a href="#traversing">Traversing</a></strong>: <a href="#dataset">Dataset()</a>, <a href="#dimension">Dimension()</a>, <a href="#category">Category()</a>, <a href="#data">Data()</a>, <a href="#item">Item()</a></li>
-  <li><strong><a href="#transforming">Transforming</a></strong>: <a href="#unflatten">Unflatten()</a>, <a href="#totable">toTable()</a>, <a href="#dice">Dice()</a>, <a href="#slice">Slice()</a></li>
+  <li><strong><a href="#transforming">Transforming</a></strong>: <a href="#unflatten">Unflatten()</a>, <a href="#transform">Transform()</a>, <a href="#totable">toTable()</a>, <a href="#dice">Dice()</a>, <a href="#slice">Slice()</a></li>
 </ul>
 
 ### By hierarchy
@@ -40,6 +40,7 @@
               </li>
               <li><strong><a href="#data">Data()</a></strong>: <a href="#value">value</a>, <a href="#status">status</a></li>
               <li><strong><a href="#unflatten">Unflatten()</a></strong></li>
+              <li><strong><a href="#transform">Transform()</a></strong></li>
               <li><strong><a href="#totable">toTable()</a></strong></li>
               <li><strong><a href="#dice">Dice()</a></strong></li>
               <li><strong><a href="#slice">Slice()</a></strong></li>
@@ -542,6 +543,134 @@ JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
 });
 ```
 
+### Transform()
+
+***
+<div><strong>Parent</strong>: <a href="#dataset">Dataset</a></div>
+<div><strong>Description</strong>: Converts information from a <em>jsonstat</em> instance into tabular form</div>
+<div><strong>Public Properties</strong>: &mdash;</div>
+<div><strong>Summary</strong>: <code><i>array</i> Transform ( [<i>object</i> opts] )</code></div>
+
+***
+
+This method was added in version 2.1.0 as a future replacement for <a href="#totable">toTable()</a>. It is directly based on <a href="#unflatten">Unflatten()</a> and is more efficient than <a href="#totable">toTable()</a>. 
+
+In comparison with <a href="#totable">toTable()</a>, it still has some limitations: currently, it only supports *array* and *arrobj* types and **unit** and **bylabel** options are not supported (instead of **bylabel**, Transform() takes into account the **content** option). It does not support a *callback* parameter.
+
+On the other hand, it has many advantages over <a href="#totable">toTable()</a>: it is more efficient as it relies on <a href="#unflatten">Unflatten()</a> and the *drop*, *comma* and *meta* options are also available for the *array* type. Finally, when *meta* is *true*, *type* is included in the meta property of the returned object (*unit* and *bylabel* have been removed from the meta property as they are not available).
+
+#### Parameters
+
+##### opts
+
+It is an object with the following optional properties:
+
+* **type**: String (*arrobj*, *array*). Default value is *array*. It determines the form of the return value.
+* **status**: Boolean. Default value is *false*. It determines whether the status of each value is included in the return value.
+* **content**: String (*id*, *label*). Default value is *label*. It determines whether categories are identified by label or by ID in the return value. It also determines the name of the pivoted categories when **by** is specified.
+* **field**: String (*id*, *label*). Default value is *label* except when **type** is *arrobj*. It determines whether dimensions, value and status are identified by label or by ID in the return value. When a valid **by** is specified, the default value of **field** is *id*.
+* **vlabel**: String. Default value is *Value*. It determines the label of the value field.
+* **slabel**: String. Default value is *Status*. Only available when **status** is *true*. It determines the label of the status field.
+* **meta**: Boolean. Default value is *false*. It determines the structure of the output. When **meta** is *true*, metadata is included in the output, which takes the form of an object with two properties: "meta" and "data". The latter contains the same array of objects that is returned when **meta** is *false*.
+* **by**: String. Only available when **type** is *arrobj*. It must be the ID of an existing dimension; otherwise, it will be ignored. When a valid **by** is specified, a property is created for each category of the **by** dimension (the "value" property is "transposed" by the *by* dimension). When a valid **by** is specified, **status** is ignored.
+* **prefix**: String. Only available when **type** is *arrobj*. When values are transposed using the **by** option, category IDs end up being used as properties, side by side with dimension IDs. To avoid collision, a prefix can be specified to be added at the beginning of each new property created by the transposition. When no valid **by** has been specified, the **prefix** property is ignored.
+* **drop**: Array. This property is used to provide dimension IDs not to be included in the output. Invalid dimension IDs and non single category dimensions are ignored.
+* **comma**: Boolean. Default value is *false*. When *true*, values are represented as strings instead of numbers with comma as the decimal mark.
+
+```js
+JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
+  //Column names (first row)
+  //["country", "year", "age group", "concepts", "sex", "Value"]
+  var cols=j.Transform( { type : "array" } )[0];
+  //IDs instead of labels
+  //["country", "year", "age", "concept", "sex", "value"]
+  cols=j.Transform( { type : "array", field : "id" } )[0];
+  //Labels including status
+  //["country", "year", "age group", "concepts", "sex", "Status", "Value"]
+  cols=j.Transform( { type : "array", status : true } )[0];
+  //Same but naming status as "Metadata" and value as "Data"
+  cols=j.Transform( { type : "array", status : true, vlabel : "Data", slabel: "Metadata" } )[0];
+  //First data row
+  //["Canada", "2012", "total", "population", "total", 34880.5]
+  var row1=j.Transform( {type: "array"} )[1];
+  //Same including status
+  //["Canada", "2012", "total", "population", "total", "a", 34880.5]
+  row1=j.Transform( {type: "array", status: true} )[1];
+  //Same but IDs instead of labels
+  //["CA", "2012", "T", "POP", "T", "a", 34880.5]
+  row1=j.Transform( {type: "array", status: true, content: "id"} )[1];
+});
+```
+
+#### Return Value
+
+It depends on the **type** specified in the <strong><a href="#opts">opts</a></strong> parameter. It returns *null* when the dataset has no values.
+
+##### <em>arrobj</em> type
+
+Unless **meta** is *true*, it returns an array of objects, where the key is the dimension ID, *value* or *status* (columns) and the value can be the category label or ID.
+
+```json
+[
+  { "age" : "total", "concept" : "population", "country": "Canada", "sex": "total", "value" : 34880.5, "year" : "2012"},
+  { "age" : "total", "concept" : "population", "country": "Canada", "sex": "male", "value" : 17309.1, "year" : "2012"},
+  { "age" : "total", "concept" : "population", "country": "Canada", "sex": "female", "value" : 17571.3, "year" : "2012"},
+  ...
+]
+```
+
+When **meta** is *true*, it returns an object of objects:
+
+```json
+{
+  "meta": {
+    "type": "arrobj",
+    "label": "Population by sex and age group. Canada. 2012",
+    "source": "Statistics Canada, CANSIM, table 051-0001",
+    "updated": "2012-09-27",
+    "id": ["country", "year", "age", "concept", "sex"],
+    "status": false,
+    "by": "sex",
+    "drop": ["year", "country"],
+    "prefix": "",
+    "comma": false,
+    "dimensions": {
+      "sex": {
+        "label": "sex",
+        "role": "classification",
+        "categories": {
+          "id": [ "T", "M", "F"],
+          "label": [ "total", "male", "female" ]
+        }
+      },
+      "age": { ... },
+      "concept": { ... },
+      "country": { ... },
+      "year": { ... }
+    }
+  },
+
+  "data": [
+    ...
+  ]
+}
+```
+
+The dimensions included in the "meta.dimensions" property are not affected by the value of the **by** and **drop** options.
+
+##### <em>array</em> type
+
+Unless **meta** is *true*, it returns an array of arrays. The first element in the array contains the column labels or IDs. The next elements can use category labels or IDs.
+
+```json
+[
+  [ "country", "year", "age group", "concepts", "sex", "Value" ],
+  [ "Canada", "2012", "total", "population", "total", 34880.5 ],
+  [ "Canada", "2012", "total", "population", "male", 17309.1 ],
+  ...
+]
+```
+
 ### toTable()
 
 ***
@@ -552,7 +681,7 @@ JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
 
 ***
 
-For a more efficient and more flexible transformation method, see <a href="#unflatten">Unflatten()</a>.
+This method is deprecated and planned to be removed in version 3.0.0. For a more efficient and flexible transformation method, see <a href="#unflatten">Unflatten()</a>. For a method based on <a href="#unflatten">Unflatten()</a>, with the same interface of toTable() (but based on Unflatten()), see <a href="#transform">Transform()</a> (added in version 2.1.0).
 
 #### Parameters
 
@@ -563,12 +692,12 @@ It is an object with the following optional properties:
 * **type**: String (*arrobj*, *objarr*, *object*, *array*). Default value is *array*. It determines the form of the return value.
 * **status**: Boolean. Default value is *false*. It determines whether the status of each value is included in the return value.
 * **content**: String (*id*, *label*). Default value is *label*. It determines whether categories are identified by label or by ID in the return value.
-* **field**: String (*id*, *label*). Default value is *label* except when **type** is *arrobj* or *objarr*. It determines whether dimensions, value and status are identified by label or by ID in the return value. When a valid **by** is specified, **field** is ignored and set to *id*.
+* **field**: String (*id*, *label*). Default value is *label* except when **type** is *arrobj* or *objarr*. It determines whether dimensions, value and status are identified by label or by ID in the return value. When a valid **by** is specified, the default value of **field** is *id*.
 * **vlabel**: String. Default value is *Value*. It determines the label of the value field.
 * **slabel**: String. Default value is *Status*. Only available when **status** is *true*. It determines the label of the status field.
 * **unit**: Boolean. Default value is *false*. Only available when **type** is *arrobj* or *objarr*. It determines whether unit information is included in the output. When *true*, each object in the array includes a *unit* property with all the unit information attached to a value by the provider. It is assumed that there is only a dimension with role *metric* in the dataset (or at least only one with unit information).
 * **meta**: Boolean. Default value is *false*. Only available when **type** is *arrobj* or *objarr*. It determines the structure of the output. When **meta** is *true*, metadata is included in the output, which takes the form of an object with two properties: "meta" and "data". The latter contains the same array of objects that is returned when **meta** is *false*.
-* **by**: String. Only available when **type** is *arrobj* or *objarr*. It must be the ID of an existing dimension; otherwise, it will be ignored. When a valid **by** is specified, a property is created for each category of the **by** dimension (the "value" property is "transposed" by the *by* dimension). When a valid **by** is specified, **field**, **status** and **unit** are ignored.
+* **by**: String. Only available when **type** is *arrobj* or *objarr*. It must be the ID of an existing dimension; otherwise, it will be ignored. When a valid **by** is specified, a property is created for each category of the **by** dimension (the "value" property is "transposed" by the *by* dimension). When a valid **by** is specified, **status** and **unit** are ignored.
 * **bylabel**: Boolean. Default is *false*. Only available when **type** is *arrobj* or *objarr*. When *true*, the categories of the **by** dimension are identified, once transposed, by their label instead of their ID.
 * **prefix**: String. Only available when **type** is *arrobj* or *objarr*. When values are transposed using the **by** option, category IDs end up being used as properties, side by side with dimension IDs. To avoid collision, a prefix can be specified to be added at the beginning of each new property created by the transposition. When no valid **by** has been specified, the **prefix** property is ignored.
 * **drop**: Array. Only available when **type** is *arrobj* or *objarr*. This property is used to provide dimension IDs not to be included in the output. Invalid dimension IDs and non single category dimensions are ignored. When no valid **by** is specified, the **drop** property is ignored.
