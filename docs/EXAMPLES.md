@@ -9,7 +9,7 @@
 
 ## Observable Notebooks
 
-* [Introduction to the jsonstat-toolkit](https://observablehq.com/@jsonstat/toolkit)
+* [Introduction to the JSONSTAT-TOOLKIT](https://observablehq.com/@jsonstat/toolkit)
 * [Fetching Official Statistics in Observable Notebooks... Worldwide](https://observablehq.com/@jsonstat/fetch)
 * [Avoiding JSON-stat semantics: The JSONSTAT-TOOLKIT Transform Method](https://observablehq.com/@jsonstat/transform)
 * [Bringing Data and Metadata Together: The JSONSTAT-TOOLKIT Unflatten Method](https://observablehq.com/@jsonstat/unflatten)
