@@ -4,21 +4,14 @@
 
 <ul>
   <li><a href="#observable-notebooks">Observable Notebooks</a></li>
-  <li><a href="#differences-between-version-0-and-version-1">Differences between version 0 and version&gt;0</a>
-    <ul>
-      <li><a href="#retrieving-jjts-version">Retrieving JJT's version</a></li>
-      <li><a href="#doing-a-get-request">Doing a GET request</a></li>
-      <li><a href="#doing-a-post-request">Doing a POST request</a></li>
-      <li><a href="#ecmascript-module">ECMAScript Module</a></li>
-      <li><a href="#ie-support-for-jsonstat-requests">IE Support for JSONstat requests</a></li>
-    </ul>
-  </li>
+  <li><a href="#differences-between-version-0-and-version-1">Differences between version 0 and version&gt;0</a></li>
 </ul>
 
 ## Observable Notebooks
 
 * [Introduction to the jsonstat-toolkit](https://observablehq.com/@jsonstat/toolkit)
 * [Fetching Official Statistics in Observable Notebooks... Worldwide](https://observablehq.com/@jsonstat/fetch)
+* [Avoiding JSON-stat semantics: The JSONSTAT-TOOLKIT Transform Method](https://observablehq.com/@jsonstat/transform)
 * [Bringing Data and Metadata Together: The JSONSTAT-TOOLKIT Unflatten Method](https://observablehq.com/@jsonstat/unflatten)
 * [JSON-stat Empty Datasets](https://observablehq.com/@jsonstat/emptydatasets)
 * [Renewable Energy in Europe](https://observablehq.com/@jsonstat/energy)
