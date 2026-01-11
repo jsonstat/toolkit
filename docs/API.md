@@ -681,7 +681,7 @@ Unless **meta** is *true*, it returns an array of arrays. The first element in t
 
 ***
 
-This method is deprecated and planned to be removed in version 3.0.0. For a more efficient and flexible transformation method, see <a href="#unflatten">Unflatten()</a>. For a method based on <a href="#unflatten">Unflatten()</a>, with the same interface of toTable() (but based on Unflatten()), see <a href="#transform">Transform()</a> (added in version 2.1.0).
+This method is deprecated and planned to be removed in version 3.0.0. For a more efficient and flexible transformation method, see <a href="#unflatten">Unflatten()</a>. For a method based on <a href="#unflatten">Unflatten()</a>, with the same interface of toTable(), see <a href="#transform">Transform()</a> (added in version 2.1.0).
 
 #### Parameters
 
