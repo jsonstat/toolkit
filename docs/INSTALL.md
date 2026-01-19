@@ -11,11 +11,11 @@
 Copy the latest version of the [jsonstat-toolkit code](https://raw.githubusercontent.com/jsonstat/toolkit/master/iife.js) to your server and use a script tag in your webpage to link to it. <strong>jsonstat-toolkit</strong> is also available from several CDNs ([unpkg](https://unpkg.com), [jsDelivr](https://www.jsdelivr.com/)):
 
 ```html
-<script src="https://unpkg.com/jsonstat-toolkit@2.1.0"></script>
+<script src="https://unpkg.com/jsonstat-toolkit@2.1.1"></script>
 ```
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/jsonstat-toolkit@2.1.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsonstat-toolkit@2.1.1"></script>
 ```
 
 The Toolkit works on any modern browser: it has been developed using ECMAScript 2016 (ES2016), an specification well-supported in major web browsers as of January 2020.
@@ -33,13 +33,13 @@ Modern browsers support ECMAScript modules. Copy the latest version of the [ECMA
 
 ```html
 <script type="module">
-import JSONstat from "https://unpkg.com/jsonstat-toolkit@2.1.0/import.mjs";
+import JSONstat from "https://unpkg.com/jsonstat-toolkit@2.1.1/import.mjs";
 </script>
 ```
 
 ```html
 <script type="module">
-import JSONstat from "https://cdn.jsdelivr.net/npm/jsonstat-toolkit@2.1.0/import.mjs";
+import JSONstat from "https://cdn.jsdelivr.net/npm/jsonstat-toolkit@2.1.1/import.mjs";
 </script>
 ```
 
@@ -80,5 +80,5 @@ import { JSONstat } from "@jsonstat/toolkit"
 To import a particular version of the jsonstat-toolkit in [Observable](https://observablehq.com/):
 
 ```js
-JSONstat = require("jsonstat-toolkit@2.1.0").catch(() => window["JSONstat"])
+JSONstat = require("jsonstat-toolkit@2.1.1").catch(() => window["JSONstat"])
 ```

@@ -620,8 +620,8 @@ jsonstat.prototype.Dice=function(filters, options, drop){
 		}
 
 		ds
-		.toTable({type: "arrobj", content: "id", status: true})
-		.forEach((item) => {
+		.Transform({type: "arrobj", content: "id", field: "id", status: true})
+		.forEach((item) => { //TODO: Remove this extra loop: use Unflatten instead of Transform+forEach
 			let or = [];
 
 			ids.forEach(dimid => {
@@ -1441,6 +1441,10 @@ jsonstat.prototype.Transform=function(opts){
 		}
 	} else {
 		opts = {};
+	}
+
+	if(opts.type==="arrobj" && typeof(opts.field)==="undefined"){
+		opts.field="id";
 	}
 
 	const
