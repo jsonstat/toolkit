@@ -1460,7 +1460,10 @@ jsonstat.prototype.Transform=function(opts){
 		meta = opts.meta || false,
 		prefix = (by && typeof opts.prefix === "string") ? opts.prefix : "",
 		drop = (opts.drop && opts.drop.length > 0) ? opts.drop : [],
-		dec = opts.comma ? dp => String(dp.value).replace(".", ",") : dp => dp.value
+		dec = comma ? 
+				dp => ( dp.value===null ? null : String(dp.value).replace(".", ",") )
+				: 
+				dp => dp.value
 	;
 
 	let callback, arrobj, header;
