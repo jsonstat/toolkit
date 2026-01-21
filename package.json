@@ -1,6 +1,6 @@
 {
 	"name": "jsonstat-toolkit",
-	"version": "2.1.2",
+	"version": "2.2.0",
 	"description": "JSON-stat JavaScript Toolkit: a library to deal with JSON-stat responses.",
 	"homepage": "https://jsonstat.com",
 	"keywords": [

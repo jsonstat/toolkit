@@ -553,11 +553,11 @@ JSONstat( "https://json-stat.org/samples/canada.json" ).then(function(j) {
 
 ***
 
-This method was added in version 2.1.0 as a future replacement for <a href="#totable">toTable()</a>. It is directly based on <a href="#unflatten">Unflatten()</a> and is more efficient than <a href="#totable">toTable()</a>. 
+This method was added in version 2.1.0 (and support for "objarr" type in 2.2.0) as a future replacement for <a href="#totable">toTable()</a>. It is directly based on <a href="#unflatten">Unflatten()</a> and is more efficient than <a href="#totable">toTable()</a>. 
 
-In comparison with <a href="#totable">toTable()</a>, it still has some limitations: currently, it only supports *array* and *arrobj* types and **unit** and **bylabel** options are not supported (instead of **bylabel**, Transform() takes into account the **content** option). It does not support a *callback* parameter.
+In comparison with <a href="#totable">toTable()</a>, it still has some limitations: it does not support the *object* type, and **unit** and **bylabel** options are not included (instead of **bylabel**, Transform() takes into account the **content** option). It does not support a *callback* parameter either.
 
-On the other hand, it has many advantages over <a href="#totable">toTable()</a>: it is more efficient as it relies on <a href="#unflatten">Unflatten()</a> and the *drop*, *comma* and *meta* options are also available for the *array* type. Finally, when *meta* is *true*, *type* is included in the meta property of the returned object (*unit* and *bylabel* have been removed from the meta property as they are not available).
+On the other hand, it has many advantages over <a href="#totable">toTable()</a>: it is more efficient as it relies on <a href="#unflatten">Unflatten()</a>, *drop* does not required *by* and the *drop*, *comma* and *meta* options are also available for the *array* type. Finally, when *meta* is *true*, *type* is included in the meta property of the returned object (*unit* and *bylabel* have been removed from the meta property as they do not exist).
 
 #### Parameters
 
@@ -565,15 +565,15 @@ On the other hand, it has many advantages over <a href="#totable">toTable()</a>:
 
 It is an object with the following optional properties:
 
-* **type**: String (*arrobj*, *array*). Default value is *array*. It determines the form of the return value.
+* **type**: String (*array*, *arrobj*, *objarr*). Default value is *array*. It determines the form of the return value.
 * **status**: Boolean. Default value is *false*. It determines whether the status of each value is included in the return value.
 * **content**: String (*id*, *label*). Default value is *label*. It determines whether categories are identified by label or by ID in the return value. It also determines the name of the pivoted categories when **by** is specified.
-* **field**: String (*id*, *label*). Default value is *label* except when **type** is *arrobj*. It determines whether dimensions, value and status are identified by label or by ID in the return value. When a valid **by** is specified, the default value of **field** is *id*.
+* **field**: String (*id*, *label*). Default value is *id* except when **type** is *array*. It determines whether dimensions, value and status are identified by label or by ID in the return value.
 * **vlabel**: String. Default value is *Value*. It determines the label of the value field.
 * **slabel**: String. Default value is *Status*. Only available when **status** is *true*. It determines the label of the status field.
 * **meta**: Boolean. Default value is *false*. It determines the structure of the output. When **meta** is *true*, metadata is included in the output, which takes the form of an object with two properties: "meta" and "data". The latter contains the same array of objects that is returned when **meta** is *false*.
-* **by**: String. Only available when **type** is *arrobj*. It must be the ID of an existing dimension; otherwise, it will be ignored. When a valid **by** is specified, a property is created for each category of the **by** dimension (the "value" property is "transposed" by the *by* dimension). When a valid **by** is specified, **status** is ignored.
-* **prefix**: String. Only available when **type** is *arrobj*. When values are transposed using the **by** option, category IDs end up being used as properties, side by side with dimension IDs. To avoid collision, a prefix can be specified to be added at the beginning of each new property created by the transposition. When no valid **by** has been specified, the **prefix** property is ignored.
+* **by**: String. Not available when **type** is *array*. It must be the ID of an existing dimension; otherwise, it will be ignored. When a valid **by** is specified, a property is created for each category of the **by** dimension (the "value" property is "transposed" by the *by* dimension). When a valid **by** is specified, **status** is ignored.
+* **prefix**: String. Not available when **type** is *array*. When values are transposed using the **by** option, category IDs end up being used as properties, side by side with dimension IDs. To avoid collision, a prefix can be specified to be added at the beginning of each new property created by the transposition. When no valid **by** has been specified, the **prefix** property is ignored.
 * **drop**: Array. This property is used to provide dimension IDs not to be included in the output. Invalid dimension IDs and non single category dimensions are ignored.
 * **comma**: Boolean. Default value is *false*. When *true*, values are represented as strings instead of numbers with comma as the decimal mark.
 
@@ -658,9 +658,23 @@ When **meta** is *true*, it returns an object of objects:
 
 The dimensions included in the "meta.dimensions" property are not affected by the value of the **by** and **drop** options.
 
+##### <em>objarr</em> type
+
+*objarr* has the same options of *arrobj* but, instead of using an array of objects, it expresses data as an object where each property (table column) is an array. This table structure is often known as column-oriented arrays or columnar format.
+
+```json
+{
+  "value": [5.943826289, 5.39663128, 5.044790587, ...],
+  "status": [null, null, null, ...],
+  "year": ["2003", "2004", "2005", ...],
+  "area": ["AU", "AU", "AU", ...],
+  "concept": ["UNR", "UNR", "UNR", ...]
+}
+```
+
 ##### <em>array</em> type
 
-Unless **meta** is *true*, it returns an array of arrays. The first element in the array contains the column labels or IDs. The next elements can use category labels or IDs.
+Unless **meta** is *true*, it returns an array of arrays. The first element (header) in the array contains the column labels or IDs depending on the *field* option. The next elements use category labels or IDs depending on the *content* option.
 
 ```json
 [
