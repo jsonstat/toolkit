@@ -3,9 +3,14 @@
 > [JSON-stat JavaScript Toolkit](https://github.com/jsonstat/toolkit/blob/master/README.md) ▸ **Examples**
 
 <ul>
+  <li><a href="#jsonstatcom-examples-repository">JSONstat.com Examples Repository</a></li>
   <li><a href="#observable-notebooks">Observable Notebooks</a></li>
-  <li><a href="#differences-between-version-0-and-version-1">Differences between version 0 and version&gt;0</a></li>
+  <li><a href="#differences-between-version-0-and-version0">Differences between version 0 and version&gt;0</a></li>
 </ul>
+
+## JSONstat.com Examples Repository
+
+* [jsonstat-toolkit examples](https://jsonstat.com/examples/?lib=tlkt)
 
 ## Observable Notebooks
 
