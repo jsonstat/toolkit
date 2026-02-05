@@ -666,6 +666,8 @@ When **meta** is *true*, it returns an object of objects:
 
 The dimensions included in the "meta.dimensions" property are not affected by the value of the **by** and **drop** options.
 
+Full example: [EU Dashboard](https://jsonstat.com/examples/45855280509edd73300af7240de3524a).
+
 ##### <em>objarr</em> type
 
 *objarr* has the same options of *arrobj* but, instead of using an array of objects, it expresses data as an object where each property (table column) is an array. This table structure is often known as column-oriented arrays or columnar format.
