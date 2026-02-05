@@ -17,6 +17,7 @@ Copy the latest version of the [jsonstat-toolkit code](https://raw.githubusercon
 ```html
 <script src="https://cdn.jsdelivr.net/npm/jsonstat-toolkit@2.2.0"></script>
 ```
+Full example: [A Population Pyramid in a Couple of Lines of Code](https://jsonstat.com/examples/73d6d471b42abc17ac01502024be5f28).
 
 The Toolkit works on any modern browser: it has been developed using ECMAScript 2016 (ES2016), an specification well-supported in major web browsers as of January 2020.
 
@@ -42,6 +43,8 @@ import JSONstat from "https://unpkg.com/jsonstat-toolkit@2.2.0/import.mjs";
 import JSONstat from "https://cdn.jsdelivr.net/npm/jsonstat-toolkit@2.2.0/import.mjs";
 </script>
 ```
+
+Full example: [Latest EU Unemployment Rate (ECMAScript module)](https://jsonstat.com/examples/c1feb27bd8214de60f430379424e12fa)
 
 The Toolkit ECMAScript module works on any browser that supports ECMAScript modules (all major browsers released after 2018).
 
