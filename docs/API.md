@@ -987,6 +987,8 @@ The filter can be specified as an object where properties are dimensions IDs and
 ]
 ```
 
+Full example: [Latest Unemployment Rate in Spain](https://jsonstat.com/examples/73d6d471b42abc17ac01502024be5f28).
+
 ##### opts
 
 It is an object with the following optional properties:
