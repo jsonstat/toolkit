@@ -99,6 +99,8 @@ if( j.length ){
 }
 ```
 
+Full example: [A Population Pyramid (fetch version)](https://jsonstat.com/examples/31ae71bf8c466abbd957eff23b3994f3).
+
 When the string "version" is specified, the JSON-stat JavaScript Toolkit version is returned.
 
 ```js
@@ -116,6 +118,8 @@ JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
   }
 });
 ```
+
+Full examples: [A Population Pyramid in a Couple of Lines of Code](https://jsonstat.com/examples/8bfd4cd8218d773ca0ac0fbe33bca28f), [A Population Pyramid (await version)](https://jsonstat.com/examples/105d4e14f1c891085be3737e4567ed12).
 
 ##### init
 
@@ -137,6 +141,8 @@ JSONstat(url, options).then(function( j ) {
 });
 ```
 
+Full example: [Female Activity Rate in Finland (POST example)](https://jsonstat.com/examples/bd741e64f80ccea83ad3f5523e2ed302).
+
 ##### typedArray
 
 Since version 1.4, the JSON-stat JavaScript Toolkit supports typed arrays. If an object that uses a typed array for the *value* property is passed to JSONstat(), it will keep the type once converted into a *jsonstat* instance.
@@ -149,7 +155,7 @@ JSONstat( "https://json-stat.org/samples/oecd.json", Float32Array ).then(functio
 });
 ```
 
-The type is kept when a subset is created using <a href="#dice">Dice()</a> (or <a href="#slice">Slice()</a>) or when dataset information is exported using <a href="#totable">toTable()</a> ("objarr" type without **by**).
+The type is kept when a subset is created using <a href="#dice">Dice()</a> (or <a href="#slice">Slice()</a>) or when dataset information is exported using <a href="#totable">toTable()</a>/<a href="#transform">Transform</a> ("objarr" type without **by**).
 
 #### Return Value
 
@@ -212,6 +218,8 @@ JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
   }
 });
 ```
+
+Full example: [Danish Labor Market (JSON-stat v1 bundle)](https://jsonstat.com/examples/7058b47db2f3b1f9b0dc).
 
 ### Dimension()
 
