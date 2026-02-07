@@ -666,7 +666,7 @@ When **meta** is *true*, it returns an object of objects:
 
 The dimensions included in the "meta.dimensions" property are not affected by the value of the **by** and **drop** options.
 
-Full example: [EU Dashboard](https://jsonstat.com/examples/45855280509edd73300af7240de3524a).
+Full examples: [EU Dashboard](https://jsonstat.com/examples/45855280509edd73300af7240de3524a), [Ireland's Harmonised Inflation Calculator](https://jsonstat.com/examples/3cfb6bcec7c5a27b1fa7).
 
 ##### <em>objarr</em> type
 
