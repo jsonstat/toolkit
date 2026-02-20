@@ -141,7 +141,8 @@ JSONstat(url, options).then(function( j ) {
 });
 ```
 
-Full example: [Female Activity Rate in Finland (POST example)](https://jsonstat.com/examples/bd741e64f80ccea83ad3f5523e2ed302).
+Full examples: [Female Activity Rate in Finland (POST example)](https://jsonstat.com/examples/bd741e64f80ccea83ad3f5523e2ed302), [UNECE Unemployment Trend Comparison](https://jsonstat.com/examples/dc7ff91a533159a85c3c).
+
 
 ##### typedArray
 
@@ -264,6 +265,8 @@ JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
 });
 ```
 
+Full example: [UNECE Unemployment Trend Comparison](https://gist.github.com/badosa/dc7ff91a533159a85c3c).
+
 #### Return Value
 
 When a valid **dimid** is specified, it returns a *jsonstat* instance. If **dimid** is not valid, a *null* is returned. If **dimid** is not specified, it returns an array of *jsonstat* instances: one for each dimension. If **dimid** is a valid object, it returns an array of *jsonstat* instances: one for each dimension with the selected [role](#role).
@@ -292,6 +295,8 @@ JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
   var AUlabel=j.Dimension( "area" ).Category( "AU" ).label; //"Australia"
 });
 ```
+
+Full example: [UNECE Unemployment Trend Comparison](https://jsonstat.com/examples/dc7ff91a533159a85c3c).
 
 ### Data()
 
