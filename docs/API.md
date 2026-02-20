@@ -371,6 +371,8 @@ JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
 });
 ```
 
+Full examples: [A Population Pyramid in a Couple of Lines of Code](https://jsonstat.com/examples/8bfd4cd8218d773ca0ac0fbe33bca28f), [A Population Pyramid (fetch version)](https://jsonstat.com/examples/31ae71bf8c466abbd957eff23b3994f3), [A Population Pyramid (await version)](https://jsonstat.com/examples/105d4e14f1c891085be3737e4567ed12), [Norway’s Dynamic Population Pyramid](https://jsonstat.com/examples/cea1a9205b8321195236915ac3b80932), [Female Activity Rate in Finland (POST example)](https://jsonstat.com/examples/bd741e64f80ccea83ad3f5523e2ed302), [Educational attainment in Europe (toolkit version)](https://jsonstat.com/examples/af4edd90b99f5461e70345c23bc308f1), [Crimes in Switzerland](https://jsonstat.com/examples/7148589924ca07c2ca076eda4a359661), [UK Unemployment by Sex](https://jsonstat.com/examples/4ef0e6e7f0971e206f7d33d51b85a455), [Dynamic GDP per Capita in the EU (toolkit version)](https://jsonstat.com/examples/02294839c6a82661d1f48baa50b02b8e), [Danish Labor Market (JSON-stat v1 bundle)](https://jsonstat.com/examples/7058b47db2f3b1f9b0dc), [Registered Unemployment in Galicia (JSON-stat v1 + JSONP)](https://jsonstat.com/examples/9974deedb4fb34d0cbc3), [Exports / Imports in Catalonia](https://jsonstat.com/examples/d0dd5cea681ed4337ba0af0f3dc39bec), [UNECE Unemployment Trend Comparison](https://jsonstat.com/examples/dc7ff91a533159a85c3c).
+
 ### Item()
 
 ***
