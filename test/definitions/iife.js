@@ -24,9 +24,6 @@ const definitions = [
 		real: (J) => J.Dataset(1).Dimension('age').role,
 		exp: "classification",
 	  },
-
-
-
 	  {
 		text: "Number of categories in dimension 'area'",
 		real: (J) => J.Dataset(0).Dimension("area").length,
@@ -359,7 +356,12 @@ const definitions = [
 	  },
 	  {
 		text: "toTable() with comma option",
-		real: (J, { oecd }) => oecd.toTable( { type : "arrobj" , comma: true } )[10].value,
+		real: (J, { oecd }) => oecd.toTable( { type : "arrobj", comma: true } )[10].value,
+		exp: "5,50415003",
+	  },
+	  {
+		text: "Transform() with comma option",
+		real: (J, { oecd }) => oecd.Transform( { type : "arrobj", comma: true } )[10].value,
 		exp: "5,50415003",
 	  },
 	  {
@@ -419,10 +421,58 @@ const definitions = [
           )).value)
 	  },
 	  {
+		text: "Value via toTable and object",
+		real: (J, { oecd }) => oecd.toTable({ type: "object" }).rows[10].c[3].v,
+		exp: 5.50415003,
+	  },
+	  {
+		text: "Value via Transform and object",
+		real: (J, { oecd }) => oecd.Transform({ type: "object" }).rows[10].c[3].v,
+		exp: 5.50415003,
+	  },
+	  {
+		text: "Label with drop via Transform and object",
+		real: (J, { oecd }) => oecd.Transform({ type: "object", drop: ["concept"] }).cols[0].label,
+		exp: 'OECD countries, EU15 and total',
+	  },
+	  {
+		text: "Id with drop via Transform and object",
+		real: (J, { oecd }) => oecd.Transform({ type: "object", drop: ["concept"], content: "id" }).rows[0].c[0].v,
+		exp: 'AU',
+	  },
+	  {
 		text: "Single value using Slice()",
 		exp: 9.627692959,
 		real: (J, { oecd }) => oecd.Slice({area: 'US', year: '2010'}).value[0]
-	  }
+	  },
+	  {
+		text: "Label (first row) of 3rd colum (via Transform)",
+		exp: "age group",
+		real: (J, { canada }) => canada.Transform({ type: "array" })[0][2],
+	  },
+	  {
+		text: "Id (first row) of 3rd colum (via Transform)",
+		exp: "age",
+		real: (J, { canada }) =>
+		  canada.Transform({ type: "array", field: "id" })[0][2],
+	  },
+	  {
+		text: "Label (first row) of status colum renamed as Metadata (via Transform)",
+		exp: "Metadata",
+		real: (J, { canada }) =>
+		  canada.Transform({
+			type: "array",
+			status: true,
+			vlabel: "Data",
+			slabel: "Metadata",
+		  })[0][5],
+	  },
+	  {
+		text: "Id of 3rd colum of first row of data (via Transform)",
+		exp: "POP",
+		real: (J, { canada }) =>
+		  canada.Transform({ type: "array", status: true, content: "id" })[1][3],
+	  },
 	],
   },
   {
@@ -503,6 +553,41 @@ const definitions = [
 		real: (J) => J.toTable({ type: "objarr" }).geo[10],
 		exp: "Denmark",
 	  },
+	  {
+		text: "BY variable (via Transform)",
+		real: (J) => J.Transform({ type: "arrobj", content: "id", meta: true, by: "time" }).meta.by,
+		exp: "time",
+	  },
+	  {
+		text: "geo for first value (via Transform)",
+		real: (J) =>
+		  J.Transform({
+			type: "arrobj",
+			content: "id",
+			meta: true,
+			by: "time",
+			prefix: "Y",
+		  }).data[0].geo,
+		exp: "EU27_2020",
+	  },
+	  {
+		text: "Year 2024 value for EU27_2020 (via Transform)",
+		real: (J) =>
+		  J.Transform({
+			type: "arrobj",
+			content: "id",
+			meta: true,
+			by: "time",
+			prefix: "Y",
+		  }).data[0].Y2024,
+		exp: 75.8,
+	  },
+	  {
+		text: "geo of 9nth value (via Transform and objarr)",
+		real: (J) => J.Transform({ type: "objarr" }).geo[10],
+		exp: "Denmark",
+	  },
+
 	],
   },
 ];

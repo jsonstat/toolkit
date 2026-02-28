@@ -1418,16 +1418,16 @@ jsonstat.prototype.Unflatten = function (callback) {
 };
 
 /* 
-	2.2.0 
+	2.2.0 (support for "object" type added in 2.2.1)
 	Replacement for toTable().
 	Comparison with toTable:
-	- "object" type, "unit" and callback argument not supported. 
+	- "unit" and callback argument not supported. 
 	- "bylabel" removed (it uses "content" value instead). 
 	+ "type" added to meta property ("unit" and "bylabel" removed from meta property).
 	+ "drop" does not require "by".
-	+ "drop", "comma" and "meta", generalized (available also for "array" type).
+	+ "drop" generalized (available also for "array" and "object" types)
+	+ "comma" and "meta" also available for "array" type.
 	+ It relies on Unflatten: much more efficient than toTable.
-	
 */
 jsonstat.prototype.Transform=function(opts){
 	if (this === null || this.class !== "dataset" || this.value === null) {
@@ -1448,9 +1448,9 @@ jsonstat.prototype.Transform=function(opts){
 
 	const
 		ds = this,
-		type = opts.type !== "arrobj" && opts.type !== "objarr" ? "array" : opts.type,
+		type = opts.type !== "arrobj" && opts.type !== "objarr" && opts.type !== "object" ? "array" : opts.type,
 		ids = ds.id,
-		by = (type !== "array" && opts.by && ids.includes(opts.by)) ? opts.by : null,
+		by = (type !== "array" && type !== "object" && opts.by && ids.includes(opts.by)) ? opts.by : null,
 		comma = opts.comma || false,
 		status = by === null && opts.status || false,
 		content = opts.content || "label",
@@ -1503,6 +1503,59 @@ jsonstat.prototype.Transform=function(opts){
 
 			unflattened = ds.Unflatten(callback);
 			break;
+		}
+
+		case "object": {
+			const
+				gDims = validIds.map(id => ds.Dimension(id)),
+				valuetype = (typeof ds.value[0] === "number" || ds.value[0] === null) ? "number" : "string",
+				cols = []
+			;
+
+			for (let i = 0, len = validIds.length; i < len; i++) {
+				const
+					dimId = validIds[i],
+					dim = gDims[i],
+					colLabel = field === "id" ? dimId : (dim.label || dimId)
+				;
+
+				cols.push({ id: dimId, label: colLabel, type: "string" });
+			}
+
+			if (status) {
+				cols.push({ id: "status", label: slabel, type: "string" });
+			}
+
+			cols.push({ id: "value", label: vlabel, type: valuetype });
+
+			const
+				addStatusCell = status
+					? (row, dp) => row.push({ v: dp.status })
+					: () => {}
+				,
+				rows = ds.Unflatten((coordinates, datapoint) => {
+					const row = [];
+
+					for (let i = 0, len = validIds.length; i < len; i++) {
+						const
+							dimId = validIds[i],
+							d = gDims[i],
+							cat = coordinates[dimId]
+						;
+
+						row.push({
+							v: content === "label" ? d.Category(cat).label : cat
+						});
+					}
+
+					addStatusCell(row, datapoint);
+					row.push({ v: datapoint.value });
+
+					return { c: row };
+				})
+			;
+
+			return { cols: cols, rows: rows };
 		}
 
 		case "objarr": {
