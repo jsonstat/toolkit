@@ -141,7 +141,7 @@ JSONstat(url, options).then(function( j ) {
 });
 ```
 
-Full examples: [Female Activity Rate in Finland (POST example)](https://jsonstat.com/examples/bd741e64f80ccea83ad3f5523e2ed302), [UNECE Unemployment Trend Comparison](https://jsonstat.com/examples/dc7ff91a533159a85c3c).
+Full examples: [Female Activity Rate in Finland (POST example)](https://jsonstat.com/examples/bd741e64f80ccea83ad3f5523e2ed302), [UNECE Unemployment Trend Comparison](https://jsonstat.com/examples/dc7ff91a533159a85c3c), [UNECE Unemployment Choropleth](https://jsonstat.com/examples/5689764).
 
 
 ##### typedArray
@@ -715,6 +715,7 @@ It returns an object of arrays in the [Google DataTable](https://developers.goog
 
 **Warning**: DataTable declares explicitly the type of the values. JSON-stat does not, so this information must be inferred. Generally, it can safely be assumed that values are numbers. Currently, toTable only performs a very naïf test: if the first value is a number (or *null*), it will assign a type of *number*; otherwise, it will assign a type of *string*.
 
+Full example: [UNECE Unemployment Choropleth](https://jsonstat.com/examples/5689764).
 
 ### toTable()
 
@@ -1010,7 +1011,7 @@ The filter can be specified as an object where properties are dimensions IDs and
 ]
 ```
 
-Full example: [Latest Unemployment Rate in Spain](https://jsonstat.com/examples/73d6d471b42abc17ac01502024be5f28).
+Full examples: [Latest Unemployment Rate in Spain](https://jsonstat.com/examples/73d6d471b42abc17ac01502024be5f28), [UNECE Unemployment Choropleth](https://jsonstat.com/examples/5689764).
 
 ##### opts
 
