@@ -1,6 +1,6 @@
 {
 	"name": "jsonstat-toolkit",
-	"version": "2.2.1",
+	"version": "2.2.2",
 	"description": "JSON-stat JavaScript Toolkit: a library to deal with JSON-stat responses.",
 	"homepage": "https://jsonstat.com",
 	"keywords": [
@@ -30,8 +30,11 @@
 	},
 	"devDependencies": {
 		"@rollup/plugin-json": "^6.1.0",
-		"rollup": "^4.45.0",
+		"rollup": "^4.59.0",
 		"@rollup/plugin-terser": "^0.4.4"
+	},
+	"overrides": {
+		"serialize-javascript": "^7.0.3"
 	},
 	"license": "Apache-2.0",
 	"files": [
