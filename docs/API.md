@@ -255,7 +255,7 @@ JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
 ```
 
 ##### instance
-This boolean parameter is only available when **dimid** is specified and alters the return value. By default (*true*), the return value is a *jsonstat* instance (object), an array of *jsonstat* instances or *null*. When a valid **dimid** is specified in combination with **instance** *true*, the return value is an array of category labels for dimension **dimid** or, when **dimid** is an object, an array of arrays (one for each selected dimension) of category labels.
+This boolean parameter is only available when **dimid** is specified and alters the return value. By default (*true*), the return value is a *jsonstat* instance (object), an array of *jsonstat* instances or *null*. When a valid **dimid** is specified in combination with **instance** *false*, the return value is an array of category labels for dimension **dimid** or, when **dimid** is an object, an array of arrays (one for each selected dimension) of category labels.
 
 ```js
 JSONstat( "https://json-stat.org/samples/oecd.json" ).then(function(j) {
@@ -269,7 +269,16 @@ Full example: [UNECE Unemployment Trend Comparison](https://gist.github.com/bado
 
 #### Return Value
 
-When a valid **dimid** is specified, it returns a *jsonstat* instance. If **dimid** is not valid, a *null* is returned. If **dimid** is not specified, it returns an array of *jsonstat* instances: one for each dimension. If **dimid** is a valid object, it returns an array of *jsonstat* instances: one for each dimension with the selected [role](#role).
+The return value depends on both **dimid** and the **instance** parameter, which is available only when **dimid** is specified.
+
+- **dimid not specified**: an array of *jsonstat* instances, one per dimension.
+- **dimid not valid**: *null*.
+- **valid integer/string dimid**:
+    - **instance** *true* (default): a *jsonstat* instance.
+    - **instance** *false*: an array of category labels for dimension **dimid**.
+- **valid object dimid** (`{ role: … }`):
+    - **instance** *true* (default): an array of *jsonstat* instances, one per dimension with the selected [role](#role).
+    - **instance** *false*: an array of arrays (one per selected dimension) of category labels.
 
 ### Category()
 
